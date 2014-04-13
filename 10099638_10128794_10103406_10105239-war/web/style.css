@@ -1,0 +1,332 @@
+/* 
+ * Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
+ * Module:      Distributed Systems 2
+ *      Code:   CE4208
+ * Lecturer:    Reiner Dojen
+ * Date:        07 April 2014
+ *
+ * Project:     Secure Authentication and Session Management System for a Web Application
+ */
+body {
+    font-family: "proxima-nova", Frutiger, Univers, ‘Myriad Pro’, ‘Liberation Sans’, ‘Nimbus Sans L’, ‘Helvetica Neue’, Arial, sans-serif; /* Narrow */
+    /* font-family: Corbel, ‘Lucida Sans Unicode’, ‘DejaVu Sans’, ‘Bitstream Vera Sans’, ‘Liberation Sans’, Verdana, sans-serif; /* Wide */
+    /* font-family: ‘Palatino Linotype’, Palladio, Baskerville, ‘Bitstream Charter’, Garamond, Georgia, serif /* Serif */
+    font-size:15px;
+    line-height:22px;
+    color:#333;
+    background:#FFFAFA url();
+}
+
+/* 2.DEFAULT STYLING
+---------------------------------------------------------------------- */
+/* Lists, spans, labels, buttons, general classes, code etc. */
+pre {
+    width: 40%;
+    margin-bottom: 1.5%;
+    padding: 5px 24px 5px 26px;
+    background: #EEE;
+    border: 1px solid #CCC;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12px;
+    line-height: 140%;
+    overflow: auto;
+}
+code {
+    margin:0;
+    padding:0;
+    font-family: Consolas, ‘Andale Mono WT’, ‘Lucida Console’, ‘DejaVu Sans Mono’, ‘Liberation Mono’, ‘Nimbus Mono L’, Monaco,  Courier, monospace;		font-size:13px;
+    line-height:1.5em;
+}
+.code {
+    border: 1px solid #444444;
+    background-color: #e8ffe9;
+    font-family: Consolas, ‘Andale Mono WT’, ‘Lucida Console’, ‘DejaVu Sans Mono’, ‘Liberation Mono’, ‘Nimbus Mono L’, Monaco,  Courier, monospace;		font-size:13px;
+    color:blue;
+    padding: 4px;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+table {
+    border-collapse:collapse;
+    width:100%;
+}
+table tr:nth-child(odd) {
+    background-color:#F6F4F0;
+}
+table tr:nth-child(even) {
+    background-color:#ffffff;
+}
+table th{
+    color:#ffffff;
+    background-color:#555555;
+    border:1px solid #555555;
+    padding:2px;
+    vertical-align:top;
+    text-align:left;
+}
+table td{
+    border:1px solid #d4d4d4;
+    padding:2px;
+    vertical-align:top;
+}
+
+/* 3.HEADINGS
+---------------------------------------------------------------------- */
+h1 {
+    clear: both;
+    margin: 10px 0 0px 0;
+    padding-bottom: 10px;
+    font-weight:normal;
+    font-size:35px;
+    line-height: 29px;
+    background: url() repeat-x bottom center;
+}
+h2 {
+    clear:both;
+    margin:10px 0 0px 0;
+    padding-bottom: 10px;
+    font-weight:normal;
+    font-size:25px;
+    line-height:29px;
+    background:url()
+        repeat-x bottom center;
+}
+h3 {
+    clear:both;
+    margin:10px 0 12px 0;
+    padding:0px 0 0 0;
+    font-weight:normal;
+    font-size:14px;
+    color:#333;
+    text-transform:uppercase;
+}
+
+/* 4.LINKS
+---------------------------------------------------------------------- */
+
+/* 5.LAYOUT
+---------------------------------------------------------------------- */
+.main-body {
+    margin: 0 auto;
+    width: 90%;
+}
+.big-wrapper {
+    overflow:auto;
+    clear:both;
+    margin: 0 3px 5px 0;
+    padding: 1% 3% 1% 3%;
+    width: 96%;
+    height: 80px;
+    border: 1px solid #DDD;
+    -webkit-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    background: url();
+}
+.small-wrapper {
+    line-height:18px;
+    float:left;
+    width:20%;
+    padding:1%;
+    border:1px solid #DDD;
+    color:#333;
+    -webkit-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    background:url();
+}
+ul {
+    padding: 0;
+}
+li {
+    list-style-type: none;
+}
+#login-container {
+    margin: 0 auto;
+    width: 400px;
+    height: 500px;
+}
+#login-image {
+    margin: 0 auto;
+    background-image: url("images/login-image.png");
+    height: 300px;
+    width: 300px;
+    background-size: 300px;
+}
+#login-fields {
+    margin: 0 auto;
+    height: 150px;
+    margin-top: 30px;
+    border: 1px solid #ddd;
+/*    background: #f5f5f5;*/
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.message-container {
+    height: auto;
+    padding-bottom: 1%;
+}
+.poster-info {
+    float: left;
+    width: 29%;
+    height: auto;
+    max-width: 200px;
+    border-right: 4px solid #cb9bf1;
+}
+.poster-info img {
+    width: 40%;
+    height: auto;
+}
+.poster-info span {
+    padding-left: 10px;
+    font-size: 20px;
+    display: inline-block;
+}
+.message {
+    float: right;
+    width: 70%;
+}
+.error-message {
+    border: 1px solid red;
+    background-color: lightpink;
+    font-size: 12px;
+}
+.thread-description {
+    float: right;
+    right: 0;
+    width: 68%;
+    height: 100%;
+    padding-left: 10px
+}
+#thread-title-container {
+    margin: 0 auto;
+    width: 90%;
+    padding: 10px 5% 10px 5%;
+}
+
+/* 6.NAVIGATION
+---------------------------------------------------------------------- */
+header {
+    border-bottom: 5px solid #ddd;
+    height: 25px;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: auto;
+}
+
+header #logo {
+    position: absolute;
+    width: 29%;
+    height: 100%;
+    left: 0;
+}
+header img {
+    width: 100%;
+    max-width: 200px;
+    max-height: 100%;
+}
+
+/* 7.SITEINFO/FOOTER
+---------------------------------------------------------------------- */
+
+/* 8.FORMS
+---------------------------------------------------------------------- */
+button[type="submit"], input[type="submit"] {
+    background:#FFFAFA;
+    border: 2px solid #cb9bf1;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"]:hover, input[type="submit"]:hover {
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border: 2px solid #b063ef;
+}
+
+#refresh-button {
+    height: 30px;
+    width: 20%;
+    border: 2px solid #cb9bf1;
+}
+.header-button {
+    border-bottom: none !important;
+    float: right;
+    height: 100%;
+}
+#submit-button {
+    height: 30px;
+    width: 20%;
+    border: 2px solid #cb9bf1;
+    border-top: none;
+}
+
+
+button[type="submit"].thread-title-button {
+    border: none;
+    border-right: 4px solid #cb9bf1;
+    float: left;
+    height: 100%;
+    width: 30%;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"].thread-title-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+
+#thread-title {
+    width: 70%;
+    margin-left: 7%;
+}
+
+.new-thread {
+    height: 300px;
+    width: 100%;
+}
+
+.thread-message {
+    height: 100px;
+    width: 100%;
+}
+
+.login-text-field {
+    width: 80%;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.05);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+/* 9.MEDIA QUERIES: Default styles first then media queries
+---------------------------------------------------------------------- */
+@media screen and (min-width: 400px)  {
+
+}
+@media screen and (min-width: 600px)  {
+
+}
+@media screen and (min-width: 1000px) {
+
+}
+@media screen and (min-width: 1400px) {
+
+}
