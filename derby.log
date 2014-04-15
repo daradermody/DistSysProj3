@@ -1,0 +1,25 @@
+Tue Apr 15 18:07:38 IST 2014 : Apache Derby Network Server - 10.9.1.0 - (1344872) started and ready to accept connections on port 1527
+----------------------------------------------------------------
+Tue Apr 15 18:07:39 IST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0145-665b-b90c-00005fd10ec0 
+on database directory /media/elfie/Media/college/DistSysProj3/10105239  with class loader sun.misc.Launcher$AppClassLoader@1978b0f9 
+Loaded from file:/home/elfie/glassfish-4.0/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_51-b00
+user.dir=/home/elfie/glassfish-4.0/javadb
+derby.system.home=/media/elfie/Media/college/DistSysProj3
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue Apr 15 18:07:48 IST 2014:
+Shutting down instance a816c00e-0145-665b-b90c-00005fd10ec0 on database directory /media/elfie/Media/college/DistSysProj3/10105239 with class loader sun.misc.Launcher$AppClassLoader@1978b0f9 
+Tue Apr 15 18:07:48 IST 2014 Thread[DRDAConnThread_4,5,main] (DATABASE = 10105239), (DRDAID = {2}), Database '10105239' shutdown.
+----------------------------------------------------------------
+Tue Apr 15 18:16:44 IST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance 45b300a8-0145-665b-b90c-00005fd10ec0 
+on database directory /media/elfie/Media/college/DistSysProj3/10105239  with class loader sun.misc.Launcher$AppClassLoader@1978b0f9 
+Loaded from file:/home/elfie/glassfish-4.0/javadb/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_51-b00
+user.dir=/home/elfie/glassfish-4.0/javadb
+derby.system.home=/media/elfie/Media/college/DistSysProj3
+Database Class Loader started - derby.database.classpath=''

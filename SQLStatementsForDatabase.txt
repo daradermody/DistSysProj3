@@ -1,0 +1,29 @@
+create table EMMA.Customer(
+id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), 
+fullName varchar(255) not null,
+userName varchar(255) not null unique,
+address varchar(255) not null,
+region varchar(64) not null,
+isAdmin boolean default false,
+password varchar(16)
+);
+
+create table EMMA.Product(
+id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), 
+title varchar(255) not null,
+description varchar(2048) not null,
+quantity int not null default 0,
+price decimal not null default 0.00,
+image varchar(255),
+summary varchar(255)
+);
+
+
+create table EMMA.Comments( 
+content varchar(2048) not null,
+poster varchar(255) not null,
+product integer not null,
+date timestamp default CURRENT_TIMESTAMP,
+FOREIGN KEY (poster) REFERENCES Customer (username),
+FOREIGN KEY (product) REFERENCES Product (id)
+);
