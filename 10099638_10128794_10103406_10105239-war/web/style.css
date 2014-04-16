@@ -218,6 +218,33 @@ li {
     padding: 10px 5% 10px 5%;
 }
 
+.searchbar {
+    height: 35px;
+    position: relative;
+    overflow: auto;
+}
+
+.searchText {
+    width: 400px;
+    height: 20px;
+}
+
+.searchRow {
+    background-color: transparent;
+}
+
+.searchCell {
+    border: 0px;
+    background-color: transparent;
+    width: 400px;
+}
+
+#search-button {
+    height: 28px;
+    width: 100px;
+    border: 2px solid #cb9bf1;
+}
+
 /* 6.NAVIGATION
 ---------------------------------------------------------------------- */
 header {
@@ -262,18 +289,19 @@ button[type="submit"]:hover, input[type="submit"]:hover {
     width: 20%;
     border: 2px solid #cb9bf1;
 }
+
 .header-button {
     border-bottom: none !important;
     float: right;
     height: 100%;
 }
+
 #submit-button {
     height: 30px;
     width: 20%;
     border: 2px solid #cb9bf1;
     border-top: none;
 }
-
 
 button[type="submit"].thread-title-button {
     border: none;
