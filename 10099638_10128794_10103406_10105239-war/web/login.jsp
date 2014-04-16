@@ -96,7 +96,7 @@
 
         <div class="main-body">
             <header>
-                <div id="logo">Distributed Systems Project II</div>
+                <div id="logo">Distributed Systems Project III</div>
             </header>
             <div class="big-wrapper" id="login-container">
                 <div id="login-image">

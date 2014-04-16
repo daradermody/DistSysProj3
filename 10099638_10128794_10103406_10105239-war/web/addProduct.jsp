@@ -12,14 +12,12 @@
 <%@page import="mainPackage.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
+<jsp:include page="/header.jsp" />
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>New Product</title>
-        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
-        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
-
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
 
@@ -68,17 +66,6 @@
 
         
         <div class="main-body">
-            <header>
-              <span id="logo">Distributed Systems Project II</span>
-                <form name="logOut" action="login.jsp" method="POST">
-                    <input type="hidden" name="log-out" value="true">
-                    <input type="submit" class="header-button" value="Log Out">
-                </form>
-                <form name="home" action="index.jsp" method="POST">
-                    <input type="submit" class="header-button" value="Threads">
-                </form>
-            </header>
-
             <form name="newThread" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
                     <div id="thread-title-container">

@@ -35,6 +35,12 @@
                 <input type="submit" class="header-button" value="Add Product">
             </form>
         </header>
-        <img src="images/Pokeball.gif" alt="Pokeball" width="64" height="50">
+        <div id="searchbar">
+            <img src="images/Pokeball.gif" alt="Pokeball" width="64" height="50">
+            Search:
+            <textarea class="searchText">
+                
+            </textarea>
+        </div>
     </body>
 </html>

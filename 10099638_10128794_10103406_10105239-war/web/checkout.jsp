@@ -12,16 +12,15 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="/header.jsp" />
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>Checkout</title>
-        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
-        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
-
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>CHECKOUT!</h1>
     </body>
 </html>

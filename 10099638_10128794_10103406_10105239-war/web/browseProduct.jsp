@@ -13,14 +13,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
+<jsp:include page="/header.jsp" />
 
 <!DOCTYPE html>
 <html>
     <head>
         <title><%= Security.sanitise(request.getParameter("thread-title"), false) %></title>
-        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
-        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
-
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
 
@@ -69,20 +67,6 @@
 
 
         <div class="main-body">
-            <header>
-                <span id="logo">Distributed Systems Project II</span>
-                <form name="logOut" action="login.jsp" method="POST">
-                    <input type="hidden" name="log-out" value="true">
-                    <input type="submit" class="header-button" value="Log Out">
-                </form>
-                <form name="home" action="index.jsp" method="POST">
-                    <input type="submit" class="header-button" value="Threads">
-                </form>
-                <form name="newThread" action="newThread.jsp" method="POST">
-                    <input type="submit" class="header-button" value="New Thread">
-                </form>
-            </header>
-
             <ul>
                 <%
                     // Find index of thread being requested
