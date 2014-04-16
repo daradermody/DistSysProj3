@@ -64,7 +64,6 @@
             });
         </script>
 
-        
         <div class="main-body">
             <form name="newThread" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
