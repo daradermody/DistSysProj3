@@ -49,13 +49,17 @@
                 // Check for ID in cookies
                 Cookie[] cookies = request.getCookies(); // Fetch Cookie array
                 if (cookies != null) // Cycle through each cookie in Cookie array to find one with name "id"
-                    for (Cookie cookie : cookies)
-                        if (cookie.getName().equals("id"))
+                {
+                    for (Cookie cookie : cookies) {
+                        if (cookie.getName().equals("id")) {
                             id = Security.sanitise(cookie.getValue(), false); // Get and sanitise string value
-
+                        }
+                    }
+                }
                 // If no session cookie, check for session parameter in URL
-                if (id == null)
+                if (id == null) {
                     id = Security.sanitise(request.getParameter("id"), false);
+                }
 
                 Security.endSession(id); // End session by calling to destroying user-id association
             }
@@ -69,8 +73,9 @@
             String address = Security.sanitise((String) request.getAttribute("address"), true);
 
             // If no particular page was requested, set to default (index.jsp)
-            if (address.equals(""))
+            if (address.equals("")) {
                 address = "index.jsp";
+            }
 
             // If user submitted parameters for inteded page, retrieve them and 
             // add them (except username/passwords)
@@ -79,8 +84,11 @@
 
                 // Cycle through each parameter in parameter map
                 for (Entry<String, String[]> entry : request.getParameterMap().entrySet()) // Check if username or password in request (do not include them)
-                    if (!entry.getKey().equals("username") && !entry.getKey().equals("password"))
+                {
+                    if (!entry.getKey().equals("username") && !entry.getKey().equals("password")) {
                         address += String.format("%s=%s&", Security.sanitise(entry.getKey(), false), Security.sanitise(entry.getValue()[0], false));
+                    }
+                }
 
                 address = address.substring(0, address.length() - 1); // Truncate last '&' character
             }
@@ -98,6 +106,7 @@
                         <li><input type="text" class="login-text-field" placeholder="Username" name="username"></li>
                         <li><input type="password" class="login-text-field" placeholder="Password" name="password"></li>
                         <li>
+                        <center>
                             <input type="submit" value="Login"> 
                             <%
                                 // Check if user arrived at this page by entering invalid details
@@ -108,6 +117,7 @@
                                             + "are now flocking to your location.</span>");
                                 }
                             %>
+                        </center>
                         </li>
                     </ol>
                 </form>

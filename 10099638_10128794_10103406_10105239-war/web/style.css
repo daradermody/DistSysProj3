@@ -150,19 +150,22 @@ li {
 }
 #login-container {
     margin: 0 auto;
-    width: 400px;
-    height: 500px;
+    width: 700px;
+    height: 520px;
+    background-color: white;
 }
 #login-image {
     margin: 0 auto;
-    background-image: url("images/login-image.png");
-    height: 300px;
-    width: 300px;
-    background-size: 300px;
+    background-image: url("images/BannerHeader.jpg");
+    height: 315px;
+    width: 700px;
+    background-size: 700px;
 }
 #login-fields {
     margin: 0 auto;
     height: 150px;
+    width: 400px;
+    alignment-adjust: central;
     margin-top: 30px;
     border: 1px solid #ddd;
 /*    background: #f5f5f5;*/
@@ -245,7 +248,7 @@ header img {
 button[type="submit"], input[type="submit"] {
     background:#FFFAFA;
     border: 2px solid #cb9bf1;
-    font-size: 14px;
+    font-size: 16px;
     white-space: normal;
 }
 button[type="submit"]:hover, input[type="submit"]:hover {
