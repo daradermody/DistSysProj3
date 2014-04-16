@@ -1,12 +1,13 @@
 <%-- 
  
-   Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
+   Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
    Module:      Distributed Systems 2
         Code:   CE4208
    Lecturer:    Reiner Dojen
-   Date:        07 April 2014
+   Date:        25 April 2014
  
-   Project:     Secure Authentication and Session Management System for a Web Application
+   Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+        Number: 3
 
 --%>
 <%@page import="java.lang.NullPointerException"%>
@@ -20,8 +21,8 @@
 <html>
     <head>
         <title>Login</title>
-        <meta name="description" content="Website for forum application for Distributed Systems Project II">
-        <meta name="keywords" content="distributed systems project forum application java servlet security">
+        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
+        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
 
         <link rel="stylesheet" type="text/css" href="style.css" />
         <!-- Import jQuery -->

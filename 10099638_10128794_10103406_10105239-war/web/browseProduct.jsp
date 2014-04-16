@@ -18,8 +18,8 @@
 <html>
     <head>
         <title><%= Security.sanitise(request.getParameter("thread-title"), false) %></title>
-        <meta name="description" content="Website for forum application for Distributed Systems Project II">
-        <meta name="keywords" content="distributed systems project forum application java servlet security">
+        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
+        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
 
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>

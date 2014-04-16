@@ -17,12 +17,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Thread Page</title>
-        <meta name="description" content="Website for forum application for Distributed Systems Project II">
-        <meta name="keywords" content="distributed systems project forum application java servlet security">
+        <title>Browse Products</title>
+        <meta name="description" content="Website for online shop application using EJB, entity classes and servlets/JSP/HTML for Distributed Systems Project III">
+        <meta name="keywords" content="java distributed systems project online shop application enterprise java beans entity classes servlet jsp html">
 
         <link rel="stylesheet" type="text/css" href="style.css" />
-
+        
         <%
             // Check session ID, or username and password; if it fails, forward to login
             String[] userInfo = Security.authoriseRequest(request);
