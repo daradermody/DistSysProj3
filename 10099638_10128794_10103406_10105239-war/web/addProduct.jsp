@@ -69,7 +69,7 @@
             <form name="newThread" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
                     <div id="thread-title-container">
-                        Title of thread: <input type="text" id="thread-title" name="threadName">
+                        Product name: <input type="text" id="thread-title" name="threadName">
                     </div>
                     <textarea class="message new-thread" name="threadBody"></textarea>
                     <input id="submit-button" type="submit" value="Create">
