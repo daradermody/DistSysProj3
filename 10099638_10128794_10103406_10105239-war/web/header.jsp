@@ -28,8 +28,8 @@
             var tweetThisText = "Koalascense - " + window.location.href;
             tripleflapInit();
         </script>
-        <a id="tBird" href="https://twitter.com/Koalascense" target="_blank" style="display: block; position: absolute; left: 357px; top: 550px; width: 64px; height: 64px; background-image: url(http://2.bp.blogspot.com/_nDNgmK8FIyI/TTPu1fD8gwI/AAAAAAAAASk/umOvdnb827E/way2blogging.org-twitterbirdsprite.png); background-color: transparent; z-index: 947; background-position: 0px 0px; background-repeat: no-repeat no-repeat;"></a>
-
+        <a id="tBird" href="https://twitter.com/Koalascense" target="_blank" style="display: block; position: absolute; left: 357px; top: 550px; width: 64px; height: 64px; background-image: url(http://2.bp.blogspot.com/_nDNgmK8FIyI/TTPu1fD8gwI/AAAAAAAAASk/umOvdnb827E/way2blogging.org-twitterbirdsprite.png); background-color: transparent; z-index: 947; background-position: 0px 0px; background-repeat: no-repeat no-repeat;"></a><a id="tBirdLtweet" href="https://twitter.com/Koalascense" target="_blank" title="tweet this" style="display: none; position: absolute; left: 406px; top: 550px; background-image: url(http://2.bp.blogspot.com/_nDNgmK8FIyI/TTPu1fD8gwI/AAAAAAAAASk/umOvdnb827E/way2blogging.org-twitterbirdsprite.png); background-color: transparent; opacity: 0; width: 58px; height: 30px; z-index: 951; background-position: -64px 0px; background-repeat: no-repeat no-repeat;"></a><a id="tBirdLfollow" href="https://twitter.com/Koalascense" target="_blank" title="follow @Koalascense" style="display: none; position: absolute; left: 411px; top: 580px; background-image: url(http://2.bp.blogspot.com/_nDNgmK8FIyI/TTPu1fD8gwI/AAAAAAAAASk/umOvdnb827E/way2blogging.org-twitterbirdsprite.png); background-color: transparent; opacity: 0; width: 58px; height: 20px; z-index: 952; background-position: -64px -30px; background-repeat: no-repeat no-repeat;"></a>
+    
         <header>
             <span id="logo">Distributed Systems Project III</span>
             <form name="logOut" action="login.jsp" method="POST">
@@ -43,12 +43,12 @@
                 <input type="submit" class="header-button" value="Add Product">
             </form>
         </header>
-        <header>
-            <div id="searchbar">
-                Search:
-                <textarea class="searchText">  
-                </textarea>
-            </div>
-        </header>
+        <div id="searchbar">
+            <img src="images/Pokeball.gif" alt="Pokeball" width="64" height="50">
+            Search:
+            <textarea class="searchText">
+                
+            </textarea>
+        </div>
     </body>
 </html>
