@@ -5,7 +5,7 @@
  * Copyright        : Florian Buenzli, 2010
  * For Blogger by   : Harish (way2blogging)
  * Url              : http://www.way2blogging.org/
- * Plugin Page      : http://www.way2blogging.org/2011/01/how-to-add-animated-flying-twitter-bird.html
+ * Plugin Page      : a
  */
 
 if (typeof(twitterAccount) != "string") var twitterAccount = "";
