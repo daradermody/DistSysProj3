@@ -14,7 +14,7 @@ is divided into following sections:
   - cleanup
 
 -->
-<project xmlns:ear2="http://www.netbeans.org/ns/j2ee-earproject/2" basedir=".." default="default" name="10099638_10128794_10103406_10105239-impl">
+<project xmlns:ear2="http://www.netbeans.org/ns/j2ee-earproject/2" basedir=".." default="default" name="DistSysProj3-impl">
     <import file="ant-deploy.xml"/>
     <fail message="Please build using Ant 1.7.1 or higher.">
         <condition>
@@ -407,17 +407,17 @@ exists or setup the property manually. For example like this:
         <ear2:run-appclient subprojectname="${app.client}"/>
     </target>
     <target if="j2ee.appclient.mainclass.args" name="-as-retrieve-option-workaround" unless="j2ee.clientName">
-        <property name="client.jar" value="${dist.dir}/10099638_10128794_10103406_10105239Client.jar"/>
+        <property name="client.jar" value="${dist.dir}/DistSysProj3Client.jar"/>
         <sleep seconds="3"/>
-        <copy failonerror="false" file="${wa.copy.client.jar.from}/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239Client.jar" todir="${dist.dir}"/>
+        <copy failonerror="false" file="${wa.copy.client.jar.from}/DistSysProj3/DistSysProj3Client.jar" todir="${dist.dir}"/>
         <copy failonerror="false" flatten="true" todir="${dist.dir}/">
-            <fileset dir="${wa.copy.client.jar.from}/10099638_10128794_10103406_10105239" includes="**/10099638_10128794_10103406_10105239Client.jar"/>
+            <fileset dir="${wa.copy.client.jar.from}/DistSysProj3" includes="**/DistSysProj3Client.jar"/>
         </copy>
-        <copy flatten="true" todir="${dist.dir}/10099638_10128794_10103406_10105239Client">
-            <fileset dir="${wa.copy.client.jar.from}/10099638_10128794_10103406_10105239" includes="**/*.*ar"/>
+        <copy flatten="true" todir="${dist.dir}/DistSysProj3Client">
+            <fileset dir="${wa.copy.client.jar.from}/DistSysProj3" includes="**/*.*ar"/>
         </copy>
-        <copy failonerror="false" flatten="false" todir="${dist.dir}/10099638_10128794_10103406_10105239Client">
-            <fileset dir="${dist.dir}/gfdeploy/10099638_10128794_10103406_10105239" includes="**/*.jar"/>
+        <copy failonerror="false" flatten="false" todir="${dist.dir}/DistSysProj3Client">
+            <fileset dir="${dist.dir}/gfdeploy/DistSysProj3" includes="**/*.jar"/>
         </copy>
     </target>
     <target depends="init" name="-init-run-macros">
