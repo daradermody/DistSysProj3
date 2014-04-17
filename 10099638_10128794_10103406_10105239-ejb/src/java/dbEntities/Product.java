@@ -39,13 +39,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
     @NamedQuery(name = "Product.findByTitle", query = "SELECT p FROM Product p WHERE p.title = :title"),
+    @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
-    @NamedQuery(name = "Product.findByQuantity", query = "SELECT p FROM Product p WHERE p.quantity = :quantity"),
     @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
-    @NamedQuery(name = "Product.findByImage", query = "SELECT p FROM Product p WHERE p.image = :image"),
-    @NamedQuery(name = "Product.findBySummary", query = "SELECT p FROM Product p WHERE p.summary = :summary")})
+    @NamedQuery(name = "Product.removeByID", query = "DELETE FROM Product p WHERE p.id=:id"),
+    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT WHERE EMMA.PRODUCT.ID=:pid)-:amount WHERE id=:pid"),
+    @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id")
+})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -82,27 +83,21 @@ public class Product implements Serializable {
 
     public Product() {
     }
-
-    public Product(Integer id) {
-        this.id = id;
-    }
-
-    public Product(Integer id, String title, String description, int quantity, int price) {
-        this.id = id;
+    
+    //id is auto generated, and not needed for it in constructor
+    public Product(String title, String description, int quantity, int price, String imagepath, String summary) {
         this.title = title;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
+        this.image = imagepath;
+        this.summary = summary;
     }
 
     public Integer getId() {
         return id;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    
     public String getTitle() {
         return title;
     }
@@ -156,10 +151,6 @@ public class Product implements Serializable {
         return commentsCollection;
     }
 
-    public void setCommentsCollection(Collection<Comments> commentsCollection) {
-        this.commentsCollection = commentsCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -185,6 +176,7 @@ public class Product implements Serializable {
         return "dbEntities.Product[ id=" + id + " ]";
     }
 
+    //Auto-generated
     public void persist(Object object) {
         /* Add this to the deployment descriptor of this module (e.g. web.xml, ejb-jar.xml):
          * <persistence-context-ref>

@@ -28,3 +28,13 @@ date timestamp default CURRENT_TIMESTAMP,
 FOREIGN KEY (poster) REFERENCES Customer (username),
 FOREIGN KEY (product) REFERENCES Product (id)
 );
+
+
+ALTER TABLE EMMA.Product
+ADD CHECK (quantity=>0)
+
+
+ALTER TABLE EMMA.Product ADD COLUMN description_new VARCHAR(4096);
+UPDATE EMMA.Product SET description_new = description;
+ALTER TABLE EMMA.Product DROP COLUMN description;
+RENAME EMMA.Product.description_new TO description;
