@@ -76,6 +76,16 @@ public class interactProduct {
         return q.getResultList();
     }
     
+    
+    public boolean increaseQuantity(int pid, int amount){
+        return updateQuantity(pid, 0-amount);
+    }
+    
+    public boolean reduceQuantity(int pid, int amount){
+        return updateQuantity(pid, amount);
+    
+    }
+    
     /**
      * Updates the quantity of a product. Required (admin) action.
      *
@@ -112,12 +122,13 @@ public class interactProduct {
      * @param kw
      * @return A list of products matching the keywords
      */
-    public List<Product> searchByKeyword(String kw){
+    public List<Product> searchProductByKeyword(String kw){
         Query q = em.createNamedQuery("Product.findByKeyword");
         q.setParameter("kw", kw);
         
         return q.getResultList();
     }
+    
     
     //TODO: Add comment through Customer username and product id 
     /**
