@@ -37,4 +37,4 @@ ADD CHECK (quantity=>0)
 ALTER TABLE EMMA.Product ADD COLUMN description_new VARCHAR(4096);
 UPDATE EMMA.Product SET description_new = description;
 ALTER TABLE EMMA.Product DROP COLUMN description;
-RENAME EMMA.Product.description_new TO description;
+RENAME COLUMN EMMA.Product.description_new TO description;

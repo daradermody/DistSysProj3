@@ -8,7 +8,6 @@ package interactionBeans;
 import dbEntities.Product;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import javax.ejb.Remove;
 
@@ -19,7 +18,7 @@ import javax.ejb.Remove;
  */
 public class shoppingCartBean {
 
-    private HashMap<Product, Integer> items = new HashMap<Product, Integer>();
+    private HashMap<Product, Integer> items = new HashMap<>();
 
     /**
      * Add an item to the cart. Modified from samples.
