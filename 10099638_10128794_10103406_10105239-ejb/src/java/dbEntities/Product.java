@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
     @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
     @NamedQuery(name = "Product.removeByID", query = "DELETE FROM Product p WHERE p.id=:id"),
-    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)-:amount WHERE id=:pid"),
+    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)+:amount WHERE id=:pid"),
     @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id"),
     @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) like '%:kw%' OR lower(p.description) like '%:kw%' OR lower(p.title) like '%:kw%'")
 })

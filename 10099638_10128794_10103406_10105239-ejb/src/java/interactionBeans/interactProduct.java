@@ -71,21 +71,20 @@ public class interactProduct {
     }
 
     //@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-    public List<Product> findAllProducts(){
+    public List<Product> findAllProducts() {
         Query q = em.createNamedQuery("Product.findAll");
         return q.getResultList();
     }
-    
-    
-    public boolean increaseQuantity(int pid, int amount){
-        return updateQuantity(pid, 0-amount);
-    }
-    
-    public boolean reduceQuantity(int pid, int amount){
+
+    public boolean increaseQuantity(int pid, int amount) {
         return updateQuantity(pid, amount);
-    
     }
-    
+
+    public boolean reduceQuantity(int pid, int amount) {
+        return updateQuantity(pid, 0-amount);
+
+    }
+
     /**
      * Updates the quantity of a product. Required (admin) action.
      *
@@ -100,9 +99,8 @@ public class interactProduct {
         q.setParameter("pid", pid);
         int quantity = q.getFirstResult();
         // the quantity must be greater than the requested amount
-        //requested amount is -ve => adding stock
-        // POSSIBLE BUG double -ve (--) becomes comment
-        if (quantity >= diff || diff < 0) {
+        //requested amount is +ve => adding stock -> no theoretical limit
+        if (quantity >= Math.abs(diff) || diff > 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
@@ -116,20 +114,20 @@ public class interactProduct {
     }
 
     /**
-     * Returns products matching the description.
-     * Allows the user to search for a product based on a keyword.
-     * The Product(s) returned contain the keyword in their description, summary or title.
+     * Returns products matching the description. Allows the user to search for
+     * a product based on a keyword. The Product(s) returned contain the keyword
+     * in their description, summary or title.
+     *
      * @param kw
      * @return A list of products matching the keywords
      */
-    public List<Product> searchProductByKeyword(String kw){
+    public List<Product> searchProductByKeyword(String kw) {
         Query q = em.createNamedQuery("Product.findByKeyword");
         q.setParameter("kw", kw);
-        
+
         return q.getResultList();
     }
-    
-    
+
     //TODO: Add comment through Customer username and product id 
     /**
      * Add a comment using references (Product, Customer objects)
