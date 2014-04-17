@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package interactionBeans;
 
 import dbEntities.Product;
@@ -16,18 +15,17 @@ import javax.ejb.Remove;
 /**
  *
  * @author elfie
+ * @author reiner
  */
-public class shoppingCartBean{
+public class shoppingCartBean {
 
     private HashMap<Product, Integer> items = new HashMap<Product, Integer>();
-    //ArrayList<Product> items = new ArrayList<>();
-    
+
     /**
-     * Add an item to the cart.
-     * Modified from samples.
-     * 
+     * Add an item to the cart. Modified from samples.
+     *
      * @param p The product to add
-     * @param quantity 
+     * @param quantity
      */
     public void addItem(Product p, int quantity) {
         // obtain current number of items in cart
@@ -39,12 +37,10 @@ public class shoppingCartBean{
         orderQuantity += quantity;
         items.put(p, orderQuantity);
     }
-    
-    
+
     /**
-     * Remove an item from the cart.
-     * Modified from the examples.
-     * 
+     * Remove an item from the cart. Modified from the examples.
+     *
      * @param p The item to be removed
      * @param quantity The quantity of the item to be removed.
      */
@@ -63,16 +59,16 @@ public class shoppingCartBean{
             // final quantity > 0 - adjust quantity
             items.put(p, orderQuantity);
         }
-        
+
     }
-    
+
     @Remove
     public void cancel() {
         // no action required - annotation @Remove indicates
         // that calling this method should remove the EJB which will
         // automatically destroy instance variables
     }
-    
+
     public String printItemList() {
         String message = "";
         Set<Product> keys = items.keySet();
@@ -84,38 +80,37 @@ public class shoppingCartBean{
         }
         return message;
     }
-    
+
     /**
      * Get the total value of goods in cart.
-     * @return The total price of the goods 
+     *
+     * @return The total price of the goods
      */
-    public double getTotal(){
+    public double getTotal() {
         double total = 0;
         Set<Product> keys = items.keySet();
         Iterator<Product> it = keys.iterator();
         Product curr;
-        while (it.hasNext()){
+        while (it.hasNext()) {
             curr = it.next();
-            total = curr.getPrice()*items.get(curr);
+            total = curr.getPrice() * items.get(curr);
         }
-        
+
         return total;
     }
-    
-    public HashMap<Product, Integer> getItems(){
+
+    public HashMap<Product, Integer> getItems() {
         return this.items;
     }
-    
+
     @Remove
-    //TODO: Update tables 
+    //TODO: Update tables
     public String checkout() {
-        // dummy checkout method that just returns message for successful 
+        // dummy checkout method that just returns message for successful
         // checkout
-        String message = "You checked out the following items:\n<br />" + 
-                printItemList() + "<br />Total cost is: " + getTotal();
+        String message = "You checked out the following items:\n<br />"
+                + printItemList() + "<br />Total cost is: " + getTotal();
         return message;
     }
-   
-   
 
 }

@@ -57,7 +57,7 @@
         <script type="text/javascript">
             $(function() {
                 $('form').submit(function() { // On submission of form
-                    if(!navigator.cookieEnabled) // Check if cookies disabled
+                    if (!navigator.cookieEnabled) // Check if cookies disabled
                         $(this).append('<input type="hidden" name="id" value="<%= id %>">');
                     return true;
                 });

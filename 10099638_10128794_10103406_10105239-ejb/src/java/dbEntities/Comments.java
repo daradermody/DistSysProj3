@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dbEntities;
 
 import java.io.Serializable;
@@ -44,6 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Comments.findByContent", query = "SELECT c FROM Comments c WHERE c.content = :content"),
     @NamedQuery(name = "Comments.findByDate", query = "SELECT c FROM Comments c WHERE c.date = :date")})
 public class Comments implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,8 +67,8 @@ public class Comments implements Serializable {
 
     public Comments() {
     }
-    
-    public Comments(Product p, Customer c, String content){
+
+    public Comments(Product p, Customer c, String content) {
         this.product = p;
         this.poster = c;
         this.content = content;
@@ -158,5 +158,5 @@ public class Comments implements Serializable {
             throw new RuntimeException(e);
         }
     }
-    
+
 }

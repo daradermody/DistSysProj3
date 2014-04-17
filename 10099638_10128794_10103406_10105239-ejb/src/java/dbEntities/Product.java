@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dbEntities;
 
 import java.io.Serializable;
@@ -48,6 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) like '%:kw%' OR lower(p.description) like '%:kw%' OR lower(p.title) like '%:kw%'")
 })
 public class Product implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,7 +83,7 @@ public class Product implements Serializable {
 
     public Product() {
     }
-    
+
     //id is auto generated, and not needed for it in constructor
     public Product(String title, String description, int quantity, int price, String imagepath, String summary) {
         this.title = title;
@@ -97,7 +97,7 @@ public class Product implements Serializable {
     public Integer getId() {
         return id;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -200,5 +200,5 @@ public class Product implements Serializable {
             throw new RuntimeException(e);
         }
     }
-    
+
 }

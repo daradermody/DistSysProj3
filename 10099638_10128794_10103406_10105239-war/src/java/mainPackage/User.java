@@ -1,21 +1,12 @@
-/* 
- * Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
- * Module:      Distributed Systems 2
- *      Code:   CE4208
- * Lecturer:    Reiner Dojen
- * Date:        07 April 2014
- *
- * Project:     Secure Authentication and Session Management System for a Web Application
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
+
 package mainPackage;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import dbEntities.Customer;
 
 /**
  * A User data type, containing the details of one user.
@@ -25,31 +16,26 @@ import java.util.Random;
  * @author Patrick O Keeffe
  */
 public class User {
-    private final String username;
+    private final Customer details;
     private String sessionID; //for security class
-    private final String creationDate; // for Security class
+    //private final String creationDate; // for Security class
     private int sessionTime;
-    private final int salt;
-    private final String pwdHash;
     
     /**
-     * Constructor to create a user with the given username and password.
-     * Other attributes are generated.
-     * @param usnm the name for the new user 
-     * @param password the user's password
+     * Constructor to create a logged on user.
+     * 
+     * @param c The "base" customer that will be associated with other user attributes.
+     * @param sessionID A session ID 
+     * @param sessionTime A session time
      */
-    protected User(String usnm, String password) {
-        this.username = usnm;
+    protected User(Customer c, String sessionID, int sessionTime ) {
+        this.details = c;
         
-        DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-        this.creationDate = dateFormatter.format(new Date());
-  
-        Random r = new Random();
-        this.salt = r.nextInt();
-        this.pwdHash = hash(salt+password);
-        
-        sessionID = null; // for default
-        sessionTime = 0; // for default
+        //DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        //this.creationDate = dateFormatter.format(new Date());
+          
+        this.sessionID = sessionID;
+        this.sessionTime = sessionTime; 
     }
     
     /**
@@ -57,15 +43,7 @@ public class User {
      * @return the username
      */
     protected String getUsername(){
-        return this.username;
-    }
-    
-    /**
-     * Getter for the creationDate attribute
-     * @return the date/time the user joined the site
-     */
-    protected String getCreationDate(){
-        return this.creationDate;
+        return this.details.getUsername();
     }
     
     /**
@@ -82,14 +60,6 @@ public class User {
      */
     protected void setTimestamp(int st) {
         this.sessionTime=st;
-    }
-    
-    /**
-     * getter for the salt attribute
-     * @return the salt used for the password hashing
-     */
-    protected int getSalt(){
-        return this.salt;
     }
     
     /**
@@ -113,38 +83,6 @@ public class User {
      * @return the (salt) hashed password.
      */
     protected String getPwdHash(){
-        return this.pwdHash;
+        return this.details.getPassword();
     }
-    
-    /**
-     * Hash a plain test salt+password
-     * @param plain the string to be hashed (salt+password)
-     * @return 
-     */
-    protected static String hash(String plain){    
-        String cipher = null;
-         
-        if(plain == null) return null;
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA");
-            //Update input string in message digest
-            digest.update(plain.getBytes(), 0, plain.length());
- 
-            //Converts message digest value in base 16 (hex)
-            cipher = new BigInteger(1, digest.digest()).toString(16);
-        } catch (NoSuchAlgorithmException e) { 
-            System.out.println("The specified algorithm is not supported.");
-        }
-        return cipher;
-    }
-    
-    /**
-     * Return a String representation of the object
-     * @return the object string
-     */
-    @Override
-    public String toString(){
-        return(String.format("%s, %s, %s, %s", this.username, this.pwdHash, this.salt, this.creationDate));
-    }
-    
 }

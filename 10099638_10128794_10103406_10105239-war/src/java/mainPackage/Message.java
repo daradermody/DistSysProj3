@@ -20,12 +20,13 @@ import java.util.Date;
  * @author Niko Flores
  * @author Patrick O Keeffen
  */
+@Deprecated
 public class Message {
 
     private String content;
     private String poster;
     final private String date;
-    
+
     /**
      * Constructor to create a forum message with a given content
      *
@@ -39,7 +40,7 @@ public class Message {
         DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         this.date = dateFormatter.format(new Date());
     }
-   
+
     /**
      * Returns the content of the forum message
      *
@@ -48,7 +49,6 @@ public class Message {
     public String getContent() {
         return this.content;
     }
-
 
     /**
      * Returns the content of the forum message
@@ -77,5 +77,5 @@ public class Message {
     public boolean contains(String text) {
         return this.content.contains(text);
     }
-    
+
 }

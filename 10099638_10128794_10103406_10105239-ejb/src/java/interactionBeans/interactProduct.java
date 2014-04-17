@@ -80,8 +80,15 @@ public class interactProduct {
         return updateQuantity(pid, amount);
     }
 
+    /**
+     * Wrapper method for reducing the available number of items.
+     * Calls the updateQuantity() method to subtract from the total quantity. 
+     * @param pid
+     * @param amount
+     * @return True if the action was successful, false if there is insufficient stock.
+     */
     public boolean reduceQuantity(int pid, int amount) {
-        return updateQuantity(pid, 0-amount);
+        return updateQuantity(pid, 0 - amount);
 
     }
 

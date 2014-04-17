@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dbEntities;
 
 import java.io.Serializable;
@@ -44,9 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
     @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
     @NamedQuery(name = "Customer.findByRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
-    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin"),
-    @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")})
+    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin")
+})
 public class Customer implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,12 +84,7 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(Integer id) {
-        this.id = id;
-    }
-
-    public Customer(Integer id, String fullname, String username, String address, String region) {
-        this.id = id;
+    public Customer(String fullname, String username, String address, String region) {
         this.fullname = fullname;
         this.username = username;
         this.address = address;
@@ -98,10 +93,6 @@ public class Customer implements Serializable {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getFullname() {
@@ -209,5 +200,5 @@ public class Customer implements Serializable {
             throw new RuntimeException(e);
         }
     }
-    
+
 }

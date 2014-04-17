@@ -43,7 +43,7 @@
                 <input type="submit" class="header-button" value="Add Product">
             </form>
         </header>
-        
+
         <table class="searchbar">
             <tr class="searchRow">
                 <td class="searchCell">

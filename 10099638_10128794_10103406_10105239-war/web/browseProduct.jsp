@@ -51,14 +51,14 @@
             if(!cookiesDisabled) // If cookies enabled, add cookie to response
                 response.addCookie(cookie);   
         %>
-        
+
         <!-- Import jQuery -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.js"></script>
         <%-- JavaScript function that adds ID field to form when submitted if cookies are disabled --%>
         <script type="text/javascript">
             $(function() {
                 $('form').submit(function() { // On submission of form
-                    if(!navigator.cookieEnabled) // Check if cookies disabled
+                    if (!navigator.cookieEnabled) // Check if cookies disabled
                         $(this).append('<input type="hidden" name="id" value="<%= id %>">');
                     return true;
                 });
@@ -103,7 +103,7 @@
                             <span><%= message.getPoster()%></span>
                             <br><%= message.getDate()%>
                         </div>
-                        
+
                         <%-- Identify message as "latest" if it is the last message (for auto-scrolling) --%>
                         <div class="message" <%= (messageCount == numMessages) ? "id='latest'" : "" %>>
                             <%= message.getContent() %> <%-- Fetch message body --%> 
@@ -111,14 +111,14 @@
                     </div>
                 </li>
                 <% } // End of for loop for retrieving all messages%>
-                
+
                 <li>
                     <div class="big-wrapper message-container">
                         <div class="poster-info">
                             <p><img src="images/male-default.png" title="<%= username %>" alt="<%= username %>"></p>
                             <p><%= username %><br></p>
                         </div>
-                        
+
                         <div class="message">
                             <form name="newPost" action="readThread.jsp#latest" method="POST">
                                 <textarea class="message thread-message" name="messageBody"></textarea>
