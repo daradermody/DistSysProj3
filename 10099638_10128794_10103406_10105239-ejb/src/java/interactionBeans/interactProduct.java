@@ -105,10 +105,21 @@ public class interactProduct {
         }
     }
 
-    //search
-    //search whole table
-    //search in title, description and summary 
-    //TODO: Add comment through Customer and 
+    /**
+     * Returns products matching the description.
+     * Allows the user to search for a product based on a keyword.
+     * The Product(s) returned contain the keyword in their description, summary or title.
+     * @param kw
+     * @return A list of products matching the keywords
+     */
+    public List<Product> searchByKeyword(String kw){
+        Query q = em.createNamedQuery("Product.findByKeyword");
+        q.setParameter("kw", kw);
+        
+        return q.getResultList();
+    }
+    
+    //TODO: Add comment through Customer username and product id 
     /**
      * Add a comment using references (Product, Customer objects)
      *
