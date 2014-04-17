@@ -67,22 +67,15 @@ public class Comments implements Serializable {
 
     public Comments() {
     }
-
-    public Comments(Integer id) {
-        this.id = id;
-    }
-
-    public Comments(Integer id, String content) {
-        this.id = id;
+    
+    public Comments(Product p, Customer c, String content){
+        this.product = p;
+        this.poster = c;
         this.content = content;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getContent() {

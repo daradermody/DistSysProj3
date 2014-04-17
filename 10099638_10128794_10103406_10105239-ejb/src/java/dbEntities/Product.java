@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
     @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
     @NamedQuery(name = "Product.removeByID", query = "DELETE FROM Product p WHERE p.id=:id"),
-    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT WHERE EMMA.PRODUCT.ID=:pid)-:amount WHERE id=:pid"),
+    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)-:amount WHERE id=:pid"),
     @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id")
 })
 public class Product implements Serializable {
