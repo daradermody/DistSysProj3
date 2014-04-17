@@ -7,46 +7,115 @@
 package interactionBeans;
 
 import dbEntities.Product;
-import java.util.ArrayList;
-import javax.ejb.Stateful;
-import javax.ejb.LocalBean;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import javax.ejb.Remove;
 
 /**
  *
  * @author elfie
  */
-@Stateful
-@LocalBean
-public class shoppingCartBean {
+public class shoppingCartBean{
 
-    ArrayList<Product> items = new ArrayList<>();
+    private HashMap<Product, Integer> items = new HashMap<Product, Integer>();
+    //ArrayList<Product> items = new ArrayList<>();
     
-    public void addItem(Product p){
-        items.add(p);
+    /**
+     * Add an item to the cart.
+     * Modified from samples.
+     * 
+     * @param p The product to add
+     * @param quantity 
+     */
+    public void addItem(Product p, int quantity) {
+        // obtain current number of items in cart
+        Integer orderQuantity = items.get(p);
+        if (orderQuantity == null) {
+            orderQuantity = 0;
+        }
+        // adjust quantity and put back to cart
+        orderQuantity += quantity;
+        items.put(p, orderQuantity);
     }
     
-    //removeItem()
-    public void removeItem(Product p){
-        items.remove(p);
+    
+    /**
+     * Remove an item from the cart.
+     * Modified from the examples.
+     * 
+     * @param p The item to be removed
+     * @param quantity The quantity of the item to be removed.
+     */
+    public void removeItem(Product p, int quantity) {
+        // obtain current number of items in cart
+        Integer orderQuantity = items.get(p);
+        if (orderQuantity == null) {
+            orderQuantity = 0;
+        }
+        // adjust quantity and put back to cart
+        orderQuantity -= quantity;
+        if (orderQuantity <= 0) {
+            // final quantity less equal 0 - remove from cart
+            items.remove(p);
+        } else {
+            // final quantity > 0 - adjust quantity
+            items.put(p, orderQuantity);
+        }
+        
     }
     
-    //getTotal()
+    @Remove
+    public void cancel() {
+        // no action required - annotation @Remove indicates
+        // that calling this method should remove the EJB which will
+        // automatically destroy instance variables
+    }
+    
+    public String printItemList() {
+        String message = "";
+        Set<Product> keys = items.keySet();
+        Iterator<Product> it = keys.iterator();
+        Product k;
+        while (it.hasNext()) {
+            k = it.next();
+            message += k.getTitle() + ", quantity: " + items.get(k) + "\n<br>";
+        }
+        return message;
+    }
+    
+    /**
+     * Get the total value of goods in cart.
+     * @return The total price of the goods 
+     */
     public double getTotal(){
         double total = 0;
-        Product temp;
-        for (int i =0; i<items.size(); i++ ){
-            temp = items.get(i);
-            total += temp.getPrice();
+        Set<Product> keys = items.keySet();
+        Iterator<Product> it = keys.iterator();
+        Product curr;
+        while (it.hasNext()){
+            curr = it.next();
+            total = curr.getPrice()*items.get(curr);
         }
+        
         return total;
     }
     
-   // public boolean checkout(){
-        //TODO: code logic
-        //transactions?
-        //get quantity of each
-        //make sure there's enough available?
-        //
-    //}
+    public HashMap<Product, Integer> getItems(){
+        return this.items;
+    }
+    
+    @Remove
+    //TODO: Update tables 
+    public String checkout() {
+        // dummy checkout method that just returns message for successful 
+        // checkout
+        String message = "You checked out the following items:\n<br />" + 
+                printItemList() + "<br />Total cost is: " + getTotal();
+        return message;
+    }
+   
+   
 
 }
