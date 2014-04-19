@@ -12,7 +12,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -71,11 +70,21 @@ public class interactProduct {
     }
 
     //@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+    /**
+     * Returns list of all products in database
+     * @return List of all Product objects in database
+     */
     public List<Product> findAllProducts() {
         Query q = em.createNamedQuery("Product.findAll");
         return q.getResultList();
     }
 
+    /**
+     * Increases quantity of products in store for particular product
+     * @param pid Identification of product to increase quantity of
+     * @param amount Increase value of quantity
+     * @return Boolean value that indicates if operation was successful
+     */
     public boolean increaseQuantity(int pid, int amount) {
         return updateQuantity(pid, amount);
     }
@@ -101,6 +110,8 @@ public class interactProduct {
      * insufficient stock.
      */
     public boolean updateQuantity(int pid, int diff) {
+        boolean success = false; // Variable that holds satus of operation completion
+        
         //First, check if the quanitity
         Query q = em.createNamedQuery("Product.findQuantityByID");
         q.setParameter("pid", pid);
@@ -114,10 +125,10 @@ public class interactProduct {
             q2.setParameter("pid", pid);
             q2.setParameter("amt", diff);
             //The query was run!
-            return true;
-        } else {
-            return false; // insufficient stock
+            success = true;
         }
+        
+        return success;
     }
 
     /**
@@ -125,7 +136,7 @@ public class interactProduct {
      * a product based on a keyword. The Product(s) returned contain the keyword
      * in their description, summary or title.
      *
-     * @param kw
+     * @param kw Keyword string to search for
      * @return A list of products matching the keywords
      */
     public List<Product> searchProductByKeyword(String kw) {
@@ -135,18 +146,21 @@ public class interactProduct {
         return q.getResultList();
     }
 
-    //TODO: Add comment through Customer username and product id 
+    //TODO: Verify (peer review) addition calls of comment to product
     /**
      * Add a comment using references (Product, Customer objects)
      *
-     * @param p The Product that the comment is about
-     * @param c the Customer that posted the Comment
+     * @param prod The Product that the comment is about
+     * @param cust the Customer that posted the Comment
      * @param content The content of the post.
      */
-    public void addComment(Product p, Customer c, String content) {
+    public void addComment(Product prod, Customer cust, String content) {
 
-        Comments comm = new Comments(p, c, content);
+        Comments comm = new Comments(prod, cust, content);
         em.persist(comm);
+        Product c1 = searchByID(prod.getId());
+        c1.addToCommentsCollection(comm);
+        
     }
 
     // @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :id"),
