@@ -150,6 +150,11 @@ public class Product implements Serializable {
     public Collection<Comments> getCommentsCollection() {
         return commentsCollection;
     }
+    
+    public void addToCommentsCollection(Comments comment) {
+        this.commentsCollection.add(comment);
+    }
+
 
     @Override
     public int hashCode() {
