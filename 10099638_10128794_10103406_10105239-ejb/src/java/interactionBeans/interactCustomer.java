@@ -42,6 +42,8 @@ public class interactCustomer {
      *
      * @param usnm the name for the new user
      * @param password the user's password
+     * @return Boolean that indicates whether the username and password combination
+     * is valid
      */
      public boolean verifyPassword(String usnm, String password) {
         
