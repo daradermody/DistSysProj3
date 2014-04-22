@@ -158,9 +158,10 @@ public class interactProduct {
 
         Comments comm = new Comments(prod, cust, content);
         em.persist(comm);
-        Product c1 = searchByID(prod.getId());
-        c1.addToCommentsCollection(comm);
-        
+        //not needed because of table relations
+        //Product c1 = searchByID(prod.getId());
+        //this is not needed: 
+        //c1.addToCommentsCollection(comm);
     }
 
     // @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :id"),
