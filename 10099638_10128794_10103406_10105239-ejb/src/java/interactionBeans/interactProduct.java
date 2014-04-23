@@ -175,5 +175,10 @@ public class interactProduct {
     public void persist(Object object) {
         em.persist(object);
     }
+    
+    public int getNumberOfProducts(){
+        Query q = em.createNamedQuery("Product.countAll");
+        return q.getFirstResult();
+    }
 
 }

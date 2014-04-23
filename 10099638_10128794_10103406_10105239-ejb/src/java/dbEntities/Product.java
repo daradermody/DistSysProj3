@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author root
  */
+
 @Entity
 @Table(name = "PRODUCT")
 @XmlRootElement
@@ -33,7 +34,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByImage", query = "SELECT p FROM Product p WHERE p.image = :image"),
     @NamedQuery(name = "Product.findBySummary", query = "SELECT p FROM Product p WHERE p.summary = :summary"),
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
-    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")})
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
+    @NamedQuery(name = "Product.removeByID", query = "DELETE FROM Product p WHERE p.id=:id"),
+    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)+:amount WHERE id=:pid"),
+    @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id"),
+    @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) like '%:kw%' OR lower(p.description) like '%:kw%' OR lower(p.title) like '%:kw%'"),
+    @NamedQuery(name = "Product.countAll", query = "SELECT COUNT(*) FROM EMMA.Product")
+})
+
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
