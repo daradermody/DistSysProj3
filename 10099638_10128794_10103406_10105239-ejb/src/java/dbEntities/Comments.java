@@ -3,51 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package dbEntities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.transaction.UserTransaction;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author elfie
+ * @author root
  */
 @Entity
 @Table(name = "COMMENTS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c"),
-    @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :id"),
+    @NamedQuery(name = "Comments.findById", query = "SELECT c FROM Comments c WHERE c.id = :id"),
     @NamedQuery(name = "Comments.findByContent", query = "SELECT c FROM Comments c WHERE c.content = :content"),
+    @NamedQuery(name = "Comments.findByPoster", query = "SELECT c FROM Comments c WHERE c.poster = :poster"),
+    @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :product"),
     @NamedQuery(name = "Comments.findByDate", query = "SELECT c FROM Comments c WHERE c.date = :date")})
 public class Comments implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
@@ -55,27 +47,45 @@ public class Comments implements Serializable {
     @Size(min = 1, max = 2048)
     @Column(name = "CONTENT")
     private String content;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "POSTER")
+    private String poster;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PRODUCT")
+    private int product;
     @Column(name = "DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-    @JoinColumn(name = "PRODUCT", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Product product;
-    @JoinColumn(name = "POSTER", referencedColumnName = "USERNAME")
-    @ManyToOne(optional = false)
-    private Customer poster;
 
     public Comments() {
     }
 
-    public Comments(Product p, Customer c, String content) {
-        this.product = p;
-        this.poster = c;
+    public Comments(Integer id) {
+        this.id = id;
+    }
+
+    public Comments(Integer id, String content, String poster, int product) {
+        this.id = id;
+        this.content = content;
+        this.poster = poster;
+        this.product = product;
+    }
+    
+    public Comments(Product prod, Customer cust, String content) {
+        this.product = prod.getId();
+        this.poster = cust.getUsername();
         this.content = content;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -86,28 +96,28 @@ public class Comments implements Serializable {
         this.content = content;
     }
 
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public int getProduct() {
+        return product;
+    }
+
+    public void setProduct(int product) {
+        this.product = product;
+    }
+
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public Customer getPoster() {
-        return poster;
-    }
-
-    public void setPoster(Customer poster) {
-        this.poster = poster;
     }
 
     @Override
@@ -132,31 +142,7 @@ public class Comments implements Serializable {
 
     @Override
     public String toString() {
-        return "dbEntities.Comments[ id=" + id + " ]";
+        return "testDBEntities.Comments[ id=" + id + " ]";
     }
-
-    public void persist(Object object) {
-        /* Add this to the deployment descriptor of this module (e.g. web.xml, ejb-jar.xml):
-         * <persistence-context-ref>
-         * <persistence-context-ref-name>persistence/LogicalName</persistence-context-ref-name>
-         * <persistence-unit-name>10099638_10128794_10103406_10105239-ejbPU</persistence-unit-name>
-         * </persistence-context-ref>
-         * <resource-ref>
-         * <res-ref-name>UserTransaction</res-ref-name>
-         * <res-type>javax.transaction.UserTransaction</res-type>
-         * <res-auth>Container</res-auth>
-         * </resource-ref> */
-        try {
-            Context ctx = new InitialContext();
-            UserTransaction utx = (UserTransaction) ctx.lookup("java:comp/env/UserTransaction");
-            utx.begin();
-            EntityManager em = (EntityManager) ctx.lookup("java:comp/env/persistence/LogicalName");
-            em.persist(object);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
-    }
-
+    
 }
