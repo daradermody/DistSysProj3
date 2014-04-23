@@ -68,7 +68,7 @@
             // is searched for in subsequent pages.
             response.addCookie(new Cookie("id", ""));
 
-            // Get address of intended location (before client was forward to login 
+            // Get address of intended location (before client was forwarded to login 
             // page) for use when user is verified
             String address = Security.sanitise((String) request.getAttribute("address"), true);
 
@@ -77,7 +77,7 @@
                 address = "index.jsp";
             }
 
-            // If user submitted parameters for inteded page, retrieve them and 
+            // If user submitted parameters for intended page, retrieve them and 
             // add them (except username/passwords)
             if (!request.getParameterMap().isEmpty()) {
                 address += "?"; // Add initial character seperating URL with parameters

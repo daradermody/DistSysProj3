@@ -40,14 +40,14 @@ public class interactCustomer {
      * Constructor to create a user with the given username and password. Other
      * attributes are generated.
      *
-     * @param usnm the name for the new user
+     * @param username the name for the new user
      * @param password the user's password
      * @return Boolean that indicates whether the username and password combination
      * is valid
      */
-     public boolean verifyPassword(String usnm, String password) {
+     public boolean verifyPassword(String username, String password) {
         
-        return getPassword(usnm).equals(password);
+        return getPassword(username).equals(password);
     }
 
 

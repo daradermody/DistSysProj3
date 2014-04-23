@@ -172,7 +172,7 @@ public class Security {
         // User information array setup to package returned information
         int USER = 0; // Constant index for username
         int ID = 1; // Constant index for session ID
-        String userInfo[] = {null, null}; // User information array
+        String userInfo[] = {null, null, }; // User information array
 
         // Check for ID in cookies
         Cookie[] cookies = request.getCookies(); // Fetch Cookie array
