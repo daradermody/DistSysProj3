@@ -52,15 +52,15 @@
                 response.addCookie(cookie);
             }
 
-            // Add new thread if parameters exist
-            String newThreadTitle = Security.sanitise(request.getParameter("threadName"), false);
-            String newThreadMessage = Security.sanitise(request.getParameter("threadBody"), true);
-            if (!newThreadTitle.equals("") && !newThreadMessage.equals("")) {
-                // Create new forum thread object with user-inputted thread title/name
-                ForumThread newThread = new ForumThread(newThreadTitle);
-                // Add message to thread obejct
-                newThread.addMessage(newThreadMessage, username);
-                ForumBoard.addThread(newThread); // Add thread object to database
+            // Add new product if parameters exist
+            String newProductTitle = Security.sanitise(request.getParameter("productName"), false);
+            String newProductMessage = Security.sanitise(request.getParameter("productBody"), true);
+            if (!newProductMessage.equals("") && !newProductMessage.equals("")) {
+                // Create new forum product object with user-inputted product title/name
+                ShopProduct newProduct = new ShopProduct(newProductTitle);
+                // Add message to product obejct
+                newProduct.addMessage(newProductMessage, username);
+                ShopListing.addProduct(newProduct); // Add product object to database
             }
         %>
         
@@ -80,17 +80,17 @@
 
     <body>
         <div class="main-body">
-            <form name="threadList" method="POST" action="readThread.jsp">
+            <form name="productList" method="POST" action="browseProduct.jsp">
                 <ul>
-                    <%-- Loops through getting of thread items --%>
-                    <% for (int i = 0; i < ForumBoard.getNumberOfThreads(); i++) {
-                            String title = ForumBoard.getThread(i).getTitle();
-                            String description = ForumBoard.getThread(i).getAllMessages().get(0).getContent();
+                    <%-- Loops through getting of product items --%>
+                    <% for (int i = 0; i < ShopListing.getNumberOfProducts(); i++) {
+                            String title = ShopListing.getProduct(i).getTitle();
+                            String description = ShopListing.getProduct(i).getAllMessages().get(0).getContent();
                     %>
                     <li>
                         <div class="big-wrapper">
-                            <button class="thread-title-button" type="submit" name="thread-title" value="<%= title%>"><%= title%></button>
-                            <span class="thread-description">
+                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                            <span class="product-description">
                                 <%= description%>
                             </span>
                         </div>

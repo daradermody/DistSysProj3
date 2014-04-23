@@ -318,7 +318,7 @@ button[type="submit"]:hover, input[type="submit"]:hover {
     border-top: none;
 }
 
-button[type="submit"].thread-title-button {
+button[type="submit"].product-title-button {
     border: none;
     border-right: 4px solid #cb9bf1;
     float: left;
@@ -327,23 +327,23 @@ button[type="submit"].thread-title-button {
     font-size: 14px;
     white-space: normal;
 }
-button[type="submit"].thread-title-button:hover{
+button[type="submit"].product-title-button:hover{
     background:#cb9af4;
     box-shadow: 0px 0px 1px #777;
     border-right: 4px solid #b063ef;
 }
 
-#thread-title {
+#product-title {
     width: 70%;
     margin-left: 7%;
 }
 
-.new-thread {
+.new-product {
     height: 300px;
     width: 100%;
 }
 
-.thread-message {
+.product-message {
     height: 100px;
     width: 100%;
 }

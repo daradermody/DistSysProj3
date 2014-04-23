@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><%= Security.sanitise(request.getParameter("thread-title"), false) %></title>
+        <title><%= Security.sanitise(request.getParameter("product-title"), false) %></title>
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
 
@@ -70,31 +70,33 @@
         <div class="main-body">
             <ul>
                 <%
-                    // Find index of thread being requested
-                    String threadTitle;
-                    ShopProduct thread = null;
-                    for (int index = 0; index < ForumBoard.getNumberOfThreads(); index++) {
-                        threadTitle = ForumBoard.getThread(index).getTitle();
-                        String requestedThread = Security.sanitise(request.getParameter("thread-title"), false);
-                        if (threadTitle.equals(requestedThread)) {
-                            thread = ForumBoard.getThread(index); // Retrieve requested thread
+                    // Find index of product being requested
+                    String productTitle;
+                    
+                    String requestedProduct = Security.sanitise(request.getParameter("product-name"), false);
+                    ShopProduct product = null;
+                    for (int index = 0; index < ShopListing.getNumberOfProducts(); index++) {
+                        productTitle = ShopListing.getProduct(index).getTitle();
+                        
+                        if (productTitle.equals(requestedProduct)) {
+                            product = ShopListing.getProduct(index); // Retrieve requested product
                             break;
                         }
                     }
-                    // If requested thread not found, redirect to main thread page
-                    if(thread == null) response.sendRedirect("index.jsp");
+                    // If requested product not found, redirect to main product page
+                    if(product == null) response.sendRedirect("index.jsp");
 
-                    // If user posted content, add message to thread
+                    // If user posted content, add message to product
                     String postedContent = Security.sanitise(request.getParameter("messageBody"), true);
 
                     if (!postedContent.equals(""))
-                        thread.addMessage(postedContent, username);
+                        product.addMessage(postedContent, username);
 
                     // For each message, display according to set of tags and style
                     int messageCount = 0; // Used to find last message posted
-                    int numMessages = thread.getAllMessages().size(); // Variable holding number of messages
+                    int numMessages = product.getAllMessages().size(); // Variable holding number of messages
 
-                    for (Message message : thread.getAllMessages()) {
+                    for (Message message : product.getAllMessages()) {
                         messageCount++; // Increment counter of messages
                 %>
                 <li>
@@ -121,13 +123,13 @@
                         </div>
 
                         <div class="message">
-                            <form name="newPost" action="readThread.jsp#latest" method="POST">
-                                <textarea class="message thread-message" name="messageBody"></textarea>
+                            <form name="newPost" action="browseProduct.jsp#latest" method="POST">
+                                <textarea class="message product-message" name="messageBody"></textarea>
                                 <input id="submit-button" type="submit" value="Post">
-                                <input type="hidden" name="thread-title" value="<%= thread.getTitle()%>">
+                                <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
                             </form>
-                            <form name="refresh" action="readThread.jsp#latest" method="POST">
-                                <input type="hidden" name="thread-title" value="<%= thread.getTitle()%>">
+                            <form name="refresh" action="browseProduct.jsp#latest" method="POST">
+                                <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
                                 <button id="refresh-button" type="submit" name="refresh" value="true">Refresh</button>
                             </form>
                         </div>

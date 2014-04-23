@@ -73,7 +73,7 @@
         </script>
         
         <div class="main-body">
-            <form name="newThread" method="POST" action="index.jsp">
+            <form name="newProduct" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
                     <table>
                         <tr>
@@ -82,7 +82,7 @@
                                     <tr>
                                         <td>
                                             <div id="product-name-container">
-                                                Name: <input type="text" id="thread-title" name="threadName">
+                                                Name: <input type="text" id="product-title" name="productName">
                                             </div>
                                         </td>
                                         <td>

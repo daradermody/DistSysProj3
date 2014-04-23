@@ -39,7 +39,7 @@
             <form name="home" action="index.jsp" method="POST">
                 <input type="submit" class="header-button" value="Browse">
             </form>
-            <form name="newThread" action="addProduct.jsp" method="POST">
+            <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">
             </form>
         </header>
