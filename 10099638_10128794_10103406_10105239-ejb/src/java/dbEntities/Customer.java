@@ -80,7 +80,7 @@ public class Customer implements Serializable {
     private String password;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "poster")
     private Collection<Comments> commentsCollection;
-
+    
     public Customer() {
     }
 

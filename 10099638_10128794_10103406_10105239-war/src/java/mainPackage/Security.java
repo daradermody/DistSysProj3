@@ -47,7 +47,7 @@ public class Security {
      */
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
-
+        
         // Uncomment and set validity to false (above) when Emma provides database
         if (username != null && password != null) {
             validity = customerBean.verifyPassword( username, password);
@@ -109,7 +109,7 @@ public class Security {
      * @return Returns the username associated with the sessionID if the session
      * exists; null, otherwise
      */
-    public static String verifySession(String sessionID) {
+    public String verifySession(String sessionID) {
         String username = null;
 
         if (sessionID != null) {
@@ -168,7 +168,7 @@ public class Security {
      * @return String array of username and ID. if invalid, one of the elements
      * is null.
      */
-    public static String[] authoriseRequest(HttpServletRequest request) {
+    public String[] authoriseRequest(HttpServletRequest request) {
         // User information array setup to package returned information
         int USER = 0; // Constant index for username
         int ID = 1; // Constant index for session ID
