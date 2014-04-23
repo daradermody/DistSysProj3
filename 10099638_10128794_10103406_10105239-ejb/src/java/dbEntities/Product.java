@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)+:amount WHERE id=:pid"),
     @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id"),
     @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) like '%:kw%' OR lower(p.description) like '%:kw%' OR lower(p.title) like '%:kw%'"),
-    @NamedQuery(name = "Product.countAll", query = "SELECT COUNT(*) FROM EMMA.Product")
+    @NamedQuery(name = "Product.countAll", query = "SELECT COUNT(p) FROM Product p")
 })
 
 public class Product implements Serializable {
