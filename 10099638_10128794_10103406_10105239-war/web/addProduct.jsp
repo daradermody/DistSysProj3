@@ -71,7 +71,7 @@
                 });
             });
         </script>
-
+        
         <div class="main-body">
             <form name="newThread" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
@@ -101,8 +101,14 @@
                         </tr>
                         <tr>
                             <td>
-                                <div id="product-description">
-                                    Description: <textarea class="message new-thread" name="threadBody"></textarea>
+                                <form action="upload" method="POST" enctype="multipart/form-data"/>
+                                    <input type="file" name="product-image">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="product-description-container">
+                                    Description: <textarea class="product-description" name="productDescription"></textarea>
                                 </div>
                             </td>
                         </tr>
