@@ -86,48 +86,25 @@ public class Customer implements Serializable {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getFullname() {
         return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getRegion() {
         return region;
     }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public Boolean getIsadmin() {
+    public Boolean getIsAdmin() {
         return isadmin;
-    }
-
-    public void setIsadmin(Boolean isadmin) {
-        this.isadmin = isadmin;
     }
 
     public String getPassword() {

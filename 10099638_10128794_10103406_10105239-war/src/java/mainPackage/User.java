@@ -20,16 +20,17 @@ public class User {
     private String sessionID; //for security class
     //private final String creationDate; // for Security class
     private int sessionTime;
-    private boolean isAdmin;
+    private final boolean isAdmin;
     
     /**
      * Constructor to create a logged on user.
      * 
+     * An "isAdmin" boolean is not needed! 
      * @param c The "base" customer that will be associated with other user attributes.
      * @param sessionID A session ID 
      * @param sessionTime A session time
      */
-    protected User(Customer c, String sessionID, int sessionTime, boolean isAdmin) {
+    protected User(Customer c, String sessionID, int sessionTime) {
         this.details = c;
         
         //DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
@@ -37,7 +38,7 @@ public class User {
           
         this.sessionID = sessionID;
         this.sessionTime = sessionTime; 
-        this.isAdmin = isAdmin;
+        this.isAdmin = this.details.getIsAdmin();
     }
     
     /**
@@ -45,17 +46,9 @@ public class User {
      * @return the boolean for administrative privileges
      */
     protected boolean getIsAdmin(){
-        return this.details.getIsadmin();
+        return this.details.getIsAdmin();
     }
-    
-    /**
-     * setter for the isAdmin attribute
-     * @param isAdmin boolean for administrative privileges
-     */
-    protected void setIsAdmin(boolean isAdmin) {
-        this.isAdmin=isAdmin;
-    }
-    
+      
     /**
      * Getter for username attribute
      * @return the username
@@ -98,7 +91,7 @@ public class User {
     
     /**
      * Getter for the password hash.
-     * @return the (salt) hashed password.
+     * @return the hashed password.
      */
     protected String getPwdHash(){
         return this.details.getPassword();
