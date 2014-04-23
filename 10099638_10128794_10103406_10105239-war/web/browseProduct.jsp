@@ -24,8 +24,9 @@
 
     <body>
         <%
+            Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = Security.authoriseRequest(request);
+            String[] userInfo = sec.authoriseRequest(request);
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
             
