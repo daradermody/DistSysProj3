@@ -14,6 +14,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
+<jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
 
 <!DOCTYPE html>
 <html>
@@ -48,19 +49,19 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
-            {
                 response.addCookie(cookie);
-            }
 
             // Add new product if parameters exist
-            String newProductTitle = Security.sanitise(request.getParameter("productName"), false);
-            String newProductMessage = Security.sanitise(request.getParameter("productBody"), true);
-            if (!newProductMessage.equals("") && !newProductMessage.equals("")) {
-                // Create new forum product object with user-inputted product title/name
-                ShopProduct newProduct = new ShopProduct(newProductTitle);
-                // Add message to product obejct
-                newProduct.addMessage(newProductMessage, username);
-                ShopListing.addProduct(newProduct); // Add product object to database
+            String newProductName = Security.sanitise(request.getParameter("productName"), false);
+            String newProductDescription = Security.sanitise(request.getParameter("productDescription"), true);
+            int newProductPrice = Integer.valueOf(Security.sanitise(request.getParameter("productPrice"), false));
+            int newProductAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
+            String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
+            String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
+            
+            if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
+                // Create new shop product object with user-inputted product details
+                interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
             }
         %>
         
@@ -83,7 +84,7 @@
             <form name="productList" method="POST" action="browseProduct.jsp">
                 <ul>
                     <%-- Loops through getting of product items --%>
-                    <% for (int i = 0; i < ShopListing.getNumberOfProducts(); i++) {
+                    <% for (int i = 0; i < interactProduct.; i++) {
                             String title = ShopListing.getProduct(i).getTitle();
                             String description = ShopListing.getProduct(i).getAllMessages().get(0).getContent();
                     %>

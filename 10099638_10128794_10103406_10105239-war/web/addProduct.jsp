@@ -24,54 +24,8 @@
     </head>
 
     <body>
-        <%
-            Security sec = new Security();
-            // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String username = userInfo[0]; // Set to more convenient variable
-            String id = userInfo[1]; // Set to more convenient variable
-            String isAdmin = userInfo[2]; // Set to more convenient variable
 
-            // If session ID invalid/non-existant or if the user does not have
-            // administrative privileges, forward to login page (also 
-            // determine if login was attempted)
-            if (id.equals("") || isAdmin.equals("false")) {
-                // If login failed, set attribute so login.jsp can set error message
-                if (!username.equals("<none>")) {
-                    request.setAttribute("invalid-login", "true");
-                } else {
-                    request.setAttribute("invalid-login", "false");
-                }
-                request.setAttribute("address", "index.jsp"); // Set requested page as this page
-                // Forward request (with parameters) to login page for authentication
-                getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
-            }
 
-            // Determine if user has cookies disabled
-            boolean cookiesDisabled = request.getCookies() == null;
-
-            Cookie cookie = new Cookie("id", id); // Create new cookie with session ID
-            cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
-            cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
-            if (!cookiesDisabled) // If cookies enabled, add cookie to response
-            {
-                response.addCookie(cookie);
-            }
-        %>
-
-        <!-- Import jQuery -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.js"></script>
-        <%-- JavaScript function that adds ID field to form when submitted if cookies are disabled --%>
-        <script type="text/javascript">
-            $(function() {
-                $('form').submit(function() { // On submission of form
-                    if (!navigator.cookieEnabled) // Check if cookies disabled
-                        $(this).append('<input type="hidden" name="id" value="<%= id%>">');
-                    return true;
-                });
-            });
-        </script>
-        
         <div class="main-body">
             <form name="newProduct" method="POST" action="index.jsp">
                 <div class="big-wrapper message-container">
@@ -87,12 +41,12 @@
                                         </td>
                                         <td>
                                             <div id="product-price-container">
-                                                Price: <input type="text" id="product-price" name="productPrice">
+                                                Price: <input type="number" id="product-price" name="productPrice">
                                             </div>
                                         </td>
                                         <td>
                                             <div id="product-amount-container">
-                                                Amount: <input type="text" id="product-amount" name="productAmount">
+                                                Amount: <input type="number" id="product-amount" name="productAmount">
                                             </div>
                                         </td>
                                     </tr>
@@ -102,7 +56,14 @@
                         <tr>
                             <td>
                                 <form action="upload" method="POST" enctype="multipart/form-data"/>
-                                    <input type="file" name="product-image">
+                                <input type="file" name="productImage">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="product-summary-container">
+                                    Summary: <input type="text" id="product-summary" name="productSummary">
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -114,7 +75,7 @@
                         </tr>
                     </table>
                     <input id="submit-button" type="submit" value="Add Product">
-                    </form>
-                </div>
-                </body>
-                </html>
+            </form>
+        </div>
+    </body>
+</html>

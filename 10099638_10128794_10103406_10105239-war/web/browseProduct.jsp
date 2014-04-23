@@ -29,6 +29,7 @@
             String[] userInfo = sec.authoriseRequest(request);
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
+            String isAdmin = userInfo[2]; // Set to more convenient variable
             
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
@@ -87,7 +88,7 @@
                     if(product == null) response.sendRedirect("index.jsp");
 
                     // If user posted content, add message to product
-                    String postedContent = Security.sanitise(request.getParameter("messageBody"), true);
+                    String postedContent = Security.sanitise(request.getParameter("productBody"), true);
 
                     if (!postedContent.equals(""))
                         product.addMessage(postedContent, username);

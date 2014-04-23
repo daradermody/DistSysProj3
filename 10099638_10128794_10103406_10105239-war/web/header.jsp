@@ -21,7 +21,18 @@
 
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
-    <body>    
+    <body>
+        <%
+            /**
+            Security sec = new Security();
+            // Check session ID, or username and password; if it fails, forward to login
+            String[] userInfo = sec.authoriseRequest(request);
+            String isAdmin = userInfo[2]; // Set to more convenient variable
+            */
+            // Uncomment above and delete below after initial testing!
+            String isAdmin = "true";
+        %>
+
         <script type="text/javascript" src="way2blogging.org-tripleflap.js"></script>
         <script type="text/javascript">
             var twitterAccount = "Koalascense";
@@ -39,9 +50,14 @@
             <form name="home" action="index.jsp" method="POST">
                 <input type="submit" class="header-button" value="Browse">
             </form>
+
+            <% if(isAdmin=="true") {
+            %>
             <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">
             </form>
+            <% }%>
+
         </header>
 
         <table class="searchbar">
