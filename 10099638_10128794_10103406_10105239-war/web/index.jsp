@@ -28,7 +28,7 @@
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
 
-           // If session ID invalid/non-existant, forward to login page (also 
+            // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("")) {
                 // If login failed, set attribute so login.jsp can set error message
@@ -49,7 +49,9 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
 
             // Add new product if parameters exist
             String newProductName = Security.sanitise(request.getParameter("productName"), false);
@@ -58,13 +60,13 @@
             int newProductAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
             String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
-            
+
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
                 interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
             }
         %>
-        
+
         <!-- Import jQuery -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.0.js"></script>
         <%-- JavaScript function that adds ID field to form when submitted if cookies are disabled --%>
@@ -84,16 +86,45 @@
             <form name="productList" method="POST" action="browseProduct.jsp">
                 <ul>
                     <%-- Loops through getting of product items --%>
-                    <% for (int i = 0; i < interactProduct.; i++) {
-                            String title = ShopListing.getProduct(i).getTitle();
-                            String description = ShopListing.getProduct(i).getAllMessages().get(0).getContent();
+                    <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
+                            String title = product.getTitle();
+                            String summary = product.getSummary();
+                            String image = product.getImage();
+                            int price = Integer.valueOf(String.valueOf(product.getPrice()));
+                            int amount = product.getQuantity();
                     %>
                     <li>
                         <div class="big-wrapper">
-                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
-                            <span class="product-description">
-                                <%= description%>
-                            </span>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <button class="product-image-button" type="submit" name="product-image" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                </td>
+                                                <td>
+                                                    <span class="product-summary">
+                                                        <%= summary%>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    Price: <%= price%><br>
+                                                    Amount: <%= amount%>
+                                                </td>
+                                                <td>
+                                                    <button class="product-title-button" type="submit" name="buy-product" value="<%= title%>">BUY</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </li>
                     <% }%>
