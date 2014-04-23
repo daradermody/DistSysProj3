@@ -20,7 +20,7 @@ import java.util.*;
  * @author Patrick O Keeffe
  */
 @Deprecated
-public class ForumThread {
+public class ShopProduct {
 
     ArrayList<Message> messages;
     String title;
@@ -30,7 +30,7 @@ public class ForumThread {
      *
      * @param forumTitle Title for forum thread.
      */
-    public ForumThread(String forumTitle) {
+    public ShopProduct(String forumTitle) {
         this.messages = new ArrayList<>();
 
         this.title = forumTitle;

@@ -205,14 +205,24 @@ li {
     background-color: lightpink;
     font-size: 12px;
 }
-.thread-description {
+.product-description {
     float: right;
     right: 0;
     width: 68%;
     height: 100%;
     padding-left: 10px
 }
-#thread-title-container {
+#product-name-container {
+    margin: 0 auto;
+    width: 90%;
+    padding: 10px 5% 10px 5%;
+}
+#product-price-container {
+    margin: 0 auto;
+    width: 90%;
+    padding: 10px 5% 10px 5%;
+}
+#product-amount-container {
     margin: 0 auto;
     width: 90%;
     padding: 10px 5% 10px 5%;
@@ -225,7 +235,7 @@ li {
 }
 
 .searchText {
-    width: 400px;
+    width: 98%;
     height: 20px;
 }
 

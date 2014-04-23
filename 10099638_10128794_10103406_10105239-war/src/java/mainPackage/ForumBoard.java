@@ -23,7 +23,7 @@ import java.util.ArrayList;
 @Deprecated
 public class ForumBoard {
 
-    private static ArrayList<ForumThread> threads = new ArrayList<ForumThread>();
+    private static ArrayList<ShopProduct> threads = new ArrayList<ShopProduct>();
     private static int numberOfThreads;
 
     /**
@@ -33,7 +33,7 @@ public class ForumBoard {
      * @return index-th thread in the database if index <= number of threads,
      * null otherwise.
      */
-    public static ForumThread getThread(int index) {
+    public static ShopProduct getThread(int index) {
         return threads.get(index);
     }
 
@@ -44,11 +44,11 @@ public class ForumBoard {
      * @return the number of threads in the board
      */
     public static int addThread(String title) {
-        threads.add(new ForumThread(title));
+        threads.add(new ShopProduct(title));
         return threads.size();
     }
 
-    public static int addThread(ForumThread t) {
+    public static int addThread(ShopProduct t) {
         threads.add(t);
         return threads.size();
     }

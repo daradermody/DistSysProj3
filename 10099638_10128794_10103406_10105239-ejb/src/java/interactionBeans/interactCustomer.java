@@ -28,7 +28,7 @@ public class interactCustomer {
      * @param username The username
      * @return The corresponding password
      */
-    public String getPassword(String username){
+    public String getPassword(String username) {
         Query q = em.createNamedQuery("Customer.findByUsername");
         q.setParameter("username", username);
         

@@ -41,6 +41,22 @@ public class User {
     }
     
     /**
+     * Getter for isAdmin attribute
+     * @return the boolean for administrative privileges
+     */
+    protected boolean getIsAdmin(){
+        return this.details.getIsadmin();
+    }
+    
+    /**
+     * setter for the isAdmin attribute
+     * @param isAdmin boolean for administrative privileges
+     */
+    protected void setIsAdmin(boolean isAdmin) {
+        this.isAdmin=isAdmin;
+    }
+    
+    /**
      * Getter for username attribute
      * @return the username
      */

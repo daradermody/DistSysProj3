@@ -30,9 +30,10 @@ import org.owasp.html.Sanitizers;
  * @author Patrick O Keeffe
  */
 public class Security {
+
     @EJB
     interactCustomer customerBean;
-    
+
     private static ArrayList<User> sessionUsers = new ArrayList<>();
     final private static int TIMEOUT = 900;
 
@@ -47,7 +48,7 @@ public class Security {
      */
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
-        
+
         // Uncomment and set validity to false (above) when Emma provides database
         if (username != null && password != null) {
             validity = customerBean.verifyPassword(username, password);
@@ -62,7 +63,7 @@ public class Security {
      * universally unique ID
      *
      * @param username Username of the user for which the session is to be
- started
+     * started
      * @return Returns the unique session ID associated with the user the
      * session was created for; null, otherwise
      */
@@ -214,6 +215,13 @@ public class Security {
             {
                 System.out.printf("Login attempt: %s | %s\n\t>>> LOGIN FAILURE <<<\n",
                         userInfo[USER], password);
+            }
+        }
+
+        for (Iterator<User> iter = sessionUsers.iterator(); iter.hasNext();) {
+            User user = iter.next();
+            if (user.getSessionID().equals(userInfo[ID])) { // User found
+                userInfo[ADMINSTAT] = String.valueOf(user.getIsAdmin());
             }
         }
 

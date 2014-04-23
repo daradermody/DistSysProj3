@@ -72,7 +72,7 @@
                 <%
                     // Find index of thread being requested
                     String threadTitle;
-                    ForumThread thread = null;
+                    ShopProduct thread = null;
                     for (int index = 0; index < ForumBoard.getNumberOfThreads(); index++) {
                         threadTitle = ForumBoard.getThread(index).getTitle();
                         String requestedThread = Security.sanitise(request.getParameter("thread-title"), false);
