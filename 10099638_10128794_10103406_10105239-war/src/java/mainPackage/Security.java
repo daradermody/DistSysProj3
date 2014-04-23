@@ -50,7 +50,7 @@ public class Security {
         
         // Uncomment and set validity to false (above) when Emma provides database
         if (username != null && password != null) {
-            validity = customerBean.verifyPassword( username, password);
+            validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
         }
 
@@ -171,8 +171,9 @@ public class Security {
     public String[] authoriseRequest(HttpServletRequest request) {
         // User information array setup to package returned information
         int USER = 0; // Constant index for username
-        int ID = 1; // Constant index for session ID
-        String userInfo[] = {null, null, }; // User information array
+        int ID = 1; // Constant index for session ID]
+        int ADMINSTAT = 2; // Constant index for isAdmin boolean value as String
+        String userInfo[] = {null, null, null}; // User information array
 
         // Check for ID in cookies
         Cookie[] cookies = request.getCookies(); // Fetch Cookie array

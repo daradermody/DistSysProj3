@@ -20,6 +20,7 @@ public class User {
     private String sessionID; //for security class
     //private final String creationDate; // for Security class
     private int sessionTime;
+    private boolean isAdmin;
     
     /**
      * Constructor to create a logged on user.
@@ -28,7 +29,7 @@ public class User {
      * @param sessionID A session ID 
      * @param sessionTime A session time
      */
-    protected User(Customer c, String sessionID, int sessionTime ) {
+    protected User(Customer c, String sessionID, int sessionTime, boolean isAdmin) {
         this.details = c;
         
         //DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
@@ -36,6 +37,7 @@ public class User {
           
         this.sessionID = sessionID;
         this.sessionTime = sessionTime; 
+        this.isAdmin = isAdmin;
     }
     
     /**
