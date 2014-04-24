@@ -56,12 +56,11 @@
             <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">
             </form>
-            <% }%>
+            <% } %>
 
         </header>
-        <form name="logOut" action="login.jsp" method="POST">
+        <form name="search" action="searchResults.jsp" method="POST">
             <table class="searchbar">
-
                 <tr class="searchRow">
                     <td class="searchCell">
                         <textarea class="searchText" name="searchKeywords"></textarea>

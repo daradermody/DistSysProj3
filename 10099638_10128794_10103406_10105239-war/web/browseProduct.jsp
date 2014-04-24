@@ -153,18 +153,20 @@
                                             Amount: <%= product.getQuantity()%>
                                             <% }%>
                                         </td>
+                                        <% if (isAdmin.equals("true")) { %>
+                                        <td>
+                                            <form name="remove-product" method="POST" action="index.jsp">
+                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
+                                            </form>
+                                        </td>
+                                        <% } 
+                                        else {%>
                                         <td>
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1 > ;</script>
                                                 <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="Buy.png" title="buy"/></button>
-                                            </form>
-                                        </td>
-                                        <% if (isAdmin.equals("true")) { %>
-                                        <td>
-                                            <form name="remove-product" method="POST" action="index.jsp">
-                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
                                         <% } %>

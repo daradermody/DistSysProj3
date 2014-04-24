@@ -77,16 +77,22 @@
     <body>
         <div class="main-body">
             <div id="main">
-                <form name="productList" method="POST" action="browseProduct.jsp">
+                <form name="shoppingCart" method="POST" action="browseProduct.jsp">
                     <ul>
-                        <%-- Loops through getting of products --%>
-                        <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
-                                String title = product.getTitle();
-                                String summary = product.getSummary();
-                                String image = product.getImage();
-                                int price = Integer.valueOf(String.valueOf(product.getPrice()));
-                                int amount = product.getQuantity();
-                        %>
+                        <%-- Loops through getting of shopping cart products --%>
+                        <%  HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.getItems();
+                            Set<dbEntities.Product> keys = shopCart.keySet();
+                            Iterator<dbEntities.Product> it = keys.iterator();
+                            dbEntities.Product p;
+
+                            for(int i = 0; i < shopCart.size(); i++) {
+                                p = it.next();
+                                String title = p.getTitle();
+                                String summary = p.getSummary();
+                                String image = p.getImage();
+                                int price = Integer.valueOf(String.valueOf(p.getPrice()));
+                                int amount = p.getQuantity();
+                    %>
                         <li>
                             <div class="big-wrapper">
                                 <table>

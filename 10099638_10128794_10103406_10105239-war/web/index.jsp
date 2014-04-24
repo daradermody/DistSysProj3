@@ -60,10 +60,10 @@
 
             // Remove product if instructed from the browseProduct page
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
-            if(productToRemove > 0) {
+            if (productToRemove > 0) {
                 interactProduct.removeProduct(productToRemove);
             }
-            
+
             // Add new product if parameters exist
             String newProductName = Security.sanitise(request.getParameter("productName"), false);
             String newProductDescription = Security.sanitise(request.getParameter("productDescription"), true);
@@ -130,10 +130,12 @@
                                                         Amount: <%= amount%>
                                                     </td>
                                                     <td>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
-                                                            <% if (isAdmin.equals("true")) {%>
+                                                        <% if (isAdmin.equals("true")) {%>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
-                                                            <% } %>
+                                                        <% } 
+                                                        else {%>
+                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
+                                                        <% } %>
                                                     </td>
                                                 </tr>
                                             </table>
