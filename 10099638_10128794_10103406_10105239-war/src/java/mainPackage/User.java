@@ -43,7 +43,7 @@ public class User {
           
         this.sessionID = sessionID;
         this.sessionTime = sessionTime; 
-        this.isAdmin = this.details.getIsAdmin();
+        this.isAdmin = this.details.getIsadmin();
     }
     
     /**
@@ -51,7 +51,7 @@ public class User {
      * @return the boolean for administrative privileges
      */
     protected boolean getIsAdmin(){
-        return this.details.getIsAdmin();
+        return this.details.getIsadmin();
     }
       
     /**
