@@ -32,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
     @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
     @NamedQuery(name = "Customer.findByRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
-    @NamedQuery(name = "Customer.findByIdadmin", query = "SELECT c FROM Customer c WHERE c.idadmin = :idadmin")})
+    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin"),
+    @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -56,8 +57,13 @@ public class Customer implements Serializable {
     private String region;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "IDADMIN")
-    private Boolean idadmin;
+    @Column(name = "ISADMIN")
+    private Boolean isadmin;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "PASSWORD")
+    private String password;
 
     public Customer() {
     }
@@ -66,10 +72,11 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public Customer(Integer id, String fullname, Boolean idadmin) {
+    public Customer(Integer id, String fullname, Boolean isadmin, String password) {
         this.id = id;
         this.fullname = fullname;
-        this.idadmin = idadmin;
+        this.isadmin = isadmin;
+        this.password = password;
     }
 
     public Integer getId() {
@@ -112,12 +119,20 @@ public class Customer implements Serializable {
         this.region = region;
     }
 
-    public Boolean getIdadmin() {
-        return idadmin;
+    public Boolean getIsadmin() {
+        return isadmin;
     }
 
-    public void setIdadmin(Boolean idadmin) {
-        this.idadmin = idadmin;
+    public void setIsadmin(Boolean isadmin) {
+        this.isadmin = isadmin;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -143,10 +158,6 @@ public class Customer implements Serializable {
     @Override
     public String toString() {
         return "dbEntities.Customer[ id=" + id + " ]";
-    }
-
-    public String getPassword() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
