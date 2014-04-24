@@ -110,7 +110,7 @@
                     if (addAmount > 0) {
                         interactProduct.increaseQuantity(product.getId(), addAmount);
                     }
-                    
+
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
                     int buyAmount = Integer.valueOf(Security.sanitise(request.getParameter("reduceAmount"), false));
@@ -126,50 +126,58 @@
                     }%>
 
                 <div class="big-wrapper">
-                    <form name="browse-product" method="POST" action="browseProduct.jsp">
-                        <table>
-                            <tr>
-                                <td>
-                                    <%= product.getTitle()%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
-                                            </td>
-                                            <td>
-                                                Price: <%= product.getPrice()%><br>
-                                                <% if (isAdmin.equals("true")) {%>
+                    <table>
+                        <tr>
+                            <td>
+                                <%= product.getTitle()%>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
+                                        </td>
+                                        <td>
+                                            Price: <%= product.getPrice()%><br>
+                                            <% if (isAdmin.equals("true")) {%>
+                                            <form name="browse-product" method="POST" action="browseProduct.jsp">
                                                 Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("product-amount").value = 0;
                                                 </script>
                                                 <br/><input id="submit-button" type="submit" value="Change Amount">
-                                                <% } else {%>                                             
-                                                Amount: <%= product.getQuantity()%>
-                                                <% }%>
-                                            </td>
-                                            <td>
+                                            </form>
+                                            <% } else {%>                                             
+                                            Amount: <%= product.getQuantity()%>
+                                            <% }%>
+                                        </td>
+                                        <td>
+                                            <form name="browse-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
-                                                    document.getElementById("reduce-amount").value = 1>;
-                                                </script>
-                                                <button class="product-title-button" type="submit" name="buyProduct" value="browseProduct.jsp"><img src="Buy.png" title="buy"/></button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <%= product.getDescription()%>
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
+                                                    document.getElementById("reduce-amount").value = 1 > ;</script>
+                                                <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="Buy.png" title="buy"/></button>
+                                            </form>
+                                        </td>
+                                        <% if (isAdmin.equals("true")) { %>
+                                        <td>
+                                            <form name="browse-product" method="POST" action="index.jsp">
+                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
+                                            </form>
+                                        </td>
+                                        <% } %>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <%= product.getDescription()%>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <ul>
                     <%

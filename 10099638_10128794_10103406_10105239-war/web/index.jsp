@@ -58,6 +58,12 @@
                 response.addCookie(cookie);
             }
 
+            // Remove product if instructed from the browseProduct page
+            int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
+            if(productToRemove > 0) {
+                interactProduct.removeProduct(productToRemove);
+            }
+            
             // Add new product if parameters exist
             String newProductName = Security.sanitise(request.getParameter("productName"), false);
             String newProductDescription = Security.sanitise(request.getParameter("productDescription"), true);
