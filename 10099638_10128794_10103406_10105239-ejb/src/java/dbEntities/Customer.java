@@ -1,12 +1,7 @@
-/* 
- * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
- * Module:      Distributed Systems 2
- *      Code:   CE4208
- * Lecturer:    Reiner Dojen
- * Date:        25 April 2014
- *
- * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
- *      Number: 3
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 package dbEntities;
@@ -24,12 +19,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Database entity class for Customer. 
- * 
- * @author Emma Foley 10105239
- * @author Dara Dermody 10099638
- * @author Niko Flores 10103406
- * @author Patrick O Keeffe 10128794
+ *
+ * @author root
  */
 @Entity
 @Table(name = "CUSTOMER")
@@ -41,7 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
     @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
     @NamedQuery(name = "Customer.findByRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
-    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin")})
+    @NamedQuery(name = "Customer.findByIdadmin", query = "SELECT c FROM Customer c WHERE c.idadmin = :idadmin")})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,29 +42,22 @@ public class Customer implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 100)
     @Column(name = "FULLNAME")
     private String fullname;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 50)
     @Column(name = "USERNAME")
     private String username;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
+    @Size(max = 200)
     @Column(name = "ADDRESS")
     private String address;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64)
+    @Size(max = 100)
     @Column(name = "REGION")
     private String region;
-    @Column(name = "ISADMIN")
-    private Boolean isadmin;
-    @Size(max = 64)
-    @Column(name = "PASSWORD")
-    private String password;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDADMIN")
+    private Boolean idadmin;
 
     public Customer() {
     }
@@ -82,45 +66,58 @@ public class Customer implements Serializable {
         this.id = id;
     }
 
-    public Customer(Integer id, String fullname, String username, String address, String region) {
+    public Customer(Integer id, String fullname, Boolean idadmin) {
         this.id = id;
         this.fullname = fullname;
-        this.username = username;
-        this.address = address;
-        this.region = region;
+        this.idadmin = idadmin;
     }
 
     public Integer getId() {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getFullname() {
         return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getAddress() {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getRegion() {
         return region;
     }
 
-    public Boolean getIsAdmin() {
-        return isadmin;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public String getPassword() {
-        return password;
+    public Boolean getIdadmin() {
+        return idadmin;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setIdadmin(Boolean idadmin) {
+        this.idadmin = idadmin;
     }
 
     @Override
@@ -145,7 +142,11 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "testDBEntities.Customer[ id=" + id + " ]";
+        return "dbEntities.Customer[ id=" + id + " ]";
+    }
+
+    public String getPassword() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
