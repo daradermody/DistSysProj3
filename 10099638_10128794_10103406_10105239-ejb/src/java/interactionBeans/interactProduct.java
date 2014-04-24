@@ -50,7 +50,12 @@ public class interactProduct {
      * @param summary A brief summary of the item.
      */
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
-        Product p = new Product(title, description, quantity, price, imagepath, summary);
+        Product p = new Product(0, title, quantity);
+        p.setDescription(description);
+        p.setPrice((long)price);
+        p.setImage(imagepath);
+        p.setSummary(summary);
+        
         persist(p);
     }
 
@@ -167,7 +172,7 @@ public class interactProduct {
      */
     public void addComment(Product prod, Customer cust, String content) {
 
-        Comments comm = new Comments(prod, cust, content);
+        Comments comm = new Comments(0, content, cust.getUsername(), prod.getId());
         em.persist(comm);
     }
 

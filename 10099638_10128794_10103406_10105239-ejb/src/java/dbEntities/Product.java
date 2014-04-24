@@ -1,12 +1,7 @@
-/* 
- * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
- * Module:      Distributed Systems 2
- *      Code:   CE4208
- * Lecturer:    Reiner Dojen
- * Date:        25 April 2014
- *
- * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
- *      Number: 3
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 package dbEntities;
@@ -24,13 +19,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Database entity class for products
- * @author Emma Foley 10105239
- * @author Dara Dermody 10099638
- * @author Niko Flores 10103406
- * @author Patrick O Keeffe 10128794
+ *
+ * @author root
  */
-
 @Entity
 @Table(name = "PRODUCT")
 @XmlRootElement
@@ -42,14 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByImage", query = "SELECT p FROM Product p WHERE p.image = :image"),
     @NamedQuery(name = "Product.findBySummary", query = "SELECT p FROM Product p WHERE p.summary = :summary"),
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
-    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
-    @NamedQuery(name = "Product.removeByID", query = "DELETE FROM Product p WHERE p.id=:id"),
-    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product SET quantity=(SELECT quantity FROM PRODUCT p WHERE p.ID=:pid)+:amount WHERE id=:pid"),
-    @NamedQuery(name = "Product.findQuantityByID", query = "SELECT quantity FROM Product WHERE ID = :id"),
-    @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) like '%:kw%' OR lower(p.description) like '%:kw%' OR lower(p.title) like '%:kw%'"),
-    @NamedQuery(name = "Product.countAll", query = "SELECT COUNT(p) FROM Product p")
-})
-
+    @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price")})
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -90,18 +74,13 @@ public class Product implements Serializable {
         this.title = title;
         this.quantity = quantity;
     }
-    
-    public Product(String title, String description, int quantity, long price, String imagepath, String summary) {
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.image = imagepath;
-        this.summary = summary;
-        this.quantity = quantity;
-    }
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -174,7 +153,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "testDBEntities.Product[ id=" + id + " ]";
+        return "dbEntities.Product[ id=" + id + " ]";
     }
     
 }

@@ -1,12 +1,7 @@
-/* 
- * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
- * Module:      Distributed Systems 2
- *      Code:   CE4208
- * Lecturer:    Reiner Dojen
- * Date:        25 April 2014
- *
- * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
- *      Number: 3
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 package dbEntities;
@@ -27,12 +22,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Database Entity class for Comments.
- * 
- * @author Emma Foley 10105239
- * @author Dara Dermody 10099638
- * @author Niko Flores 10103406
- * @author Patrick O Keeffe 10128794
+ *
+ * @author root
  */
 @Entity
 @Table(name = "COMMENTS")
@@ -81,12 +72,6 @@ public class Comments implements Serializable {
         this.content = content;
         this.poster = poster;
         this.product = product;
-    }
-    
-    public Comments(Product prod, Customer cust, String content) {
-        this.product = prod.getId();
-        this.poster = cust.getUsername();
-        this.content = content;
     }
 
     public Integer getId() {
@@ -151,7 +136,7 @@ public class Comments implements Serializable {
 
     @Override
     public String toString() {
-        return "testDBEntities.Comments[ id=" + id + " ]";
+        return "dbEntities.Comments[ id=" + id + " ]";
     }
     
 }

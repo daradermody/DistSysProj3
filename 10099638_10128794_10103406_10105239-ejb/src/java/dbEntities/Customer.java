@@ -1,12 +1,7 @@
-/* 
- * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
- * Module:      Distributed Systems 2
- *      Code:   CE4208
- * Lecturer:    Reiner Dojen
- * Date:        25 April 2014
- *
- * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
- *      Number: 3
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 package dbEntities;
@@ -24,12 +19,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Database entity class for Customer. 
- * 
- * @author Emma Foley 10105239
- * @author Dara Dermody 10099638
- * @author Niko Flores 10103406
- * @author Patrick O Keeffe 10128794
+ *
+ * @author root
  */
 @Entity
 @Table(name = "CUSTOMER")
@@ -41,7 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
     @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
     @NamedQuery(name = "Customer.findByRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
-    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin")})
+    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin"),
+    @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -94,25 +86,48 @@ public class Customer implements Serializable {
         return id;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getFullname() {
         return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getAddress() {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getRegion() {
         return region;
     }
 
-    public Boolean getIsAdmin() {
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Boolean getIsadmin() {
         return isadmin;
+    }
+
+    public void setIsadmin(Boolean isadmin) {
+        this.isadmin = isadmin;
     }
 
     public String getPassword() {
@@ -145,7 +160,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "testDBEntities.Customer[ id=" + id + " ]";
+        return "dbEntities.Customer[ id=" + id + " ]";
     }
     
 }
