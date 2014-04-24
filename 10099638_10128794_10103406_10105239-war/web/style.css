@@ -219,15 +219,13 @@ li {
 .product-description {
     float: right;
     right: 0;
-    width: 68%;
+    width: 85%;
     height: 100px;
-    padding-left: 10px
+    padding-left: 10px;
 }
-.product-summary {
-    float: right;
+#product-summary {
     right: 0;
-    width: 68%;
-    height: 100px;
+    width: 80%;
     padding-left: 10px
 }
 #product-name-container {
@@ -246,6 +244,11 @@ li {
     padding: 10px 5% 10px 5%;
 }
 #product-description-container {
+    margin: 0 auto;
+    width: 90%;
+    padding: 10px 5% 10px 5%;
+}
+#product-summary-container {
     margin: 0 auto;
     width: 90%;
     padding: 10px 5% 10px 5%;

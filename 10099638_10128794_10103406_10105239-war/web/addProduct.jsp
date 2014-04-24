@@ -24,7 +24,7 @@
     </head>
 
     <body>
-<%
+        <%
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
             String[] userInfo = sec.authoriseRequest(request);
@@ -32,7 +32,7 @@
             String id = userInfo[1]; // Set to more convenient variable
             String isAdmin = userInfo[2]; // Set to more convenient variable
 
-            // If session ID invalid/non-existant, forward to login page (also 
+                    // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("") || isAdmin.equals("false")) {
                 // If login failed, set attribute so login.jsp can set error message
@@ -108,25 +108,25 @@
                             <td>
                                 <form action="upload" method="POST" enctype="multipart/form-data">
                                     <input type="file" name="productImage">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div id="product-summary-container">
-                                    Summary: <input type="text" id="product-summary" name="productSummary">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div id="product-description-container">
-                                    Description: <textarea class="product-description" name="productDescription"></textarea>
-                                </div>
-                            </td>
-                        </tr>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div id="product-summary-container">
+                                                Summary: <input type="text" id="product-summary" name="productSummary">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div id="product-description-container">
+                                                Description: <textarea class="product-description" name="productDescription"></textarea>
+                                            </div>
+                                        </td>
+                                    </tr>
                     </table>
                     <input id="submit-button" type="submit" value="Add Product">
-            </form>
-        </div>
-    </body>
-</html>
+                    </form>
+                </div>
+                </body>
+                </html>

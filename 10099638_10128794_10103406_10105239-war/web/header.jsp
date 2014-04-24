@@ -56,7 +56,7 @@
             <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">
             </form>
-            <% } %>
+            <% }%>
 
         </header>
         <form name="search" action="searchResults.jsp" method="POST">
@@ -66,9 +66,11 @@
                         <textarea class="searchText" name="searchKeywords"></textarea>
                     </td>
                     <td class="searchCell" align="left">
-
+                        Search by:<select name="searchBy">
+                            <option value ="ID">ID</option>
+                            <option value="name">Name</option>
+                        </select>
                         <input id="search-button" type="submit" value="Search">
-
                     </td>
                 </tr>
             </table>
