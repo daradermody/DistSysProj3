@@ -115,6 +115,11 @@
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
             if (productToRemove > 0) {
                 interactProduct.removeProduct(productToRemove);
+                
+                // Data log for item removal
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                fileLog.println("Item: " + (interactProduct.searchByID(productToRemove)).getTitle() + " removed @ " + date.toString());
             }
 
             // Add new product if parameters exist
