@@ -4,8 +4,9 @@
     Author     : daradermody
 --%>
 
+<%@page import="interactionBeans.shoppingCartBean"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="shoppingCartBeanTest" class="interactionBeans.shoppingCartBeanTest" /> 
+<jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,13 +15,12 @@
     </head>
     <body>
         <% // Get shopping cart
-            shoppingCartBean.cancel();
-            shoppingCartBeanTest a1 = new shoppingCartBeanTest();
-            ShoppingCart cart = (ShoppingCart) session.
+            shoppingCartBean a1 = new shoppingCartBean();
+            shoppingCartBean cart = (shoppingCartBean) session.
                     getAttribute("cart");
             // If the user has no cart, create a new one
             if (cart == null) {
-                cart = new ShoppingCart();
+                cart = new shoppingCartBean();
                 session.setAttribute("cart", cart);
             }
         %> 
