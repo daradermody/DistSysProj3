@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
+ * Module:      Distributed Systems 2
+ *      Code:   CE4208
+ * Lecturer:    Reiner Dojen
+ * Date:        25 April 2014
+ *
+ * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+ *      Number: 3
  */
 
 package dbEntities;
@@ -19,8 +24,12 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author root
+ * Database entity class for Customer. 
+ * 
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 @Entity
 @Table(name = "CUSTOMER")
@@ -32,8 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Customer.findByUsername", query = "SELECT c FROM Customer c WHERE c.username = :username"),
     @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address"),
     @NamedQuery(name = "Customer.findByRegion", query = "SELECT c FROM Customer c WHERE c.region = :region"),
-    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin"),
-    @NamedQuery(name = "Customer.findByPassword", query = "SELECT c FROM Customer c WHERE c.password = :password")})
+    @NamedQuery(name = "Customer.findByIsadmin", query = "SELECT c FROM Customer c WHERE c.isadmin = :isadmin")})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

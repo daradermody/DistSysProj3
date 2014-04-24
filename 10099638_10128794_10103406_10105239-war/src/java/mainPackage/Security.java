@@ -24,10 +24,10 @@ import org.owasp.html.Sanitizers;
 /**
  * Class to handle session management and security
  *
- * @author Emma Foley
- * @author Dara Dermody
- * @author Niko Flores
- * @author Patrick O Keeffe
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 public class Security {
 

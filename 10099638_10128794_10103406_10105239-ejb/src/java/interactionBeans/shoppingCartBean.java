@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
+ * Module:      Distributed Systems 2
+ *      Code:   CE4208
+ * Lecturer:    Reiner Dojen
+ * Date:        25 April 2014
+ *
+ * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+ *      Number: 3
  */
 package interactionBeans;
 
@@ -12,9 +17,13 @@ import java.util.Set;
 import javax.ejb.Remove;
 
 /**
- *
- * @author elfie
+ * Shopping Cart EJB based off module code example.
+ * 
  * @author reiner
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 public class shoppingCartBean {
 
@@ -68,6 +77,10 @@ public class shoppingCartBean {
         // automatically destroy instance variables
     }
 
+    /**
+     * Prints a list of items and quantities in the shopping Cart.
+     * @return 
+     */
     public String printItemList() {
         String message = "";
         Set<Product> keys = items.keySet();
@@ -80,6 +93,28 @@ public class shoppingCartBean {
         return message;
     }
 
+    /**
+     * Method to return (up to) 5 items from the shopping cart.
+     * @return HashMap of the chosen items.
+     */
+    public HashMap<Product,Integer> get5Items(){
+        if (items.size() <= 5){
+            return items;
+        }
+        else{
+            HashMap<Product,Integer> hm = new HashMap<>();
+            Set<Product> keys = items.keySet();
+            Iterator<Product> it = keys.iterator();
+            Product p;
+
+            while (hm.size()<5 ){
+                p = it.next();
+                hm.put(p,items.get(p));
+            }
+            return hm; 
+       }
+    }
+    
     /**
      * Get the total value of goods in cart.
      *

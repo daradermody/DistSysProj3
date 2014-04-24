@@ -1,7 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
+ * Module:      Distributed Systems 2
+ *      Code:   CE4208
+ * Lecturer:    Reiner Dojen
+ * Date:        25 April 2014
+ *
+ * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+ *      Number: 3
  */
 package interactionBeans;
 
@@ -16,8 +21,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author elfie
+ * EJB for Product interaction
+ * 
+ * Main EJB used, as the application is focused on browsing products.
+ * Calls named queries and retrieves information about products.
+ * 
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 @Stateless
 @LocalBean
@@ -69,7 +81,7 @@ public class interactProduct {
         return (Product) q.getSingleResult();
     }
 
-    //@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+
     /**
      * Returns list of all products in database
      * @return List of all Product objects in database
@@ -146,7 +158,6 @@ public class interactProduct {
         return q.getResultList();
     }
 
-    //TODO: Verify (peer review) addition calls of comment to product
     /**
      * Add a comment using references (Product, Customer objects)
      *
@@ -158,13 +169,14 @@ public class interactProduct {
 
         Comments comm = new Comments(prod, cust, content);
         em.persist(comm);
-        //not needed because of table relations
-        //Product c1 = searchByID(prod.getId());
-        //this is not needed: 
-        //c1.addToCommentsCollection(comm);
     }
 
-    // @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :id"),
+    /**
+     * Returns a List of Comments associated with the product.
+     * Calls the Comments.findByProduct named query.
+     * @param pid
+     * @return Comments for the Product
+     */
     public List<Comments> getComments(int pid) {
         Query q = em.createNamedQuery("Comments.findByProduct");
         q.setParameter("pid", pid);
@@ -172,10 +184,18 @@ public class interactProduct {
         return q.getResultList();
     }
 
+    /**
+     * Wrapper for the enitity manager persist method which basically adds an object to the database.
+     * @param object 
+     */
     public void persist(Object object) {
         em.persist(object);
     }
     
+    /**
+     * Returns the total number of Products in the database.
+     * @return The number of entries in the table database 
+     */
     public int getNumberOfProducts(){
         Query q = em.createNamedQuery("Product.countAll");
         return q.getFirstResult();
