@@ -24,11 +24,11 @@
     <body>
         <%
             /**
-            Security sec = new Security();
-            // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String isAdmin = userInfo[2]; // Set to more convenient variable
-            */
+             * Security sec = new Security(); // Check session ID, or username
+             * and password; if it fails, forward to login String[] userInfo =
+             * sec.authoriseRequest(request); String isAdmin = userInfo[2]; //
+             * Set to more convenient variable
+             */
             // Uncomment above and delete below after initial testing!
             String isAdmin = "true";
         %>
@@ -51,7 +51,7 @@
                 <input type="submit" class="header-button" value="Browse">
             </form>
 
-            <% if(isAdmin=="true") {
+            <% if (isAdmin == "true") {
             %>
             <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">
@@ -59,16 +59,20 @@
             <% }%>
 
         </header>
+        <form name="logOut" action="login.jsp" method="POST">
+            <table class="searchbar">
 
-        <table class="searchbar">
-            <tr class="searchRow">
-                <td class="searchCell">
-                    <textarea class="searchText"></textarea>  
-                </td>
-                <td class="searchCell" align="left">
-                    <input id="search-button" type="submit" value="Search">
-                </td>
-            </tr>
-        </table>
+                <tr class="searchRow">
+                    <td class="searchCell">
+                        <textarea class="searchText" name="searchKeywords"></textarea>
+                    </td>
+                    <td class="searchCell" align="left">
+
+                        <input id="search-button" type="submit" value="Search">
+
+                    </td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>

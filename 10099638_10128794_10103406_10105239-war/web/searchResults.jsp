@@ -21,6 +21,6 @@
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Split with space and search for each keyword, or just allow for one word search</h1>
     </body>
 </html>

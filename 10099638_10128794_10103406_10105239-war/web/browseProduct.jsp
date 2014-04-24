@@ -142,7 +142,7 @@
                                         <td>
                                             Price: <%= product.getPrice()%><br>
                                             <% if (isAdmin.equals("true")) {%>
-                                            <form name="browse-product" method="POST" action="browseProduct.jsp">
+                                            <form name="increase-amount" method="POST" action="browseProduct.jsp">
                                                 Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("product-amount").value = 0;
@@ -154,7 +154,7 @@
                                             <% }%>
                                         </td>
                                         <td>
-                                            <form name="browse-product" method="POST" action="browseProduct.jsp">
+                                            <form name="buy-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1 > ;</script>
@@ -163,7 +163,7 @@
                                         </td>
                                         <% if (isAdmin.equals("true")) { %>
                                         <td>
-                                            <form name="browse-product" method="POST" action="index.jsp">
+                                            <form name="remove-product" method="POST" action="index.jsp">
                                                 <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
