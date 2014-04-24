@@ -32,7 +32,7 @@
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
             String isAdmin = userInfo[2]; // Set to more convenient variable
-            
+
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("")) {
@@ -125,9 +125,9 @@
                                                     </td>
                                                     <td>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
-                                                        <% if(isAdmin.equals("true")) { %>
-                                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
-                                                        <% } %>
+                                                            <% if (isAdmin.equals("true")) {%>
+                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
+                                                            <% } %>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -141,30 +141,32 @@
                 </form>
             </div>
             <div id="sidebar">
-                <%
-                    double total = shoppingCartBean.getTotal();
-                %>
-                <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
-                <br/>
-                <ul>
-                    <%-- Loops through, getting the last 5 items of the shopping cart --%>
-                    <%      HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.get5Items();
+                <form name="checkout" method="POST" action="checkout.jsp">
+                    <%
+                        double total = shoppingCartBean.getTotal();
+                    %>
+                    <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
+                    <br/>
+                    <ul>
+                        <%-- Loops through, getting 5 items of the shopping cart --%>
+                        <%      HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for(int i = 0; i < shopCart.size(); i++) {
+                            for (int i = 0; i < shopCart.size(); i++) {
                                 p = it.next();
                                 String title = p.getTitle();
                                 int price = Integer.valueOf(String.valueOf(p.getPrice()));
                                 int amount = p.getQuantity();
-                    %>
-                    <li>
-                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
-                    </li>
-                    <% }%>
-                </ul>
-                <br/>Total: <%= total%>
+                        %>
+                        <li>
+                            <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
+                        </li>
+                        <% }%>
+                    </ul>
+                    <br/>Total: <%= total%>
+                </form>
             </div>
         </div>
     </body>

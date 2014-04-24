@@ -9,6 +9,7 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
+<%@page import="java.util.Date"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
@@ -78,11 +79,17 @@
 
 
         <div class="main-body">
-            <ul>
+            <div id="main">
                 <%
+                    dbEntities.Customer customer = new dbEntities.Customer();
                     // Retrieves the user from database
-                    for (dbEntities.Customer c : interact)
-                
+                    for (dbEntities.Customer c : interactCustomer.findAllCustomers()) {
+                        if (username == c.getUsername()) {
+                            customer = c;
+                            break;
+                        }
+                    }
+
                     // Retrieves the request product from database
                     dbEntities.Product product = new dbEntities.Product();
                     String requestedProduct = Security.sanitise(request.getParameter("product-name"), false);
@@ -92,123 +99,132 @@
                             break;
                         }
                     }
-                    
+
                     // If requested product not found, redirect to main product page
                     if (product == null) {
                         response.sendRedirect("index.jsp");
                     }
 
+                    // If the admin user changes the amount of the product, reflect the changes
+                    int addAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
+                    if (addAmount > 0) {
+                        interactProduct.increaseQuantity(product.getId(), addAmount);
+                    }
+                    
+                    // If the user opts to buy the item, decrease amount of item and add to shopping cart
+                    // Ensure that the requested amount will not force the total amount to go below 0
+                    int buyAmount = Integer.valueOf(Security.sanitise(request.getParameter("reduceAmount"), false));
+                    if (buyAmount > 0 && ((product.getQuantity() - buyAmount) >= 0)) {
+                        interactProduct.reduceQuantity(product.getId(), buyAmount);
+                        shoppingCartBean.addItem(product, buyAmount);
+                    }
+
                     // If user posted content, add comment to product
                     String postedContent = Security.sanitise(request.getParameter("productBody"), true);
                     if (!postedContent.equals("")) {
-                        interactProduct.addComment(product, cust, content);
-                    }
+                        interactProduct.addComment(product, customer, postedContent);
+                    }%>
 
-                    // For each message, display according to set of tags and style
-                    int messageCount = 0; // Used to find last message posted
-                    int numMessages = product.getAllMessages().size(); // Variable holding number of messages
-
-                    for (Message message : product.getAllMessages()) {
-                        messageCount++; // Increment counter of messages
-%>
-                <li>
-                    <div class="big-wrapper message-container">
-                        <div class="poster-info">
-                            <img src="images/male-default.png" title="<%= message.getPoster()%>" alt="<%= message.getPoster()%>">
-                            <span><%= message.getPoster()%></span>
-                            <br><%= message.getDate()%>
-                        </div>
-
-                        <%-- Identify message as "latest" if it is the last message (for auto-scrolling) --%>
-                        <div class="message" <%= (messageCount == numMessages) ? "id='latest'" : ""%>>
-                            <%= message.getContent()%> <%-- Fetch message body --%> 
-                        </div>
-                    </div>
-                </li>
-                <% } // End of for loop for retrieving all messages%>
-
-                <li>
-                    <div class="big-wrapper message-container">
-                        <div class="poster-info">
-                            <p><img src="images/male-default.png" title="<%= username%>" alt="<%= username%>"></p>
-                            <p><%= username%><br></p>
-                        </div>
-
-                        <div class="message">
-                            <form name="newPost" action="browseProduct.jsp#latest" method="POST">
-                                <textarea class="message product-message" name="productBody"></textarea>
-                                <input id="submit-button" type="submit" value="Post">
-                                <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
-                            </form>
-                            <form name="refresh" action="browseProduct.jsp#latest" method="POST">
-                                <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
-                                <button id="refresh-button" type="submit" name="refresh" value="true">Refresh</button>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="main-body">
-            <div id="main">
-                <form name="productList" method="POST" action="browseProduct.jsp">
-                    <ul>
-                        <%-- Loops through getting of products --%>
-                        <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
-                                String title = product.getTitle();
-                                String summary = product.getSummary();
-                                String image = product.getImage();
-                                int price = Integer.valueOf(String.valueOf(product.getPrice()));
-                                int amount = product.getQuantity();
-                        %>
-                        <li>
-                            <div class="big-wrapper">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <button class="product-image-button" type="submit" name="product-image" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
-                                                    </td>
-                                                    <td>
-                                                        <span class="product-summary">
-                                                            <%= summary%>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        Price: <%= price%><br>
-                                                        Amount: <%= amount%>
-                                                    </td>
-                                                    <td>
-                                                        <button class="product-title-button" type="submit" name="buy-product" value="<%= title%>">BUY</button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
+                <div class="big-wrapper">
+                    <form name="browse-product" method="POST" action="browseProduct.jsp">
+                        <table>
+                            <tr>
+                                <td>
+                                    <%= product.getTitle()%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
+                                            </td>
+                                            <td>
+                                                Price: <%= product.getPrice()%><br>
+                                                <% if (isAdmin.equals("true")) {%>
+                                                Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
+                                                <script type="text/javascript">
+                                                    document.getElementById("product-amount").value = 0;
+                                                </script>
+                                                <br/><input id="submit-button" type="submit" value="Change Amount">
+                                                <% } else {%>                                             
+                                                Amount: <%= product.getQuantity()%>
+                                                <% }%>
+                                            </td>
+                                            <td>
+                                                <input type="number" id="reduce-amount" name="reduceAmount">
+                                                <script type="text/javascript">
+                                                    document.getElementById("reduce-amount").value = 1>;
+                                                </script>
+                                                <button class="product-title-button" type="submit" name="buyProduct" value="browseProduct.jsp"><img src="Buy.png" title="buy"/></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <%= product.getDescription()%>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+                <ul>
+                    <%
+                        // For each message, display according to set of tags and style
+                        for (dbEntities.Comments comm : interactProduct.getComments(product.getId())) {
+                            String message = comm.getContent();
+                            String poster = comm.getPoster();
+                            String date = comm.getDate().toString();
+                    %>
+                    <li>
+                        <div class="big-wrapper message-container">
+                            <div class="poster-info">
+                                <span><%= poster%></span>
+                                <br><%= date%>
                             </div>
-                        </li>
-                        <% }%>
-                    </ul>
-                </form>
+
+                            <div class="message">
+                                <%= message%>
+                            </div>
+                        </div>
+                    </li>
+                    <% } // End of for loop for retrieving all messages%>
+
+                    <li>
+                        <div class="big-wrapper message-container">
+                            <div class="poster-info">
+                                <p><%= username%><br></p>
+                            </div>
+
+                            <div class="message">
+                                <form name="newComment" action="browseProduct.jsp" method="POST">
+                                    <textarea class="message product-message" name="productBody"></textarea>
+                                    <input id="submit-button" type="submit" value="Comment">
+                                    <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
+                                </form>
+                                <form name="refresh" action="browseProduct.jsp" method="POST">
+                                    <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
+                                    <button id="refresh-button" type="submit" name="refresh" value="true">Refresh</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <div id="sidebar">
+        </div>
+        <div id="sidebar">
+            <form name="checkout" method="POST" action="checkout.jsp">
                 <%
                     double total = shoppingCartBean.getTotal();
                 %>
                 <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                 <br>
                 <ul>
-                    <%-- Loops through, getting the last 5 items of the shopping cart --%>
-                    <%      HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
+                    <%-- Loops through, getting 5 items of the shopping cart --%>
+                    <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
                         Set<dbEntities.Product> keys = shopCart.keySet();
                         Iterator<dbEntities.Product> it = keys.iterator();
                         dbEntities.Product p;
@@ -225,10 +241,7 @@
                     <% }%>
                 </ul>
                 <br/>Total: <%= total%>
-            </div>
+            </form>
         </div>
     </body>
 </html>
-
-
-
