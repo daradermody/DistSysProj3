@@ -58,6 +58,35 @@
                 response.addCookie(cookie);
             }
 
+            // Complete checkout by simply removing all the items in the shopping cart
+            String complete = Security.sanitise(request.getParameter("complete"), false);
+            if (!complete.equals("")) {
+                HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
+                Set<dbEntities.Product> keys = shopCart.keySet();
+                Iterator<dbEntities.Product> it = keys.iterator();
+                dbEntities.Product p;
+
+                for (int i = 0; i < shopCart.size(); i++) {
+                    p = it.next();
+                    shoppingCartBean.removeItem(p, p.getQuantity());
+                }
+            }
+
+            // Put the items from the shopping cart back to the database, if the customer clicks delete all
+            String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
+            if (!deleteAll.equals("")) {
+                HashMap<dbEntities.Product, Integer> cartShop = shoppingCartBean.getItems();
+                Set<dbEntities.Product> setOfKeys = cartShop.keySet();
+                Iterator<dbEntities.Product> iter = setOfKeys.iterator();
+                dbEntities.Product prod;
+
+                for (int i = 0; i < cartShop.size(); i++) {
+                    prod = iter.next();
+                    int currentQtt = (interactProduct.searchByID(prod.getId())).getQuantity();
+                    (interactProduct.searchByID(prod.getId())).setQuantity(currentQtt += prod.getQuantity());
+                }
+            }
+
             // Remove product if instructed from the browseProduct page
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
             if (productToRemove > 0) {
@@ -104,6 +133,9 @@
                                 String image = product.getImage();
                                 int price = Integer.valueOf(String.valueOf(product.getPrice()));
                                 int amount = product.getQuantity();
+
+                                // Check to ensure that the amount is at least 1
+                                if (amount > 0) {
                         %>
                         <li>
                             <div class="big-wrapper">
@@ -132,10 +164,9 @@
                                                     <td>
                                                         <% if (isAdmin.equals("true")) {%>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
-                                                        <% } 
-                                                        else {%>
+                                                            <% } else {%>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
-                                                        <% } %>
+                                                            <% } %>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -144,7 +175,8 @@
                                 </table>
                             </div>
                         </li>
-                        <% }%>
+                        <% }
+                            }%>
                     </ul>
                 </form>
             </div>
@@ -157,7 +189,7 @@
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>
-                        <%      HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
+                        <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;

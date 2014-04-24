@@ -33,6 +33,7 @@
             String[] userInfo = sec.authoriseRequest(request);
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
+            String isAdmin = userInfo[2]; // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
@@ -58,6 +59,12 @@
             {
                 response.addCookie(cookie);
             }
+
+            // Remove product in cart if instructed
+            int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
+            if (productToRemove > 0) {
+                shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), 1);
+            }
         %>
 
         <!-- Import jQuery -->
@@ -80,19 +87,19 @@
                 <form name="shoppingCart" method="POST" action="browseProduct.jsp">
                     <ul>
                         <%-- Loops through getting of shopping cart products --%>
-                        <%  HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.getItems();
+                        <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for(int i = 0; i < shopCart.size(); i++) {
+                            for (int i = 0; i < shopCart.size(); i++) {
                                 p = it.next();
                                 String title = p.getTitle();
                                 String summary = p.getSummary();
                                 String image = p.getImage();
                                 int price = Integer.valueOf(String.valueOf(p.getPrice()));
                                 int amount = p.getQuantity();
-                    %>
+                        %>
                         <li>
                             <div class="big-wrapper">
                                 <table>
@@ -114,11 +121,12 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        Price: <%= price%><br>
-                                                        Amount: <%= amount%>
+                                                        Price: <%= price%><br/>
+                                                        Amount: <%= amount%><br/>
+                                                        Item Total: <%= (price * amount)%>
                                                     </td>
                                                     <td>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
+                                                        <button class="product-title-button" type="submit" name="removeProduct" value="<%= p.getId()%>"><img src="Remove.png" title="edit"/></button>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -135,27 +143,13 @@
                 <%
                     double total = shoppingCartBean.getTotal();
                 %>
-                <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
-                <br>
-                <ul>
-                    <%-- Loops through, getting the last 5 items of the shopping cart --%>
-                    <%      HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.get5Items();
-                            Set<dbEntities.Product> keys = shopCart.keySet();
-                            Iterator<dbEntities.Product> it = keys.iterator();
-                            dbEntities.Product p;
-
-                            for(int i = 0; i < shopCart.size(); i++) {
-                                p = it.next();
-                                String title = p.getTitle();
-                                int price = Integer.valueOf(String.valueOf(p.getPrice()));
-                                int amount = p.getQuantity();
-                    %>
-                    <li>
-                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
-                    </li>
-                    <% }%>
-                </ul>
-                <br/>Total: <%= total%>
+                <br/>Total: <b><%= total%></b>
+                <br/>
+                <form name="cartActions" method="POST" action="index.jsp">
+                    <button type="submit" name="complete" value="Complete"><img src="images/Complete.png" title="complete"></button>
+                    <button type="submit" name="cancel" value="Cancel"><img src="images/Cancel.png" title="cancel"></button>
+                    <button type="submit" name="deleteAll" value="Delete All"><img src="images/Trash.png" title="deleteAll"></button>
+                </form>
             </div>
         </div>
     </body>
