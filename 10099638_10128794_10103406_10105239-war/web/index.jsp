@@ -9,12 +9,16 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="mainPackage.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
 <jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
+<jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 
 <!DOCTYPE html>
 <html>
@@ -83,53 +87,81 @@
 
     <body>
         <div class="main-body">
-            <form name="productList" method="POST" action="browseProduct.jsp">
+            <div id="main">
+                <form name="productList" method="POST" action="browseProduct.jsp">
+                    <ul>
+                        <%-- Loops through getting of products --%>
+                        <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
+                                String title = product.getTitle();
+                                String summary = product.getSummary();
+                                String image = product.getImage();
+                                int price = Integer.valueOf(String.valueOf(product.getPrice()));
+                                int amount = product.getQuantity();
+                        %>
+                        <li>
+                            <div class="big-wrapper">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <button class="product-image-button" type="submit" name="product-image" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                    </td>
+                                                    <td>
+                                                        <span class="product-summary">
+                                                            <%= summary%>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        Price: <%= price%><br>
+                                                        Amount: <%= amount%>
+                                                    </td>
+                                                    <td>
+                                                        <button class="product-title-button" type="submit" name="buy-product" value="<%= title%>">BUY</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
+                        <% }%>
+                    </ul>
+                </form>
+            </div>
+            <div id="sidebar">
+                <%
+                    double total = shoppingCartBean.getTotal();
+                %>
+                <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
+                <br>
                 <ul>
-                    <%-- Loops through getting of product items --%>
-                    <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
-                            String title = product.getTitle();
-                            String summary = product.getSummary();
-                            String image = product.getImage();
-                            int price = Integer.valueOf(String.valueOf(product.getPrice()));
-                            int amount = product.getQuantity();
+                    <%-- Loops through, getting the last 5 items of the shopping cart --%>
+                    <%      HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.get5Items();
+                            Set<dbEntities.Product> keys = shopCart.keySet();
+                            Iterator<dbEntities.Product> it = keys.iterator();
+                            dbEntities.Product p;
+
+                            for(int i = 0; i < shopCart.size(); i++) {
+                                p = it.next();
+                                String title = p.getTitle();
+                                int price = Integer.valueOf(String.valueOf(p.getPrice()));
+                                int amount = p.getQuantity();
                     %>
                     <li>
-                        <div class="big-wrapper">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <button class="product-image-button" type="submit" name="product-image" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
-                                                </td>
-                                                <td>
-                                                    <span class="product-summary">
-                                                        <%= summary%>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    Price: <%= price%><br>
-                                                    Amount: <%= amount%>
-                                                </td>
-                                                <td>
-                                                    <button class="product-title-button" type="submit" name="buy-product" value="<%= title%>">BUY</button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
                     </li>
                     <% }%>
                 </ul>
-            </form>
+                <br/>Total: <%= total%>
+            </div>
         </div>
     </body>
 </html>

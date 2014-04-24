@@ -111,6 +111,13 @@ h3 {
     margin: 0 auto;
     width: 90%;
 }
+#main {
+    width:70%;
+}
+#sidebar {
+    float:right;
+    width: 25%;
+}
 .big-wrapper {
     overflow:auto;
     clear:both;
