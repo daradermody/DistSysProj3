@@ -1,11 +1,12 @@
 /* 
- * Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
+ * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
  * Module:      Distributed Systems 2
  *      Code:   CE4208
  * Lecturer:    Reiner Dojen
- * Date:        07 April 2014
+ * Date:        25 April 2014
  *
- * Project:     Secure Authentication and Session Management System for a Web Application
+ * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+ *      Number: 3
  */
 package mainPackage;
 
@@ -14,10 +15,10 @@ import java.util.*;
 /**
  * This class is based on the module labs, but some modification have been made.
  *
- * @author Emma Foley
- * @author Dara Dermody
- * @author Niko Flores
- * @author Patrick O Keeffe
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 @Deprecated
 public class ShopProduct {

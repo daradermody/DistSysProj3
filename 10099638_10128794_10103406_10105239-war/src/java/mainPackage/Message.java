@@ -15,16 +15,16 @@ import java.util.Date;
 
 /**
  *
- * @author Emma Foley
- * @author Dara Dermody
- * @author Niko Flores
- * @author Patrick O Keeffen
+ * @author Emma Foley 10105239
+ * @author Dara Dermody 10099638
+ * @author Niko Flores 10103406
+ * @author Patrick O Keeffe 10128794
  */
 @Deprecated
 public class Message {
 
-    private String content;
-    private String poster;
+    private final String content;
+    private final String poster;
     final private String date;
 
     /**
