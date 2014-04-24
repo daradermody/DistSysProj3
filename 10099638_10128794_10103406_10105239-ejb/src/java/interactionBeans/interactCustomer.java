@@ -12,6 +12,7 @@
 package interactionBeans;
 
 import dbEntities.Customer;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -54,8 +55,16 @@ public class interactCustomer {
      * is valid
      */
      public boolean verifyPassword(String username, String password) {
-        
         return getPassword(username).equals(password);
+    }
+     
+    /**
+     * Returns list of all customers in database
+     * @return List of all Customer objects in database
+     */
+    public List<Customer> findAllCustomers() {
+        Query q = em.createNamedQuery("Customer.findAll");
+        return q.getResultList();
     }
 
 

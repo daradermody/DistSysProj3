@@ -31,7 +31,8 @@
             String[] userInfo = sec.authoriseRequest(request);
             String username = userInfo[0]; // Set to more convenient variable
             String id = userInfo[1]; // Set to more convenient variable
-
+            String isAdmin = userInfo[2]; // Set to more convenient variable
+            
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("")) {
@@ -111,7 +112,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-image" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span class="product-summary">
@@ -123,7 +124,10 @@
                                                         Amount: <%= amount%>
                                                     </td>
                                                     <td>
-                                                        <button class="product-title-button" type="submit" name="buy-product" value="<%= title%>">BUY</button>
+                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
+                                                        <% if(isAdmin.equals("true")) { %>
+                                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
+                                                        <% } %>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -141,7 +145,7 @@
                     double total = shoppingCartBean.getTotal();
                 %>
                 <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
-                <br>
+                <br/>
                 <ul>
                     <%-- Loops through, getting the last 5 items of the shopping cart --%>
                     <%      HashMap<dbEntities.Product,Integer> shopCart = shoppingCartBean.get5Items();

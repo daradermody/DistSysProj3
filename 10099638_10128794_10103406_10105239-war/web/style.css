@@ -113,10 +113,14 @@ h3 {
 }
 #main {
     width:70%;
+    top: 50px;
 }
 #sidebar {
     float:right;
     width: 25%;
+    margin:0px auto;
+    position: fixed;
+    top: 50px;
 }
 .big-wrapper {
     overflow:auto;
