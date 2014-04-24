@@ -9,6 +9,10 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
+<%@page import="java.util.Date"%>
+<%@page import="java.io.BufferedWriter"%>
+<%@page import="java.io.PrintWriter"%>
+<%@page import="java.io.FileWriter"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
@@ -66,9 +70,19 @@
                 Iterator<dbEntities.Product> it = keys.iterator();
                 dbEntities.Product p;
 
+                ArrayList<String> productNamesComplete = new ArrayList<>();
                 for (int i = 0; i < shopCart.size(); i++) {
                     p = it.next();
+                    productNamesComplete.add(p.getTitle());
                     shoppingCartBean.removeItem(p, p.getQuantity());
+                }
+
+                // Data log for completed checkout
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
+                for(int n = 0; n < productNamesComplete.size(); n++) {
+                    fileLog.println("\t" + productNamesComplete.get(n));
                 }
             }
 
@@ -80,10 +94,20 @@
                 Iterator<dbEntities.Product> iter = setOfKeys.iterator();
                 dbEntities.Product prod;
 
+                ArrayList<String> productNamesDumped = new ArrayList<>();
                 for (int i = 0; i < cartShop.size(); i++) {
                     prod = iter.next();
+                    productNamesDumped.add(prod.getTitle());
                     int currentQtt = (interactProduct.searchByID(prod.getId())).getQuantity();
                     (interactProduct.searchByID(prod.getId())).setQuantity(currentQtt += prod.getQuantity());
+                }
+
+                // Data log for dumped items
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
+                for(int n = 0; n < productNamesDumped.size(); n++) {
+                    fileLog.println("\t" + productNamesDumped.get(n));
                 }
             }
 
@@ -104,6 +128,15 @@
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
                 interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
+            }
+
+            // Data log for product addition
+            PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+            Date date = new Date();
+            if (!newProductName.equals("")) {
+                fileLog.println("New item: " + newProductName + " added @ " + date.toString());
+            } else {
+                fileLog.println("New item added @ " + date.toString());
             }
         %>
 
