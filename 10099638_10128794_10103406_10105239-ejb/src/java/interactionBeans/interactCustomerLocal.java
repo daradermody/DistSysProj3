@@ -41,6 +41,9 @@ public interface interactCustomerLocal {
      */
     public List<Customer> findAllCustomers();
 
+    public boolean exists(String username);
 
+    public Customer findByUsername(String username);
+            
     public void persist(Object object);
 }

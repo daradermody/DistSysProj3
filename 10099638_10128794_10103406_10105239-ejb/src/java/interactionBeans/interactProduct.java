@@ -60,8 +60,8 @@ public class interactProduct {
     }
 
     /**
-     * Removes the given product from the database. The product can be uniquely
-     * identified by it's id, <br />
+     * Removes the given product from the database. 
+     * The product can be uniquely identified by it's id, <br />
      * ensuring that only one item will be deleted at a time. <br />
      * The removeByID query is used.
      *

@@ -78,6 +78,28 @@ public class interactCustomer implements interactCustomerLocal {
         return q.getResultList();
     }
 
+    @Override
+    public boolean exists(String username){
+        Query q = em.createNamedQuery("Customer.findByUsername");
+        q.setParameter("username", username);
+        
+        return q.getResultList().size()==1;
+    }
+    
+    @Override
+    public Customer findByUsername(String username){
+        Query q = em.createNamedQuery("Customer.findByUsername");
+        q.setParameter("username", username);
+        
+        Customer c = null;
+        try {
+            c = (Customer) q.getSingleResult();
+        } catch(NoResultException e) {
+            e.printStackTrace();
+        }
+        return c;
+        
+    }
 
     @Override
     public void persist(Object object) {

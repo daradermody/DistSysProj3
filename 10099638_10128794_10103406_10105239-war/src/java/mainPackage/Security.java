@@ -16,8 +16,6 @@ import java.util.Iterator;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
@@ -45,7 +43,7 @@ public class Security {
     public Security() {
         try {
             this.customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
-            System.out.println(customerBean==null);
+            System.out.println("CustomerBean is null? "+customerBean==null);
         } catch (NamingException ex) {
             Logger.getLogger(Security.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,11 +61,12 @@ public class Security {
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
         // Uncomment and set validity to false (above) when Emma provides database
-        if (username != null && password != null) {
-            System.out.println(customerBean == null);
+        //Check that there is an input for username, password, and that the user exists
+        if (username != null && password != null && customerBean.exists(username)) {
+            System.out.println("customerBean is null?" + customerBean == null);
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
-        }
+        };
 
         return validity;
     }
@@ -81,7 +80,7 @@ public class Security {
      * @return Returns the unique session ID associated with the user the
      * session was created for; null, otherwise
      */
-    public static String startSession(String username) {
+    public String startSession(String username) {
         boolean exists = false;
         String ID = null; // ID value to return; if person already has session, return null
 
@@ -101,13 +100,17 @@ public class Security {
                 Integer seconds = (int) (System.currentTimeMillis() / 1000); // Retrieves the current time in milliseconds and converts into an integer
 
                 // Cycle through all user in the list of generated users for user requiring session
-                for (User user : UserList.getUserList()) {
-                    if (user.getUsername().equals(username)) {
-                        user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
-                        user.setTimestamp(seconds); // Set current timestamp of user
+                //check that the user exists
+                
+                System.out.println("Username exists? " + customerBean.exists(username));
+                
+                    if (customerBean.exists(username)) {
+                        //new user with the Customer, ID and Timestamp
+                        User user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
+                        //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
+                        //user.setTimestamp(seconds); // Set current timestamp of user
                         sessionUsers.add(user); // Adds the user into the list of logged in users
                     }
-                }
 
                 ID = String.valueOf(uniqueID); // Return session ID
             }
