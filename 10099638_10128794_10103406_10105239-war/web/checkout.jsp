@@ -35,7 +35,7 @@
             String id = userInfo[1]; // Set to more convenient variable
             String isAdmin = userInfo[2]; // Set to more convenient variable
 
-            // If session ID invalid/non-existant, forward to login page (also 
+                // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("")) {
                 // If login failed, set attribute so login.jsp can set error message
@@ -62,9 +62,12 @@
 
             // Remove product in cart if instructed
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
+            int amountToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeAmount"), false));
             if (productToRemove > 0) {
+                interactProduct.increaseQuantity(productToRemove, amountToRemove);
                 shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), 1);
             }
+
         %>
 
         <!-- Import jQuery -->
@@ -92,7 +95,7 @@
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for (int i = 0; i < shopCart.size(); i++) {
+                            for (int m = 0; m < shopCart.size(); m++) {
                                 p = it.next();
                                 String title = p.getTitle();
                                 String summary = p.getSummary();
@@ -126,6 +129,10 @@
                                                         Item Total: <%= (price * amount)%>
                                                     </td>
                                                     <td>
+                                                        <input type="number" name="removeAmount" id="reduce-amount">
+                                                        <script type="text/javascript">
+                                                            document.getElementById("reduce-amount").value = <%= amount%>;
+                                                        </script>
                                                         <button class="product-title-button" type="submit" name="removeProduct" value="<%= p.getId()%>"><img src="Remove.png" title="edit"/></button>
                                                     </td>
                                                 </tr>

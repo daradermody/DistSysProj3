@@ -72,25 +72,28 @@
                 Date date = new Date();
                 fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
             }
+            
+            
 
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
             if (!deleteAll.equals("")) {
                 shoppingCartBean.cancel();
+
                 // Data log for dumped items
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
                 fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
                 //for(int n = 0; n < productNamesDumped.size(); n++) {
                 //    fileLog.println("\t" + productNamesDumped.get(n));
-                }
-            
+            }
 
             // Remove product if instructed from the browseProduct page
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
             if (productToRemove > 0) {
+                //admin removng the item from database
                 interactProduct.removeProduct(productToRemove);
-                
+
                 // Data log for item removal
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
@@ -108,15 +111,14 @@
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
                 interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
-            }
-
-            // Data log for product addition
-            PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-            Date date = new Date();
-            if (!newProductName.equals("")) {
-                fileLog.println("New item: " + newProductName + " added @ " + date.toString());
-            } else {
-                fileLog.println("New item added @ " + date.toString());
+                // Data log for product addition
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                if (!newProductName.equals("")) {
+                    fileLog.println("New item: " + newProductName + " added @ " + date.toString());
+                } else {
+                    fileLog.println("New item added @ " + date.toString());
+                }
             }
         %>
 
