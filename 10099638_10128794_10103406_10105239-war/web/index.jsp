@@ -78,9 +78,9 @@
             if (!deleteAll.equals("")) {
                 shoppingCartBean.cancel();
                 // Data log for dumped items
-                //PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-                //Date date = new Date();
-                //fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
                 //for(int n = 0; n < productNamesDumped.size(); n++) {
                 //    fileLog.println("\t" + productNamesDumped.get(n));
                 }
