@@ -66,57 +66,35 @@
             // Complete checkout by simply removing all the items in the shopping cart
             String complete = Security.sanitise(request.getParameter("complete"), false);
             if (!complete.equals("")) {
-                HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
-                Set<dbEntities.Product> keys = shopCart.keySet();
-                Iterator<dbEntities.Product> it = keys.iterator();
-                dbEntities.Product p;
-
-                ArrayList<String> productNamesComplete = new ArrayList<>();
-                for (int i = 0; i < shopCart.size(); i++) {
-                    p = it.next();
-                    productNamesComplete.add(p.getTitle());
-                    shoppingCartBean.removeItem(p, p.getQuantity());
-                }
+                shoppingCartBean.checkout();
 
                 // Data log for completed checkout
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
                 fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
-                for(int n = 0; n < productNamesComplete.size(); n++) {
-                    fileLog.println("\t" + productNamesComplete.get(n));
-                }
             }
+            
+            
 
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
             if (!deleteAll.equals("")) {
-                HashMap<dbEntities.Product, Integer> cartShop = shoppingCartBean.getItems();
-                Set<dbEntities.Product> setOfKeys = cartShop.keySet();
-                Iterator<dbEntities.Product> iter = setOfKeys.iterator();
-                dbEntities.Product prod;
-
-                ArrayList<String> productNamesDumped = new ArrayList<>();
-                for (int i = 0; i < cartShop.size(); i++) {
-                    prod = iter.next();
-                    productNamesDumped.add(prod.getTitle());
-                    int currentQtt = (interactProduct.searchByID(prod.getId())).getQuantity();
-                    (interactProduct.searchByID(prod.getId())).setQuantity(currentQtt += prod.getQuantity());
-                }
+                shoppingCartBean.cancel();
 
                 // Data log for dumped items
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
                 fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
-                for(int n = 0; n < productNamesDumped.size(); n++) {
-                    fileLog.println("\t" + productNamesDumped.get(n));
-                }
+                //for(int n = 0; n < productNamesDumped.size(); n++) {
+                //    fileLog.println("\t" + productNamesDumped.get(n));
             }
 
             // Remove product if instructed from the browseProduct page
             int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
             if (productToRemove > 0) {
+                //admin removng the item from database
                 interactProduct.removeProduct(productToRemove);
-                
+
                 // Data log for item removal
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
@@ -134,15 +112,14 @@
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
                 interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
-            }
-
-            // Data log for product addition
-            PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-            Date date = new Date();
-            if (!newProductName.equals("")) {
-                fileLog.println("New item: " + newProductName + " added @ " + date.toString());
-            } else {
-                fileLog.println("New item added @ " + date.toString());
+                // Data log for product addition
+                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+                Date date = new Date();
+                if (!newProductName.equals("")) {
+                    fileLog.println("New item: " + newProductName + " added @ " + date.toString());
+                } else {
+                    fileLog.println("New item added @ " + date.toString());
+                }
             }
         %>
 
@@ -174,7 +151,7 @@
                                 int amount = product.getQuantity();
 
                                 // Check to ensure that the amount is at least 1
-                                if (amount > 0) {
+                                if (amount > 0 || isAdmin.equals("true")) {
                         %>
                         <li>
                             <div class="big-wrapper">
