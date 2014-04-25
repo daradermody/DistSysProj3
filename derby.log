@@ -1,21 +1,7 @@
-Thu Apr 24 16:28:00 IST 2014 : Apache Derby Network Server - 10.9.1.0 - (1344872) started and ready to accept connections on port 1527
+Fri Apr 25 21:08:35 IST 2014 : Apache Derby Network Server - 10.9.1.0 - (1344872) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Thu Apr 24 16:30:57 IST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0145-9459-b9b5-00001701c885 
-on database directory /Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239/10105239  with class loader sun.misc.Launcher$AppClassLoader@76ed5528 
-Loaded from file:/Applications/NetBeans/glassfish-4.0/javadb/lib/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=1.8.0-b132
-user.dir=/Applications/NetBeans/glassfish-4.0/javadb
-derby.system.home=/Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Thu Apr 24 16:30:59 IST 2014:
-Shutting down instance a816c00e-0145-9459-b9b5-00001701c885 on database directory /Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239/10105239 with class loader sun.misc.Launcher$AppClassLoader@76ed5528 
-Thu Apr 24 16:30:59 IST 2014 Thread[DRDAConnThread_4,5,main] (DATABASE = 10105239), (DRDAID = {2}), Database '10105239' shutdown.
-----------------------------------------------------------------
-Thu Apr 24 16:31:12 IST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance 45b300a8-0145-9459-b9b5-00001701c885 
+Fri Apr 25 21:11:30 IST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0145-9a80-f205-00001701c885 
 on database directory /Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239/10105239  with class loader sun.misc.Launcher$AppClassLoader@76ed5528 
 Loaded from file:/Applications/NetBeans/glassfish-4.0/javadb/lib/derby.jar
 java.vendor=Oracle Corporation

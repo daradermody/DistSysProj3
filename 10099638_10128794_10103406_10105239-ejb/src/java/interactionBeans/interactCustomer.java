@@ -13,9 +13,10 @@ package interactionBeans;
 
 import dbEntities.Customer;
 import java.util.List;
-import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,8 +28,7 @@ import javax.persistence.Query;
  * @author Patrick O Keeffe 10128794
  */
 @Stateless
-@LocalBean
-public class interactCustomer {
+public class interactCustomer implements interactCustomerLocal {
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
 
@@ -37,12 +37,21 @@ public class interactCustomer {
      * @param username The username
      * @return The corresponding password
      */
+    @Override
     public String getPassword(String username) {
+        String password = null;
+        
         Query q = em.createNamedQuery("Customer.findByUsername");
         q.setParameter("username", username);
         
-        Customer c = (Customer) q.getSingleResult();
-        return c.getPassword();
+        try {
+            Customer c = (Customer) q.getSingleResult();
+            password = c.getPassword();
+        } catch(NoResultException e) {
+            e.printStackTrace();
+        }
+        
+        return password;
     }
     
     /**
@@ -54,20 +63,23 @@ public class interactCustomer {
      * @return Boolean that indicates whether the username and password combination
      * is valid
      */
+    @Override
      public boolean verifyPassword(String username, String password) {
-        return getPassword(username).equals(password);
+        return password.equals(getPassword(username));
     }
      
     /**
      * Returns list of all customers in database
      * @return List of all Customer objects in database
      */
+    @Override
     public List<Customer> findAllCustomers() {
         Query q = em.createNamedQuery("Customer.findAll");
         return q.getResultList();
     }
 
 
+    @Override
     public void persist(Object object) {
         em.persist(object);
     }

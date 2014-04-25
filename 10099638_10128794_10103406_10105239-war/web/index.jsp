@@ -17,9 +17,10 @@
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="mainPackage.*" %>
+<%@page import="interactionBeans.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page errorPage="/errorPage.jsp" %>
+<%--<%@page errorPage="/errorPage.jsp" %>--%>
 <jsp:include page="/header.jsp" />
 <jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
 <jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 

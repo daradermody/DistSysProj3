@@ -8,6 +8,7 @@
             <web-module-libraries>
                 <library dirs="100">
                     <file>${reference.10099638_10128794_10103406_10105239-ejb.dist}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.guava.jar}</file>

@@ -10,11 +10,16 @@
  */
 package mainPackage;
 
-import interactionBeans.interactCustomer;
+import interactionBeans.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.owasp.html.HtmlPolicyBuilder;
@@ -30,12 +35,21 @@ import org.owasp.html.Sanitizers;
  * @author Patrick O Keeffe 10128794
  */
 public class Security {
-
-    @EJB
-    interactCustomer customerBean;
+    //interactCustomerLocal customerBean = lookupinteractCustomerLocal();
+    //ConverterBeanLocal converterBean;
+    interactCustomerLocal customerBean;
 
     private static ArrayList<User> sessionUsers = new ArrayList<>();
     final private static int TIMEOUT = 900;
+
+    public Security() {
+        try {
+            this.customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
+            System.out.println(customerBean==null);
+        } catch (NamingException ex) {
+            Logger.getLogger(Security.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Checks the validity of the username and corresponding password entered by
@@ -48,9 +62,9 @@ public class Security {
      */
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
-
         // Uncomment and set validity to false (above) when Emma provides database
         if (username != null && password != null) {
+            System.out.println(customerBean == null);
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
         }
@@ -264,4 +278,15 @@ public class Security {
 
         return sanitisedStr;
     }
+//
+//    private interactCustomerLocal lookupinteractCustomerLocal() {
+//        try {
+//            Context c = new InitialContext();
+//            return (interactCustomerLocal) c.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
+//        } catch (NamingException ne) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+//            throw new RuntimeException(ne);
+//        }
+//    }
+
 }
