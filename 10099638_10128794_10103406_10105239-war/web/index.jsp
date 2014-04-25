@@ -71,9 +71,6 @@
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
                 fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
-                for(int n = 0; n < productNamesComplete.size(); n++) {
-                    fileLog.println("\t" + productNamesComplete.get(n));
-                }
             }
 
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
