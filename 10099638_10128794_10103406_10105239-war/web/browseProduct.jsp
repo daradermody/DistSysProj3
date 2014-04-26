@@ -33,10 +33,10 @@
         <%
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String username = userInfo[0]; // Set to more convenient variable
-            String id = userInfo[1]; // Set to more convenient variable
-            String isAdmin = userInfo[2]; // Set to more convenient variable
+            User user = sec.authoriseRequest(request);
+            String username = user.getUsername(); // Set to more convenient variable
+            String id = user.getUsername(); // Set to more convenient variable
+            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
@@ -141,7 +141,7 @@
                                         </td>
                                         <td>
                                             Price: <%= product.getPrice()%><br>
-                                            <% if (isAdmin.equals("true")) {%>
+                                            <% if (isAdmin) {%>
                                             <form name="increase-amount" method="POST" action="browseProduct.jsp">
                                                 Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
                                                 <script type="text/javascript">
@@ -153,7 +153,7 @@
                                             Amount: <%= product.getQuantity()%>
                                             <% }%>
                                         </td>
-                                        <% if (isAdmin.equals("true")) { %>
+                                        <% if (isAdmin) { %>
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
                                                 <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
@@ -165,7 +165,7 @@
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
-                                                    document.getElementById("reduce-amount").value = 1 > ;</script>
+                                                    document.getElementById("reduce-amount").value = 1;</script>
                                                 <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="Buy.png" title="buy"/></button>
                                             </form>
                                         </td>

@@ -23,14 +23,12 @@
     </head>
     <body>
         <%
-            /**
-             * Security sec = new Security(); // Check session ID, or username
-             * and password; if it fails, forward to login String[] userInfo =
-             * sec.authoriseRequest(request); String isAdmin = userInfo[2]; //
-             * Set to more convenient variable
-             */
-            // Uncomment above and delete below after initial testing!
-            String isAdmin = "true";
+            Security sec = new Security();
+            // Check session ID, or username and password; if it fails, forward to login
+            User user = sec.authoriseRequest(request);
+            String username = user.getUsername(); // Set to more convenient variable
+            String id = user.getUsername(); // Set to more convenient variable
+            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
         %>
         
         <header>
@@ -43,7 +41,7 @@
                 <input type="submit" class="header-button" value="Browse">
             </form>
 
-            <% if (isAdmin == "true") {
+            <% if (isAdmin) {
             %>
             <form name="newProduct" action="addProduct.jsp" method="POST">
                 <input type="submit" class="header-button" value="Add Product">

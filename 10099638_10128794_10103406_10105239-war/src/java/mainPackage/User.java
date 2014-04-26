@@ -12,6 +12,7 @@
 package mainPackage;
 
 import dbEntities.Customer;
+import interactionBeans.shoppingCartBean;
 
 /**
  * A User data type, containing the details of one user.
@@ -23,9 +24,9 @@ import dbEntities.Customer;
 public class User {
     private final Customer details;
     private String sessionID; //for security class
-    //private final String creationDate; // for Security class
     private int sessionTime;
     private final boolean isAdmin;
+    private shoppingCartBean shoppingCart;
     
     /**
      * Constructor to create a logged on user.
@@ -36,21 +37,26 @@ public class User {
      * @param sessionTime A session time
      */
     protected User(Customer c, String sessionID, int sessionTime) {
+        this.shoppingCart = null;
         this.details = c;
-        
-        //DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-        //this.creationDate = dateFormatter.format(new Date());
-          
         this.sessionID = sessionID;
         this.sessionTime = sessionTime; 
         this.isAdmin = this.details.getIsadmin();
+    }
+    
+    protected User() {
+        this.details = null;
+        this.sessionID = null;
+        this.sessionTime = 0;
+        this.isAdmin = false;
+        this.shoppingCart = null;
     }
     
     /**
      * Getter for isAdmin attribute
      * @return the boolean for administrative privileges
      */
-    protected boolean getIsAdmin(){
+    public boolean getIsAdmin(){
         return this.details.getIsadmin();
     }
       
@@ -58,7 +64,7 @@ public class User {
      * Getter for username attribute
      * @return the username
      */
-    protected String getUsername(){
+    public String getUsername(){
         return this.details.getUsername();
     }
     
@@ -66,7 +72,7 @@ public class User {
      * getter for the sessionTime attribute
      * @return the sessionTime or null id the user is not logged in
      */
-    protected int getTimestamp() {
+    public int getTimestamp() {
         return this.sessionTime;
     }
     
@@ -74,7 +80,7 @@ public class User {
      * setter for the sessionTime attribute
      * @param st 
      */
-    protected void setTimestamp(int st) {
+    public void setTimestamp(int st) {
         this.sessionTime=st;
     }
     
@@ -82,7 +88,7 @@ public class User {
      * getter for the sessionID attribute
      * @return the session id or "" if the user is not logged in
      */
-    protected String getSessionID(){
+    public String getSessionID(){
         return this.sessionID;
     }
     
@@ -90,7 +96,7 @@ public class User {
      * Setter for the sessionID
      * @param id the session ID
      */
-    protected void setSessionID(String id){
+    public void setSessionID(String id){
         this.sessionID=id;
     }
     
@@ -98,7 +104,7 @@ public class User {
      * Getter for the password hash.
      * @return the hashed password.
      */
-    protected String getPwdHash(){
+    public String getPwdHash(){
         return this.details.getPassword();
     }
 }

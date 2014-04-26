@@ -90,19 +90,18 @@ public class Security {
      * @return Returns the unique session ID associated with the user the
      * session was created for; null, otherwise
      */
-    public String startSession(String username) {
+    public User startSession(String username) {
         boolean exists = false;
-        String ID = null; // ID value to return; if person already has session, return null
+        User user = null; // ID value to return; if person already has session, return null
 
         if (username != null) {
             // Cycle through sessions recorded for existence of user
-            for (User user : sessionUsers) {
-                if (user.getUsername().equals(username)) {
+            for (User userCycle : sessionUsers)
+                if (userCycle.getUsername().equals(username)) {
                     exists = true;
-                    ID = user.getSessionID();
+                    user = userCycle;
                     break;
                 }
-            }
 
             // If no session exists for user, create session ID and add to user sessions list
             if (exists == false) {
@@ -111,21 +110,17 @@ public class Security {
 
                 // Cycle through all user in the list of generated users for user requiring session
                 //check that the user exists
-                System.out.println("Username exists? " + customerBean.exists(username));
-
                 if (customerBean.exists(username)) {
                     //new user with the Customer, ID and Timestamp
-                    User user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
-                        //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
+                    user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
+                    //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
                     //user.setTimestamp(seconds); // Set current timestamp of user
                     sessionUsers.add(user); // Adds the user into the list of logged in users
                 }
-
-                ID = String.valueOf(uniqueID); // Return session ID
             }
         }
 
-        return ID;
+        return user;
     }
 
     /**
@@ -136,29 +131,27 @@ public class Security {
      * @return Returns the username associated with the sessionID if the session
      * exists; null, otherwise
      */
-    public String verifySession(String sessionID) {
-        String username = null;
-
+    public User verifySession(String sessionID) {
+        User user = null;
         if (sessionID != null) {
             // Cycle through each user to find User object associated with given session ID
-            for (User user : sessionUsers) {
-                if (user.getSessionID().equals(sessionID)) {
+            for (User userCycle : sessionUsers) {
+                if (userCycle.getSessionID().equals(sessionID)) {
                     // Retrieves the current time in milliseconds and converts into an integer
                     int currentSeconds = (int) (System.currentTimeMillis() / 1000);
                     // Calculates the elapsed time by subtracting the current time (in seconds) from the user's timestamp
-                    int elapsedTime = currentSeconds - user.getTimestamp();
+                    int elapsedTime = currentSeconds - userCycle.getTimestamp();
 
                     // If the elapsed time is greater than 15 minutes (15 * 60 seconds = 900)
                     if (elapsedTime <= TIMEOUT) {
-                        user.setTimestamp(currentSeconds); // Replaces the old user with the current one, with the new timestamp
-                        username = user.getUsername();
-                    } else {
+                        userCycle.setTimestamp(currentSeconds); // Replaces the old user with the current one, with the new timestamp
+                        user = userCycle;
+                    } else
                         endSession(sessionID); // Ends the session if the timer is longer than 15 minutes
-                    }
                 }
             }
         }
-        return username;
+        return user;
     }
 
     /**
@@ -195,65 +188,52 @@ public class Security {
      * @return String array of username and ID. if invalid, one of the elements
      * is null.
      */
-    public String[] authoriseRequest(HttpServletRequest request) {
+    public User authoriseRequest(HttpServletRequest request) {
         // User information array setup to package returned information
-        int USER = 0; // Constant index for username
-        int ID = 1; // Constant index for session ID]
-        int ADMINSTAT = 2; // Constant index for isAdmin boolean value as String
-        String userInfo[] = {null, null, null}; // User information array
+        User user = new User();
+//        int USER = 0; // Constant index for username
+//        int ID = 1; // Constant index for session ID]
+//        int ADMINSTAT = 2; // Constant index for isAdmin boolean value as String
+//        String userInfo[] = {null, null, null}; // User information array
 
         // Check for ID in cookies
         Cookie[] cookies = request.getCookies(); // Fetch Cookie array
         if (cookies != null) // Cycle through each cookie in Cookie array to find one with name "id"
-        {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("id")) {
-                    userInfo[ID] = sanitise(cookie.getValue(), false); // Get and sanitise string value
-                }
-            }
-        }
-        // If no session cookie, check for session parameter in URL
-        if (userInfo[ID] == null) {
-            userInfo[ID] = sanitise(request.getParameter("id"), false);
-        }
+            for (Cookie cookie : cookies)
+                if (cookie.getName().equals("id"))
+                    user.setSessionID(sanitise(cookie.getValue(), false)); // Get and sanitise string value
 
-        userInfo[USER] = verifySession(userInfo[ID]); // Get username from ID (null if invalid)
+        // If no session cookie, check for session parameter in URL
+        if (user.getSessionID() == null)
+            user.setSessionID(sanitise(request.getParameter("id"), false));
+
+        user = verifySession(user.getSessionID()); // Get username from ID (null if invalid)
         // If no session ID, check for username and password details
-        if (userInfo[USER] == null) {
-            userInfo[ID] = ""; // Reset given ID if invalid
+        if (user == null) {
+            user = new User();
+            user.setSessionID(""); // Reset given ID if invalid
 
             // Get username and password parameters from user request and sanitise each
-            userInfo[USER] = sanitise(request.getParameter("username"), false);
+            String username = sanitise(request.getParameter("username"), false);
             String password = sanitise(request.getParameter("password"), false);
 
             // Set username to <none> if username and password were not attempted (to 
             // determine whether or not to display 'invalid attempt' message on login page
-            if (password.equals("")) {
-                userInfo[USER] = "<none>";
-            }
+            if (password.equals(""))
+                username = "<none>";
 
             // Verified username and password, and start session if valid
-            if (verifyUser(userInfo[USER], password)) {
-                userInfo[ID] = startSession(userInfo[USER]);
+            if (verifyUser(username, password)) {
+                user = startSession(username);
                 System.out.printf("Login attempt:\t%s | %s\n\tSession ID:\t%s\n",
-                        userInfo[USER], password, userInfo[ID]);
-            } else if (!userInfo[USER].equals("<none>")) // Notify invalid attempt
-            {
+                        user.getUsername(), password, user.getSessionID());
+            } else if (!user.getUsername().equals("<none>")) // Notify invalid attempt
                 System.out.printf("Login attempt: %s | %s\n\t>>> LOGIN FAILURE <<<\n",
-                        userInfo[USER], password);
-            }
-        }
-
-        for (Iterator<User> iter = sessionUsers.iterator(); iter.hasNext();) {
-            System.out.println("Iterating through sessionUsers");
-            User user = iter.next();
-            if (user.getSessionID().equals(userInfo[ID])) { // User found
-                userInfo[ADMINSTAT] = String.valueOf(user.getIsAdmin());
-            }
+                        user.getUsername(), password);
         }
 
         // Return array containing username ("<none>" if not attempted) and session ID
-        return userInfo;
+        return user;
     }
 
     /**

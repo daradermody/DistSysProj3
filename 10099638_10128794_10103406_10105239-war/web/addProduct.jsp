@@ -27,14 +27,14 @@
         <%
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String username = userInfo[0]; // Set to more convenient variable
-            String id = userInfo[1]; // Set to more convenient variable
-            String isAdmin = userInfo[2]; // Set to more convenient variable
+            User user = sec.authoriseRequest(request);
+            String username = user.getUsername(); // Set to more convenient variable
+            String id = user.getUsername(); // Set to more convenient variable
+            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
 
                     // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
-            if (id.equals("") || isAdmin.equals("false")) {
+            if (id.equals("") || isAdmin) {
                 // If login failed, set attribute so login.jsp can set error message
                 if (!username.equals("<none>")) {
                     request.setAttribute("invalid-login", "true");

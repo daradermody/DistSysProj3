@@ -30,8 +30,7 @@
 
     public void jspInit() {
         try {
-            InitialContext initialContext = new InitialContext();
-            productBean = (interactProductLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+            productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -40,7 +39,6 @@
 
 
 <jsp:include page="/header.jsp" />
-<!--jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /-->
 <jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 
 <!DOCTYPE html>
@@ -51,10 +49,10 @@
         <%
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String username = userInfo[0]; // Set to more convenient variable
-            String id = userInfo[1]; // Set to more convenient variable
-            String isAdmin = userInfo[2]; // Set to more convenient variable
+            User user = sec.authoriseRequest(request);
+            String username = user.getUsername(); // Set to more convenient variable
+            String id = user.getUsername(); // Set to more convenient variable
+            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
@@ -183,7 +181,7 @@
                                 int amount = product.getQuantity();
 
                                 // Check to ensure that the amount is at least 1
-                                if (amount > 0 || isAdmin.equals("true")) {
+                                if (amount > 0 || isAdmin) {
                         %>
                         <li>
                             <div class="big-wrapper">

@@ -33,10 +33,10 @@
         <%
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
-            String[] userInfo = sec.authoriseRequest(request);
-            String username = userInfo[0]; // Set to more convenient variable
-            String id = userInfo[1]; // Set to more convenient variable
-            String isAdmin = userInfo[2]; // Set to more convenient variable
+            User user = sec.authoriseRequest(request);
+            String username = user.getUsername(); // Set to more convenient variable
+            String id = user.getUsername(); // Set to more convenient variable
+            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
@@ -134,7 +134,7 @@
                                                         Amount: <%= amount%>
                                                     </td>
                                                     <td>
-                                                        <% if (isAdmin.equals("true")) {%>
+                                                        <% if (isAdmin) {%>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
                                                             <% } else {%>
                                                         <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
