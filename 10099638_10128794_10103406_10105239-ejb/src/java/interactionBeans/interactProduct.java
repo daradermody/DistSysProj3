@@ -167,7 +167,7 @@ public class interactProduct implements interactProductLocal {
     @Override
     public List<Product> searchProductByKeyword(String kw) {
         Query q = em.createNamedQuery("Product.findByKeyword");
-        q.setParameter("kw", kw);
+        q.setParameter("kw", "%"+kw+"%");
 
         return q.getResultList();
     }

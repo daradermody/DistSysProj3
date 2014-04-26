@@ -11,6 +11,10 @@
 
 --%>
 
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="interactionBeans.interactCustomerLocal"%>
+<%@page import="interactionBeans.shoppingCart"%>
+<%@page import="interactionBeans.interactProductLocal"%>
 <%@page import="dbEntities.Product"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Iterator"%>
@@ -21,8 +25,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
-<jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
-<jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
+
+<%!
+    interactProductLocal interactProduct = null;
+    shoppingCart shoppingCartBean = null;
+    interactCustomerLocal customerBean = null;
+
+    public void jspInit() {
+        try {
+            interactProduct = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+            customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+%>
 
 
 <!DOCTYPE html>
@@ -34,34 +52,35 @@
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
             User user = sec.authoriseRequest(request);
-            String username = user.getUsername(); // Set to more convenient variable
-            String id = user.getUsername(); // Set to more convenient variable
-            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            String username = ""; // Set to more convenient variable
+            String id = ""; // Set to more convenient variable
+            boolean isAdmin = false; // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
-            if (id.equals("")) {
+            if (user == null) {
                 // If login failed, set attribute so login.jsp can set error message
-                if (!username.equals("<none>")) {
-                    request.setAttribute("invalid-login", "true");
-                } else {
-                    request.setAttribute("invalid-login", "false");
-                }
+                request.setAttribute("invalid-login", "false");
                 request.setAttribute("address", "index.jsp"); // Set requested page as this page
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
+            
+            username = user.getUsername(); // Set to more convenient variable
+            id = user.getSessionID(); // Set to more convenient variable
+            isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            if(user.getShoppingCart() != null)
+                shoppingCartBean = user.getShoppingCart();
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
 
             Cookie cookie = new Cookie("id", id); // Create new cookie with session ID
+
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
-            {
                 response.addCookie(cookie);
-            }
         %>
 
         <!-- Import jQuery -->
@@ -130,14 +149,14 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        Price: <%= price%><br>
-                                                        Amount: <%= amount%>
+                                                        Price: <b><%= price%></b><hr>
+                                                        Amount: <b><%= amount%></b>
                                                     </td>
                                                     <td>
                                                         <% if (isAdmin) {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
+                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Edit.png" title="edit"/></button>
                                                             <% } else {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
+                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
                                                 </tr>
@@ -156,7 +175,7 @@
                     </ul>
                 </form>
             </div>
-            <div id="sidebar">
+            <div id="sidebar" class="big-wrapper">
                 <form name="checkout" method="POST" action="checkout.jsp">
                     <%
                         double total = shoppingCartBean.getTotal();

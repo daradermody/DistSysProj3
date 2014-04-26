@@ -50,28 +50,32 @@
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
             User user = sec.authoriseRequest(request);
-            String username = user.getUsername(); // Set to more convenient variable
-            String id = user.getUsername(); // Set to more convenient variable
-            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            String username = ""; // Set to more convenient variable
+            String id = ""; // Set to more convenient variable
+            boolean isAdmin = false; // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
-            if (id.equals("")) {
+            if (user == null) {
                 // If login failed, set attribute so login.jsp can set error message
-                if (!username.equals("<none>")) {
-                    request.setAttribute("invalid-login", "true");
-                } else {
-                    request.setAttribute("invalid-login", "false");
-                }
+                request.setAttribute("invalid-login", "false");
                 request.setAttribute("address", "index.jsp"); // Set requested page as this page
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+            }
+
+            username = user.getUsername(); // Set to more convenient variable
+            id = user.getSessionID(); // Set to more convenient variable
+            isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            if (user.getShoppingCart() != null) {
+                shoppingCartBean = user.getShoppingCart();
             }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
 
             Cookie cookie = new Cookie("id", id); // Create new cookie with session ID
+
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
@@ -107,15 +111,15 @@
                     }
 
                     // Retrieves the request product from database
-                    dbEntities.Product product =null;
-                    String requestedProduct = Security.sanitise(request.getParameter("product-name"), false);
-                    //TODO replace with find by title
-                        if (requestedProduct != ""){
-                            for (dbEntities.Product p : productBean.findAllProducts()) {
-                                if (requestedProduct == p.getTitle()) {
-                                    product = p;
-                                    break;
-                                }
+                    dbEntities.Product product = null;
+                    String requestedProduct = Security.sanitise(request.getParameter("product-id"), false);
+                    if (requestedProduct != "") {
+                        int productID = Integer.parseInt(requestedProduct);
+                        for (dbEntities.Product p : productBean.findAllProducts()) {
+                            if (productID == p.getId()) {
+                                product = p;
+                                break;
+                            }
                         }
                     }
 
@@ -125,17 +129,25 @@
                     }
 
                     // If the admin user changes the amount of the product, reflect the changes
-                    int addAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
-                    if (addAmount > 0) {
-                        productBean.increaseQuantity(product.getId(), addAmount);
+                    String addAmount = Security.sanitise(request.getParameter("productAmount"), false);
+                    int amountAdd = 0;
+                    if(!addAmount.equals("")) {
+                        amountAdd = Integer.valueOf(addAmount);
+                        if (amountAdd > 0) {
+                            productBean.increaseQuantity(product.getId(), amountAdd);
+                        }
                     }
 
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
-                    int buyAmount = Integer.valueOf(Security.sanitise(request.getParameter("reduceAmount"), false));
-                    if (buyAmount > 0 && ((product.getQuantity() - buyAmount) >= 0)) {
-                        productBean.reduceQuantity(product.getId(), buyAmount);
-                        shoppingCartBean.addItem(product, buyAmount);
+                    String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
+                    int amountBuy = 0;
+                    if(!buyAmount.equals("")) {
+                        amountBuy = Integer.valueOf(buyAmount);
+                        if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
+                            productBean.reduceQuantity(product.getId(), amountBuy);
+                            shoppingCartBean.addItem(product, amountBuy);
+                        }
                     }
 
                     // If user posted content, add comment to product
@@ -159,36 +171,35 @@
                                             <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
                                         </td>
                                         <td>
-                                            Price: <%= product.getPrice()%><br>
+                                            Price: <b><%= product.getPrice()%></b><hr>
                                             <% if (isAdmin) {%>
                                             <form name="increase-amount" method="POST" action="browseProduct.jsp">
-                                                Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
+                                                Amount: <b><%= product.getQuantity()%></b> + <input type="number" id="product-amount" name="productAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("product-amount").value = 0;
                                                 </script>
                                                 <br/><input id="submit-button" type="submit" value="Change Amount">
                                             </form>
                                             <% } else {%>                                             
-                                            Amount: <%= product.getQuantity()%>
+                                            Amount: <b><%= product.getQuantity()%></b>
                                             <% }%>
                                         </td>
-                                        <% if (isAdmin) { %>
+                                        <% if (isAdmin) {%>
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
-                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
+                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="images/Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
-                                        <% } 
-                                        else {%>
+                                        <% } else {%>
                                         <td>
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
-                                                <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="Buy.png" title="buy"/></button>
+                                                <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="images/Buy.png" title="buy"/></button>
                                             </form>
                                         </td>
-                                        <% } %>
+                                        <% }%>
                                     </tr>
                                 </table>
                             </td>

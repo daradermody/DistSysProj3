@@ -110,12 +110,11 @@
 
             // Remove product if instructed from the browseProduct page
             String productID = Security.sanitise(request.getParameter("removeProduct"), false);
-
             if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
-                //admin removng the item from database
+                //admin removing the item from database
                 productBean.removeProduct(productToRemove);
-
+                
                 // Data log for item removal
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
@@ -132,7 +131,7 @@
             String productAmount = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductAmount = (!productPrice.equals("")) ? Integer.valueOf(productAmount) : 0;
 
-            String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
+            String newProductImage = "images/" + Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
 
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
@@ -184,7 +183,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><%= title%></button>
+                                            <button class="product-title-button" type="submit" name="product-id" value="<%= prodId%>"><%= title%></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -200,8 +199,8 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        Price: <%= price%><br>
-                                                        Amount: <%= amount%>
+                                                        Price: <b><%= price%></b><hr>
+                                                        Amount: <b><%= amount%></b>
                                                     </td>
                                                     <td>
         
@@ -230,7 +229,7 @@
                     <%
                         double total = shoppingCartBean.getTotal();
                     %>
-                    <button type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
+                    <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>

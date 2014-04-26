@@ -69,7 +69,7 @@
                     <td class="searchCell" align="left">
                         Search by:<select name="searchBy">
                             <option value ="ID">ID</option>
-                            <option value="name">Name</option>
+                            <option value="name">Keyword</option>
                         </select>
                         <input id="search-button" type="submit" value="Search">
                     </td>

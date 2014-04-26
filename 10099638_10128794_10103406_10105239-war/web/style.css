@@ -68,7 +68,8 @@ table th{
 table td{
     border:1px solid #d4d4d4;
     padding:2px;
-    vertical-align:top;
+    vertical-align:central;
+    width: 25%;
 }
 
 /* 3.HEADINGS
@@ -124,6 +125,7 @@ h3 {
     top: 105px;
     height: 70%;
 }
+
 .big-wrapper {
     overflow:auto;
     clear:both;
@@ -140,6 +142,7 @@ h3 {
     -moz-border-radius: 5px;
     background: url();
 }
+
 .small-wrapper {
     line-height:18px;
     float:left;
@@ -346,7 +349,7 @@ button[type="submit"].product-title-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 30%;
+    width: 100%;
     font-size: 14px;
     white-space: normal;
 }
@@ -360,7 +363,7 @@ button[type="submit"].product-image-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 50%;
+    width: 100%;
     font-size: 14px;
     white-space: normal;
 }
@@ -374,7 +377,7 @@ button[type="submit"].product-edit-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 35%;
+    width: 100%;
     font-size: 14px;
     white-space: normal;
 }
@@ -388,11 +391,61 @@ button[type="submit"].product-buy-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 35%;
+    width: 100%;
     font-size: 14px;
     white-space: normal;
 }
 button[type="submit"].product-buy-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+
+button[type="submit"].product-edit-button {
+    border: none;
+    border-right: 4px solid #cb9bf1;
+    float: left;
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"].product-edit-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+button[type="submit"].product-buy-button {
+    border: none;
+    border-right: 4px solid #cb9bf1;
+    float: left;
+    height: 100%;
+    width: 100%;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"].product-buy-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+    alignment-adjust:  central;
+}
+button[type="submit"].checkout-button {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+button[type="submit"].checkout-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+button[type="submit"].submit-button {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+button[type="submit"].submit-button:hover{
     background:#cb9af4;
     box-shadow: 0px 0px 1px #777;
     border-right: 4px solid #b063ef;
