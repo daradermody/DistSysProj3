@@ -196,7 +196,7 @@ public class interactProduct implements interactProductLocal {
     @Override
     public List<Comments> getComments(int pid) {
         Query q = em.createNamedQuery("Comments.findByProduct");
-        q.setParameter("pid", pid);
+        q.setParameter("product", pid);
 
         return q.getResultList();
     }

@@ -9,6 +9,10 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
+<%@page import="interactionBeans.interactCustomerLocal"%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="interactionBeans.shoppingCart"%>
+<%@page import="interactionBeans.interactProductLocal"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
@@ -18,10 +22,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
-<jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
-<jsp:useBean id="interactCustomer" class="interactionBeans.interactCustomer" /> 
-<jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 
+<%!
+    interactProductLocal productBean = null;
+    shoppingCart shoppingCartBean = null;
+    interactCustomerLocal customerBean = null;
+
+    public void jspInit() {
+        try {
+            productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+            customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -83,7 +99,7 @@
                 <%
                     dbEntities.Customer customer = new dbEntities.Customer();
                     // Retrieves the user from database
-                    for (dbEntities.Customer c : interactCustomer.findAllCustomers()) {
+                    for (dbEntities.Customer c : customerBean.findAllCustomers()) {
                         if (username == c.getUsername()) {
                             customer = c;
                             break;
@@ -91,12 +107,15 @@
                     }
 
                     // Retrieves the request product from database
-                    dbEntities.Product product = new dbEntities.Product();
+                    dbEntities.Product product =null;
                     String requestedProduct = Security.sanitise(request.getParameter("product-name"), false);
-                    for (dbEntities.Product p : interactProduct.findAllProducts()) {
-                        if (requestedProduct == p.getTitle()) {
-                            product = p;
-                            break;
+                    //TODO replace with find by title
+                        if (requestedProduct != ""){
+                            for (dbEntities.Product p : productBean.findAllProducts()) {
+                                if (requestedProduct == p.getTitle()) {
+                                    product = p;
+                                    break;
+                                }
                         }
                     }
 
@@ -108,21 +127,21 @@
                     // If the admin user changes the amount of the product, reflect the changes
                     int addAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
                     if (addAmount > 0) {
-                        interactProduct.increaseQuantity(product.getId(), addAmount);
+                        productBean.increaseQuantity(product.getId(), addAmount);
                     }
 
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
                     int buyAmount = Integer.valueOf(Security.sanitise(request.getParameter("reduceAmount"), false));
                     if (buyAmount > 0 && ((product.getQuantity() - buyAmount) >= 0)) {
-                        interactProduct.reduceQuantity(product.getId(), buyAmount);
+                        productBean.reduceQuantity(product.getId(), buyAmount);
                         shoppingCartBean.addItem(product, buyAmount);
                     }
 
                     // If user posted content, add comment to product
                     String postedContent = Security.sanitise(request.getParameter("productBody"), true);
                     if (!postedContent.equals("")) {
-                        interactProduct.addComment(product, customer, postedContent);
+                        productBean.addComment(product, customer, postedContent);
                     }%>
 
                 <div class="big-wrapper">
@@ -184,7 +203,7 @@
                 <ul>
                     <%
                         // For each message, display according to set of tags and style
-                        for (dbEntities.Comments comm : interactProduct.getComments(product.getId())) {
+                        for (dbEntities.Comments comm : productBean.getComments(product.getId())) {
                             String message = comm.getContent();
                             String poster = comm.getPoster();
                             String date = comm.getDate().toString();
