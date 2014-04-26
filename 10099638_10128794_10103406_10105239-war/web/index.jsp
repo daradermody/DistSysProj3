@@ -175,7 +175,7 @@
                                 String image = product.getImage();
                                 int price = Integer.valueOf(String.valueOf(product.getPrice()));
                                 int amount = product.getQuantity();
-
+                                int prodId = product.getId();
                                 // Check to ensure that the amount is at least 1
                                 if (amount > 0 || isAdmin) {
                         %>
@@ -184,7 +184,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                                            <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><%= title%></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -192,7 +192,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span class="product-summary">
@@ -210,7 +210,7 @@
 
 
                                                             <% } else {%>
-                                                        <button class="product-buy-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
+                                                        <button class="product-buy-button" type="submit" name="product-id" value="<%= prodId%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
                                                 </tr>
@@ -239,9 +239,7 @@
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for (int i = 0;
-                                    i < shopCart.size();
-                                    i++) {
+                            for (int i = 0; i < shopCart.size(); i++) {
                                 p = it.next();
                                 String title = p.getTitle();
                                 int price = Integer.valueOf(String.valueOf(p.getPrice()));
