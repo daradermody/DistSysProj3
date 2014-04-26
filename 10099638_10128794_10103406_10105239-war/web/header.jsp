@@ -1,3 +1,4 @@
+
 <%-- 
  
    Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
@@ -39,9 +40,8 @@
             } else {
                 isAdmin = user.getIsAdmin(); // Set to more convenient variable
             }
-
         %>
-
+        
         <header>
             <span id="logo">Distributed Systems Project III</span>
             <form name="logOut" action="login.jsp" method="POST">
@@ -77,4 +77,5 @@
             </table>
         </form>
     </body>
+
 </html>

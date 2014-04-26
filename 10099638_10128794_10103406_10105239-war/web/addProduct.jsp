@@ -32,7 +32,7 @@
             String id = user.getUsername(); // Set to more convenient variable
             boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
 
-            // If session ID invalid/non-existant, forward to login page (also 
+                    // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
             if (id.equals("") || isAdmin) {
                 // If login failed, set attribute so login.jsp can set error message

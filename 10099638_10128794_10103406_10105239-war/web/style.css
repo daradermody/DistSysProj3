@@ -68,8 +68,7 @@ table th{
 table td{
     border:1px solid #d4d4d4;
     padding:2px;
-    vertical-align: central;
-    width: 25%;
+    vertical-align:top;
 }
 
 /* 3.HEADINGS
@@ -281,12 +280,7 @@ li {
 #search-button {
     height: 28px;
     width: 100px;
-    border: 2px solid #b9bf1;
-}
-
-.product-summary {
-    width: 30%;
-    height: 100%;
+    border: 2px solid #cb9bf1;
 }
 
 /* 6.NAVIGATION
@@ -340,6 +334,13 @@ button[type="submit"]:hover, input[type="submit"]:hover {
     height: 100%;
 }
 
+#submit-button {
+    height: 30px;
+    width: 20%;
+    border: 2px solid #cb9bf1;
+    border-top: none;
+}
+
 button[type="submit"].product-title-button {
     border: none;
     border-right: 4px solid #cb9bf1;
@@ -359,7 +360,7 @@ button[type="submit"].product-image-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 100%;
+    width: 50%;
     font-size: 14px;
     white-space: normal;
 }
@@ -373,7 +374,7 @@ button[type="submit"].product-edit-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 100%;
+    width: 35%;
     font-size: 14px;
     white-space: normal;
 }
@@ -387,38 +388,11 @@ button[type="submit"].product-buy-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 100%;
+    width: 35%;
     font-size: 14px;
     white-space: normal;
 }
 button[type="submit"].product-buy-button:hover{
-    background:#cb9af4;
-    box-shadow: 0px 0px 1px #777;
-    border-right: 4px solid #b063ef;
-}
-button[type="submit"].checkout-button {
-    border: none;
-    float: left;
-    height: 100%;
-    width: 100%;
-    font-size: 14px;
-    white-space: normal;
-}
-button[type="submit"].checkout-button:hover{
-    background:#cb9af4;
-    box-shadow: 0px 0px 1px #777;
-    border-right: 4px solid #b063ef;
-}
-
-button[type="submit"].submit-button {
-    border: none;
-    float: left;
-    height: 100%;
-    width: 100%;
-    font-size: 14px;
-    white-space: normal;
-}
-button[type="submit"].submit-button:hover{
     background:#cb9af4;
     box-shadow: 0px 0px 1px #777;
     border-right: 4px solid #b063ef;

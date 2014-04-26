@@ -9,12 +9,6 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
-<%@page import="dbEntities.Comments"%>
-<%@page import="java.util.List"%>
-<%@page import="interactionBeans.interactCustomerLocal"%>
-<%@page import="javax.naming.InitialContext"%>
-<%@page import="interactionBeans.interactProductLocal"%>
-<%@page import="javax.naming.NamingException"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.Set"%>
@@ -22,26 +16,11 @@
 <%@page import="mainPackage.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
+<jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
 <jsp:useBean id="interactCustomer" class="interactionBeans.interactCustomer" /> 
 <jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
-
-<%!
-    interactProductLocal productBean = null;
-    interactCustomerLocal customerBean = null;
-
-    public void jspInit() {
-        try {
-            InitialContext initialContext = new InitialContext();
-            productBean = (interactProductLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
-            customerBean = (interactCustomerLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
-
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-        }
-    }
-%>
 
 <!DOCTYPE html>
 <html>
@@ -102,19 +81,23 @@
         <div class="main-body">
             <div id="main">
                 <%
-                    dbEntities.Customer customer = null;
+                    dbEntities.Customer customer = new dbEntities.Customer();
                     // Retrieves the user from database
-                    customer = customerBean.findByUsername(username);
-                    //If the customer is not found (unexpected error) then redirct to index
-                    if (customer == null) {
-                        response.sendRedirect("index.jsp");
+                    for (dbEntities.Customer c : interactCustomer.findAllCustomers()) {
+                        if (username == c.getUsername()) {
+                            customer = c;
+                            break;
+                        }
                     }
+
                     // Retrieves the request product from database
-                    dbEntities.Product product = null;// = new dbEntities.Product();
-                    String requestedProduct = Security.sanitise(request.getParameter("product-id"), false);
-                    int requestedID = (!requestedProduct.equals("")) ? Integer.valueOf(requestedProduct) : 0;
-                    if (requestedID > 0) {
-                        product = productBean.searchByID(requestedID);
+                    dbEntities.Product product = new dbEntities.Product();
+                    String requestedProduct = Security.sanitise(request.getParameter("product-name"), false);
+                    for (dbEntities.Product p : interactProduct.findAllProducts()) {
+                        if (requestedProduct == p.getTitle()) {
+                            product = p;
+                            break;
+                        }
                     }
 
                     // If requested product not found, redirect to main product page
@@ -123,25 +106,23 @@
                     }
 
                     // If the admin user changes the amount of the product, reflect the changes
-                    String addAmount = Security.sanitise(request.getParameter("productAmount"), false);
-                    int amountAdd = (!addAmount.equals("")) ? Integer.valueOf(addAmount) : 0;
-                    if (amountAdd > 0) {
-                        productBean.increaseQuantity(product.getId(), amountAdd);
+                    int addAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
+                    if (addAmount > 0) {
+                        interactProduct.increaseQuantity(product.getId(), addAmount);
                     }
 
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
-                    String amountBuy = Security.sanitise(request.getParameter("reduceAmount"), false);
-                    int buyAmount = (!amountBuy.equals("")) ? Integer.valueOf(amountBuy) : 0;
+                    int buyAmount = Integer.valueOf(Security.sanitise(request.getParameter("reduceAmount"), false));
                     if (buyAmount > 0 && ((product.getQuantity() - buyAmount) >= 0)) {
-                        productBean.reduceQuantity(product.getId(), buyAmount);
+                        interactProduct.reduceQuantity(product.getId(), buyAmount);
                         shoppingCartBean.addItem(product, buyAmount);
                     }
 
                     // If user posted content, add comment to product
                     String postedContent = Security.sanitise(request.getParameter("productBody"), true);
                     if (!postedContent.equals("")) {
-                        productBean.addComment(product, customer, postedContent);
+                        interactProduct.addComment(product, customer, postedContent);
                     }%>
 
                 <div class="big-wrapper">
@@ -159,30 +140,27 @@
                                             <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
                                         </td>
                                         <td>
-
-                                            Price: <b><%= product.getPrice()%></b><hr>
+                                            Price: <%= product.getPrice()%><br>
                                             <% if (isAdmin) {%>
-
                                             <form name="increase-amount" method="POST" action="browseProduct.jsp">
-                                                Amount: <b><%= product.getQuantity()%></b> + <input type="number" id="product-amount" name="productAmount">
+                                                Amount: <%= product.getQuantity()%> + <input type="number" id="product-amount" name="productAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("product-amount").value = 0;
                                                 </script>
-                                                <hr><input id="submit-button" type="submit" value="Change Amount">
+                                                <br/><input id="submit-button" type="submit" value="Change Amount">
                                             </form>
                                             <% } else {%>                                             
-                                            Amount: <b><%= product.getQuantity()%></b>
+                                            Amount: <%= product.getQuantity()%>
                                             <% }%>
                                         </td>
-
-                                        <% if (isAdmin) {%>
-
+                                        <% if (isAdmin) { %>
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
                                                 <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
-                                        <% } else {%>
+                                        <% } 
+                                        else {%>
                                         <td>
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
@@ -191,7 +169,7 @@
                                                 <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="Buy.png" title="buy"/></button>
                                             </form>
                                         </td>
-                                        <% }%>
+                                        <% } %>
                                     </tr>
                                 </table>
                             </td>
@@ -206,12 +184,10 @@
                 <ul>
                     <%
                         // For each message, display according to set of tags and style
-                        List<dbEntities.Comments> commList = productBean.getComments(product.getId());
-                        if (commList.size() > 0) {
-                            for (dbEntities.Comments comm : commList) {
-                                String message = comm.getContent();
-                                String poster = comm.getPoster();
-                                String date = comm.getDate().toString();
+                        for (dbEntities.Comments comm : interactProduct.getComments(product.getId())) {
+                            String message = comm.getContent();
+                            String poster = comm.getPoster();
+                            String date = comm.getDate().toString();
                     %>
                     <li>
                         <div class="big-wrapper message-container">
@@ -225,8 +201,7 @@
                             </div>
                         </div>
                     </li>
-                    <% }
-                        } // End of if and for loop for retrieving all messages%>
+                    <% } // End of for loop for retrieving all messages%>
 
                     <li>
                         <div class="big-wrapper message-container">
@@ -250,13 +225,13 @@
                 </ul>
             </div>
         </div>
-        <div id="sidebar" class="big-wrapper">
+        <div id="sidebar">
             <form name="checkout" method="POST" action="checkout.jsp">
                 <%
                     double total = shoppingCartBean.getTotal();
                 %>
                 <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
-                <br/>
+                <br>
                 <ul>
                     <%-- Loops through, getting 5 items of the shopping cart --%>
                     <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
@@ -264,16 +239,14 @@
                         Iterator<dbEntities.Product> it = keys.iterator();
                         dbEntities.Product p;
 
-                        for (int i = 0;
-                                i < shopCart.size();
-                                i++) {
+                        for (int i = 0; i < shopCart.size(); i++) {
                             p = it.next();
                             String title = p.getTitle();
                             int price = Integer.valueOf(String.valueOf(p.getPrice()));
                             int amount = p.getQuantity();
                     %>
                     <li>
-                        <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
+                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
                     </li>
                     <% }%>
                 </ul>

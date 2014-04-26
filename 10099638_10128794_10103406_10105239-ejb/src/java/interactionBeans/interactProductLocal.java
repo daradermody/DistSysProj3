@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package interactionBeans;
 
 import dbEntities.Comments;
@@ -15,7 +16,6 @@ import java.util.List;
  * @author root
  */
 public interface interactProductLocal {
-
     /**
      * Facility to fulfill the required user action of adding a product. (Admin
      * only -- which will be taken care of front-end)
@@ -30,8 +30,8 @@ public interface interactProductLocal {
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary);
 
     /**
-     * Removes the given product from the database. The product can be uniquely
-     * identified by it's id, <br />
+     * Removes the given product from the database. 
+     * The product can be uniquely identified by it's id, <br />
      * ensuring that only one item will be deleted at a time. <br />
      * The removeByID query is used.
      *
@@ -47,16 +47,15 @@ public interface interactProductLocal {
      */
     public Product searchByID(int pid);
 
+
     /**
      * Returns list of all products in database
-     *
      * @return List of all Product objects in database
      */
     public List<Product> findAllProducts();
 
     /**
      * Increases quantity of products in store for particular product
-     *
      * @param pid Identification of product to increase quantity of
      * @param amount Increase value of quantity
      * @return Boolean value that indicates if operation was successful
@@ -64,13 +63,11 @@ public interface interactProductLocal {
     public boolean increaseQuantity(int pid, int amount);
 
     /**
-     * Wrapper method for reducing the available number of items. Calls the
-     * updateQuantity() method to subtract from the total quantity.
-     *
+     * Wrapper method for reducing the available number of items.
+     * Calls the updateQuantity() method to subtract from the total quantity. 
      * @param pid
      * @param amount
-     * @return True if the action was successful, false if there is insufficient
-     * stock.
+     * @return True if the action was successful, false if there is insufficient stock.
      */
     public boolean reduceQuantity(int pid, int amount);
 
@@ -104,26 +101,22 @@ public interface interactProductLocal {
     public void addComment(Product prod, Customer cust, String content);
 
     /**
-     * Returns a List of Comments associated with the product. Calls the
-     * Comments.findByProduct named query.
-     *
+     * Returns a List of Comments associated with the product.
+     * Calls the Comments.findByProduct named query.
      * @param pid
      * @return Comments for the Product
      */
     public List<Comments> getComments(int pid);
 
     /**
-     * Wrapper for the enitity manager persist method which basically adds an
-     * object to the database.
-     *
-     * @param object
+     * Wrapper for the enitity manager persist method which basically adds an object to the database.
+     * @param object 
      */
     public void persist(Object object);
-
+    
     /**
      * Returns the total number of Products in the database.
-     *
-     * @return The number of entries in the table database
+     * @return The number of entries in the table database 
      */
     public int getNumberOfProducts();
 }

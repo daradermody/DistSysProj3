@@ -42,7 +42,6 @@
 
 <jsp:include page="/header.jsp" />
 
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -130,10 +129,10 @@
             String productPrice = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductPrice = (!productPrice.equals("")) ? Integer.valueOf(productPrice) : 9999999;
 
-            String productAmount = Security.sanitise(request.getParameter("productAmount"), false);
+            String productAmount = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductAmount = (!productPrice.equals("")) ? Integer.valueOf(productAmount) : 0;
 
-            String newProductImage = "images/" + Security.sanitise(request.getParameter("productImage"), false);
+            String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
 
             if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
@@ -176,7 +175,6 @@
                                 String image = product.getImage();
                                 int price = Integer.valueOf(String.valueOf(product.getPrice()));
                                 int amount = product.getQuantity();
-                                int prodId = product.getId();
 
                                 // Check to ensure that the amount is at least 1
                                 if (amount > 0 || isAdmin) {
@@ -186,7 +184,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><%= title%></button>
+                                            <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -194,7 +192,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span class="product-summary">
@@ -202,17 +200,17 @@
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        Price: <b><%= price%></b><hr>
-                                                        Amount: <b><%= amount%></b>
+                                                        Price: <%= price%><br>
+                                                        Amount: <%= amount%>
                                                     </td>
                                                     <td>
-
-                                    
+        
                                                         <% if (isAdmin) {%>
                                                         <button class="product-edit-button" type="submit" name="product-id" value="<%= prodId%>"><img src="images/Edit.png" title="edit"/></button>
 
+
                                                             <% } else {%>
-                                                        <button class="product-buy-button" type="submit" name="product-id" value="<%= prodId%>"><img src="images/Buy.png" title="buy"/></button>
+                                                        <button class="product-buy-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
                                                 </tr>
@@ -232,7 +230,7 @@
                     <%
                         double total = shoppingCartBean.getTotal();
                     %>
-                    <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
+                    <button type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>
