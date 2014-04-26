@@ -156,14 +156,9 @@ public class shoppingCartBean implements shoppingCart {
      *
      * @return HashMap of the chosen items.
      */
-<<<<<<< HEAD
     @Override
     public HashMap<Product,Integer> get5Items(){
         if (items.size() <= 5){
-=======
-    public HashMap<Product, Integer> get5Items() {
-        if (items.size() <= 5) {
->>>>>>> 8b6811637c3d2fa329f0e78509a1cb0880bac2d6
             return items;
         } else {
             HashMap<Product, Integer> hm = new HashMap<>();
