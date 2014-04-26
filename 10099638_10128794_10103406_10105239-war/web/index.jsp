@@ -90,8 +90,9 @@
             }
 
             // Remove product if instructed from the browseProduct page
-            int productToRemove = Integer.valueOf(Security.sanitise(request.getParameter("removeProduct"), false));
-            if (productToRemove > 0) {
+            String productID = Security.sanitise(request.getParameter("removeProduct"), false);
+            if (!productID.equals("")) {
+                int productToRemove = Integer.valueOf(productID);
                 //admin removng the item from database
                 interactProduct.removeProduct(productToRemove);
 
@@ -104,8 +105,13 @@
             // Add new product if parameters exist
             String newProductName = Security.sanitise(request.getParameter("productName"), false);
             String newProductDescription = Security.sanitise(request.getParameter("productDescription"), true);
-            int newProductPrice = Integer.valueOf(Security.sanitise(request.getParameter("productPrice"), false));
-            int newProductAmount = Integer.valueOf(Security.sanitise(request.getParameter("productAmount"), false));
+            
+            String productPrice = Security.sanitise(request.getParameter("productPrice"), false);
+            int newProductPrice = (!productPrice.equals("")) ? Integer.valueOf(productPrice) : 9999999;
+            
+            String productAmount = Security.sanitise(request.getParameter("productPrice"), false);
+            int newProductAmount = (!productPrice.equals("")) ? Integer.valueOf(productAmount) : 0;
+            
             String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
 

@@ -33,7 +33,7 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class interactProduct {
+public class interactProduct implements interactProductLocal {
 
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
@@ -49,6 +49,7 @@ public class interactProduct {
      * @param imagepath A path to an image of the product.
      * @param summary A brief summary of the item.
      */
+    @Override
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
         Product p = new Product(0, title, quantity);
         p.setDescription(description);
@@ -67,6 +68,7 @@ public class interactProduct {
      *
      * @param id The id of the product that is to be removed.
      */
+    @Override
     public void removeProduct(int id) {
         Query q = em.createNamedQuery("Product.removeByID");
         q.setParameter("id", id);
@@ -78,6 +80,7 @@ public class interactProduct {
      * @param pid The product ID
      * @return The product with the given ID.
      */
+    @Override
     public Product searchByID(int pid) {
         //@NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
         Query q = em.createNamedQuery("Product.findById");
@@ -91,6 +94,7 @@ public class interactProduct {
      * Returns list of all products in database
      * @return List of all Product objects in database
      */
+    @Override
     public List<Product> findAllProducts() {
         Query q = em.createNamedQuery("Product.findAll");
         return q.getResultList();
@@ -102,6 +106,7 @@ public class interactProduct {
      * @param amount Increase value of quantity
      * @return Boolean value that indicates if operation was successful
      */
+    @Override
     public boolean increaseQuantity(int pid, int amount) {
         return updateQuantity(pid, amount);
     }
@@ -113,6 +118,7 @@ public class interactProduct {
      * @param amount
      * @return True if the action was successful, false if there is insufficient stock.
      */
+    @Override
     public boolean reduceQuantity(int pid, int amount) {
         return updateQuantity(pid, 0 - amount);
 
@@ -126,6 +132,7 @@ public class interactProduct {
      * @return True if the update was successful, false if there was
      * insufficient stock.
      */
+    @Override
     public boolean updateQuantity(int pid, int diff) {
         boolean success = false; // Variable that holds satus of operation completion
         
@@ -156,6 +163,7 @@ public class interactProduct {
      * @param kw Keyword string to search for
      * @return A list of products matching the keywords
      */
+    @Override
     public List<Product> searchProductByKeyword(String kw) {
         Query q = em.createNamedQuery("Product.findByKeyword");
         q.setParameter("kw", kw);
@@ -170,6 +178,7 @@ public class interactProduct {
      * @param cust the Customer that posted the Comment
      * @param content The content of the post.
      */
+    @Override
     public void addComment(Product prod, Customer cust, String content) {
 
         Comments comm = new Comments(0, content, cust.getUsername(), prod.getId());
@@ -182,6 +191,7 @@ public class interactProduct {
      * @param pid
      * @return Comments for the Product
      */
+    @Override
     public List<Comments> getComments(int pid) {
         Query q = em.createNamedQuery("Comments.findByProduct");
         q.setParameter("pid", pid);
@@ -193,6 +203,7 @@ public class interactProduct {
      * Wrapper for the enitity manager persist method which basically adds an object to the database.
      * @param object 
      */
+    @Override
     public void persist(Object object) {
         em.persist(object);
     }
@@ -201,6 +212,7 @@ public class interactProduct {
      * Returns the total number of Products in the database.
      * @return The number of entries in the table database 
      */
+    @Override
     public int getNumberOfProducts(){
         Query q = em.createNamedQuery("Product.countAll");
         return q.getFirstResult();

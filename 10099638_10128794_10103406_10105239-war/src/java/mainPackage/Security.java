@@ -234,8 +234,9 @@ public class Security {
                         userInfo[USER], password);
             }
         }
-
+        
         for (Iterator<User> iter = sessionUsers.iterator(); iter.hasNext();) {
+            System.out.println("Iterating through sessionUsers");
             User user = iter.next();
             if (user.getSessionID().equals(userInfo[ID])) { // User found
                 userInfo[ADMINSTAT] = String.valueOf(user.getIsAdmin());
