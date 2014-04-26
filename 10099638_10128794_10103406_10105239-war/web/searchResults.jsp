@@ -92,13 +92,12 @@
                                 int searchID = Integer.valueOf(Security.sanitise(request.getParameter("searchKeywords"), false));
                                 product = interactProduct.searchByID(searchID);
                                 results.add(product);
-                            }
-                            else if (searchBy.equals("name")) {
+                            } else if (searchBy.equals("name")) {
                                 String searchKW = Security.sanitise(request.getParameter("searchKeywords"), false);
                                 results.addAll(interactProduct.searchProductByKeyword(searchKW));
                             }
 
-                        // Loops through search results
+                            // Loops through search results
                             for (dbEntities.Product prod : results) {
                                 String title = prod.getTitle();
                                 String summary = prod.getSummary();
@@ -156,7 +155,7 @@
                     </ul>
                 </form>
             </div>
-            <div id="sidebar">
+            <div id="sidebar" class="big-wrapper">
                 <form name="checkout" method="POST" action="checkout.jsp">
                     <%
                         double total = shoppingCartBean.getTotal();
@@ -170,14 +169,16 @@
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for (int i = 0; i < shopCart.size(); i++) {
+                            for (int i = 0;
+                                    i < shopCart.size();
+                                    i++) {
                                 p = it.next();
-                                String prTitle = p.getTitle();
-                                int prPrice = Integer.valueOf(String.valueOf(p.getPrice()));
-                                int prAmount = p.getQuantity();
+                                String title = p.getTitle();
+                                int price = Integer.valueOf(String.valueOf(p.getPrice()));
+                                int amount = p.getQuantity();
                         %>
                         <li>
-                            <button type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></button>
+                            <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
                         </li>
                         <% }%>
                     </ul>

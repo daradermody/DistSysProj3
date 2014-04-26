@@ -34,8 +34,10 @@ import javax.transaction.UserTransaction;
  * @author Niko Flores 10103406
  * @author Patrick O Keeffe 10128794
  */
+
 @Stateful
 public class shoppingCartBean implements shoppingCart {
+
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
 
@@ -156,9 +158,11 @@ public class shoppingCartBean implements shoppingCart {
      *
      * @return HashMap of the chosen items.
      */
+
     @Override
     public HashMap<Product,Integer> get5Items(){
         if (items.size() <= 5){
+
             return items;
         } else {
             HashMap<Product, Integer> hm = new HashMap<>();

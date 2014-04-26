@@ -8,7 +8,6 @@
  * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
  *      Number: 3
  */
-
 package interactionBeans;
 
 import dbEntities.Comments;
@@ -33,6 +32,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class interactProduct implements interactProductLocal {
+
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
 
@@ -49,7 +49,12 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
-        Product p = new Product(0, title, quantity);
+        int id = getNumberOfProducts() + 1;
+        while (idExists(id)) {
+            id += 1;
+        }
+        System.out.println("New ID: " + id);
+        Product p = new Product(id, title, quantity);
         p.setDescription(description);
         p.setPrice((long) price);
         p.setImage(imagepath);
@@ -195,12 +200,12 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public List<Comments> getComments(int pid) {
+        //@NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :product"),
         Query q = em.createNamedQuery("Comments.findByProduct");
-        q.setParameter("pid", pid);
+        q.setParameter("product", pid);
 
         return q.getResultList();
     }
-
 
     /**
      * Returns the total number of Products in the database.
@@ -213,9 +218,27 @@ public class interactProduct implements interactProductLocal {
         return q.getFirstResult();
     }
 
+    private boolean idExists(int id) {
+        Query q = em.createNamedQuery("Product.findById");
+        q.setParameter("id", id);
+
+        return q.getResultList().size() > 0;
+    }
+
+    //@NamedQuery(name = "Product.findByTitle", query = "SELECT p FROM Product p WHERE p.title = :title")
+    //not for customer use, just called by jsp when navigating
+    public Product findByTitle(String title) {
+        Query q = em.createNamedQuery("Product.findByTitle");
+        q.setParameter("title", title);
+
+        return (Product) q.getResultList().get(0);
+    }
+
     /**
-     * Wrapper for the enitity manager persist method which basically adds an object to the database.
-     * @param object 
+     * Wrapper for the enitity manager persist method which basically adds an
+     * object to the database.
+     *
+     * @param object
      */
     @Override
     public void persist(Object object) {
