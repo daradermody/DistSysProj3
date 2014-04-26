@@ -28,7 +28,7 @@ public class User {
     private int sessionTime;
     private final boolean isAdmin;
     private shoppingCart shoppingCart;
-    
+
     /**
      * Constructor to create a logged on user.
      *
@@ -46,7 +46,6 @@ public class User {
         this.sessionTime = sessionTime;
         this.isAdmin = this.details.getIsadmin();
     }
-
     
     protected User() {
         this.details = null;
@@ -55,8 +54,7 @@ public class User {
         this.isAdmin = false;
         this.shoppingCart = null;
     }
-    
-
+ 
     /**
      * Getter for isAdmin attribute
      *
@@ -93,7 +91,6 @@ public class User {
      */
     public void setTimestamp(int st) {
         this.sessionTime=st;
-
     }
 
     /**
@@ -101,8 +98,8 @@ public class User {
      *
      * @return the session id or "" if the user is not logged in
      */
-    public String getSessionID(){
 
+    public String getSessionID(){
         return this.sessionID;
     }
 

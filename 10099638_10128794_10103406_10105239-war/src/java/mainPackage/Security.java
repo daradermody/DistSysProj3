@@ -113,7 +113,9 @@ public class Security {
 
                 if (customerBean.exists(username)) {
                     //new user with the Customer, ID and Timestamp
+
                     user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
+
                     //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
                     //user.setTimestamp(seconds); // Set current timestamp of user
                     sessionUsers.add(user); // Adds the user into the list of logged in users
