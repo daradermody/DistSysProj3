@@ -74,7 +74,7 @@ public class Security {
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
         }
-        
+
         return validity;
     }
 
@@ -89,9 +89,12 @@ public class Security {
      */
     public User startSession(String username) {
         boolean exists = false;
+
         User user = null; // ID value to return; if person already has session, return null
 
+
         if (username != null) {
+
             // Cycle through sessions recorded for existence of user
             for (User userCycle : sessionUsers)
                 if (userCycle.getUsername().equals(username)) {
@@ -107,6 +110,7 @@ public class Security {
 
                 // Cycle through all user in the list of generated users for user requiring session
                 //check that the user exists
+
                 if (customerBean.exists(username)) {
                     //new user with the Customer, ID and Timestamp
                     user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
@@ -114,6 +118,7 @@ public class Security {
                     //user.setTimestamp(seconds); // Set current timestamp of user
                     sessionUsers.add(user); // Adds the user into the list of logged in users
                 }
+
             }
         }
 
