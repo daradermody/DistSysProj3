@@ -208,7 +208,7 @@
                                                         Amount: <%= amount%>
                                                     </td>
                                                     <td>
-                                                        <% if (isAdmin.equals("true")) {%>
+                                                        <% if (isAdmin) {%>
                                                         <button class="product-edit-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Edit.png" title="edit"/></button>
                                                             <% } else {%>
                                                         <button class="product-buy-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
