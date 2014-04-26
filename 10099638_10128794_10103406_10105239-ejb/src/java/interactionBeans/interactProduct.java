@@ -8,6 +8,7 @@
  * Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
  *      Number: 3
  */
+
 package interactionBeans;
 
 import dbEntities.Comments;
@@ -15,7 +16,6 @@ import dbEntities.Customer;
 import dbEntities.Product;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -32,9 +32,7 @@ import javax.persistence.Query;
  * @author Patrick O Keeffe 10128794
  */
 @Stateless
-@LocalBean
 public class interactProduct implements interactProductLocal {
-
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
 
@@ -198,15 +196,6 @@ public class interactProduct implements interactProductLocal {
 
         return q.getResultList();
     }
-
-    /**
-     * Wrapper for the enitity manager persist method which basically adds an object to the database.
-     * @param object 
-     */
-    @Override
-    public void persist(Object object) {
-        em.persist(object);
-    }
     
     /**
      * Returns the total number of Products in the database.
@@ -218,4 +207,12 @@ public class interactProduct implements interactProductLocal {
         return q.getFirstResult();
     }
 
+    /**
+     * Wrapper for the enitity manager persist method which basically adds an object to the database.
+     * @param object 
+     */
+    @Override
+    public void persist(Object object) {
+        em.persist(object);
+    }
 }

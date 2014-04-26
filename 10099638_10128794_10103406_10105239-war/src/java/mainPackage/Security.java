@@ -33,9 +33,11 @@ import org.owasp.html.Sanitizers;
  * @author Patrick O Keeffe 10128794
  */
 public class Security {
+
     //interactCustomerLocal customerBean = lookupinteractCustomerLocal();
     //ConverterBeanLocal converterBean;
     interactCustomerLocal customerBean;
+    interactProductLocal productBean;
 
     private static ArrayList<User> sessionUsers = new ArrayList<>();
     final private static int TIMEOUT = 900;
@@ -43,9 +45,16 @@ public class Security {
     public Security() {
         try {
             this.customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
-            System.out.println("CustomerBean is null? "+customerBean==null);
+            System.out.println("CustomerBean is null? " + customerBean == null);
         } catch (NamingException ex) {
             Logger.getLogger(Security.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            InitialContext initialContext = new InitialContext();
+            productBean = (interactProductLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+        } catch (NamingException e) {
+            System.out.println("Exception: " + e.getMessage());
         }
     }
 
@@ -60,14 +69,15 @@ public class Security {
      */
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
+        System.out.println(productBean.findAllProducts().size());
         // Uncomment and set validity to false (above) when Emma provides database
         //Check that there is an input for username, password, and that the user exists
         if (username != null && password != null && customerBean.exists(username)) {
             System.out.println("customerBean is null?" + customerBean == null);
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
-        };
-
+        }
+        
         return validity;
     }
 
@@ -101,16 +111,15 @@ public class Security {
 
                 // Cycle through all user in the list of generated users for user requiring session
                 //check that the user exists
-                
                 System.out.println("Username exists? " + customerBean.exists(username));
-                
-                    if (customerBean.exists(username)) {
-                        //new user with the Customer, ID and Timestamp
-                        User user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
+
+                if (customerBean.exists(username)) {
+                    //new user with the Customer, ID and Timestamp
+                    User user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
                         //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
-                        //user.setTimestamp(seconds); // Set current timestamp of user
-                        sessionUsers.add(user); // Adds the user into the list of logged in users
-                    }
+                    //user.setTimestamp(seconds); // Set current timestamp of user
+                    sessionUsers.add(user); // Adds the user into the list of logged in users
+                }
 
                 ID = String.valueOf(uniqueID); // Return session ID
             }
@@ -234,7 +243,7 @@ public class Security {
                         userInfo[USER], password);
             }
         }
-        
+
         for (Iterator<User> iter = sessionUsers.iterator(); iter.hasNext();) {
             System.out.println("Iterating through sessionUsers");
             User user = iter.next();

@@ -9,6 +9,9 @@
    Project:     Secure Authentication and Session Management System for a Web Application
 
 --%>
+<%@page import="interactionBeans.interactProductLocal"%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="javax.naming.NamingException"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.io.BufferedWriter"%>
 <%@page import="java.io.PrintWriter"%>
@@ -21,8 +24,23 @@
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%--<%@page errorPage="/errorPage.jsp" %>--%>
+
+<%!
+    interactProductLocal productBean = null;
+
+    public void jspInit() {
+        try {
+            InitialContext initialContext = new InitialContext();
+            productBean = (interactProductLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+%>
+
+
 <jsp:include page="/header.jsp" />
-<jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /> 
+<!--jsp:useBean id="interactProduct" class="interactionBeans.interactProduct" /-->
 <jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 
 <!DOCTYPE html>
@@ -40,7 +58,8 @@
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
-            if (id.equals("")) {
+            if (id.equals(
+                    "")) {
                 // If login failed, set attribute so login.jsp can set error message
                 if (!username.equals("<none>")) {
                     request.setAttribute("invalid-login", "true");
@@ -56,8 +75,11 @@
             boolean cookiesDisabled = request.getCookies() == null;
 
             Cookie cookie = new Cookie("id", id); // Create new cookie with session ID
-            cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
-            cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
+
+            cookie.setMaxAge(
+                    -1); // Cookie will be deleted when browser exits
+            cookie.setSecure(
+                    true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
             {
                 response.addCookie(cookie);
@@ -65,7 +87,9 @@
 
             // Complete checkout by simply removing all the items in the shopping cart
             String complete = Security.sanitise(request.getParameter("complete"), false);
-            if (!complete.equals("")) {
+
+            if (!complete.equals(
+                    "")) {
                 shoppingCartBean.checkout();
 
                 // Data log for completed checkout
@@ -73,12 +97,12 @@
                 Date date = new Date();
                 fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
             }
-            
-            
 
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
-            if (!deleteAll.equals("")) {
+
+            if (!deleteAll.equals(
+                    "")) {
                 shoppingCartBean.cancel();
 
                 // Data log for dumped items
@@ -91,33 +115,36 @@
 
             // Remove product if instructed from the browseProduct page
             String productID = Security.sanitise(request.getParameter("removeProduct"), false);
-            if (!productID.equals("")) {
+
+            if (!productID.equals(
+                    "")) {
                 int productToRemove = Integer.valueOf(productID);
                 //admin removng the item from database
-                interactProduct.removeProduct(productToRemove);
+                productBean.removeProduct(productToRemove);
 
                 // Data log for item removal
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
-                fileLog.println("Item: " + (interactProduct.searchByID(productToRemove)).getTitle() + " removed @ " + date.toString());
+                fileLog.println("Item: " + (productBean.searchByID(productToRemove)).getTitle() + " removed @ " + date.toString());
             }
 
             // Add new product if parameters exist
             String newProductName = Security.sanitise(request.getParameter("productName"), false);
             String newProductDescription = Security.sanitise(request.getParameter("productDescription"), true);
-            
+
             String productPrice = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductPrice = (!productPrice.equals("")) ? Integer.valueOf(productPrice) : 9999999;
-            
+
             String productAmount = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductAmount = (!productPrice.equals("")) ? Integer.valueOf(productAmount) : 0;
-            
+
             String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
 
-            if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
+            if (!newProductName.equals(
+                    "") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
-                interactProduct.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
+                productBean.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
                 // Data log for product addition
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
@@ -149,7 +176,8 @@
                 <form name="productList" method="POST" action="browseProduct.jsp">
                     <ul>
                         <%-- Loops through getting of products --%>
-                        <% for (dbEntities.Product product : interactProduct.findAllProducts()) {
+                        <% for (dbEntities.Product product
+                                    : productBean.findAllProducts()) {
                                 String title = product.getTitle();
                                 String summary = product.getSummary();
                                 String image = product.getImage();
@@ -216,7 +244,9 @@
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
 
-                            for (int i = 0; i < shopCart.size(); i++) {
+                            for (int i = 0;
+                                    i < shopCart.size();
+                                    i++) {
                                 p = it.next();
                                 String title = p.getTitle();
                                 int price = Integer.valueOf(String.valueOf(p.getPrice()));
