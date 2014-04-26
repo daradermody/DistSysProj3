@@ -22,10 +22,10 @@ import javax.persistence.Query;
 
 /**
  * EJB for Product interaction
- * 
- * Main EJB used, as the application is focused on browsing products.
- * Calls named queries and retrieves information about products.
- * 
+ *
+ * Main EJB used, as the application is focused on browsing products. Calls
+ * named queries and retrieves information about products.
+ *
  * @author Emma Foley 10105239
  * @author Dara Dermody 10099638
  * @author Niko Flores 10103406
@@ -51,16 +51,16 @@ public class interactProduct implements interactProductLocal {
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
         Product p = new Product(0, title, quantity);
         p.setDescription(description);
-        p.setPrice((long)price);
+        p.setPrice((long) price);
         p.setImage(imagepath);
         p.setSummary(summary);
-        
+
         persist(p);
     }
 
     /**
-     * Removes the given product from the database. 
-     * The product can be uniquely identified by it's id, <br />
+     * Removes the given product from the database. The product can be uniquely
+     * identified by it's id, <br />
      * ensuring that only one item will be deleted at a time. <br />
      * The removeByID query is used.
      *
@@ -87,9 +87,9 @@ public class interactProduct implements interactProductLocal {
         return (Product) q.getSingleResult();
     }
 
-
     /**
      * Returns list of all products in database
+     *
      * @return List of all Product objects in database
      */
     @Override
@@ -100,6 +100,7 @@ public class interactProduct implements interactProductLocal {
 
     /**
      * Increases quantity of products in store for particular product
+     *
      * @param pid Identification of product to increase quantity of
      * @param amount Increase value of quantity
      * @return Boolean value that indicates if operation was successful
@@ -110,11 +111,13 @@ public class interactProduct implements interactProductLocal {
     }
 
     /**
-     * Wrapper method for reducing the available number of items.
-     * Calls the updateQuantity() method to subtract from the total quantity. 
+     * Wrapper method for reducing the available number of items. Calls the
+     * updateQuantity() method to subtract from the total quantity.
+     *
      * @param pid
      * @param amount
-     * @return True if the action was successful, false if there is insufficient stock.
+     * @return True if the action was successful, false if there is insufficient
+     * stock.
      */
     @Override
     public boolean reduceQuantity(int pid, int amount) {
@@ -133,7 +136,7 @@ public class interactProduct implements interactProductLocal {
     @Override
     public boolean updateQuantity(int pid, int diff) {
         boolean success = false; // Variable that holds satus of operation completion
-        
+
         //First, check if the quanitity
         Query q = em.createNamedQuery("Product.findQuantityByID");
         q.setParameter("pid", pid);
@@ -149,7 +152,7 @@ public class interactProduct implements interactProductLocal {
             //The query was run!
             success = true;
         }
-        
+
         return success;
     }
 
@@ -184,8 +187,9 @@ public class interactProduct implements interactProductLocal {
     }
 
     /**
-     * Returns a List of Comments associated with the product.
-     * Calls the Comments.findByProduct named query.
+     * Returns a List of Comments associated with the product. Calls the
+     * Comments.findByProduct named query.
+     *
      * @param pid
      * @return Comments for the Product
      */
@@ -196,13 +200,15 @@ public class interactProduct implements interactProductLocal {
 
         return q.getResultList();
     }
-    
+
+
     /**
      * Returns the total number of Products in the database.
-     * @return The number of entries in the table database 
+     *
+     * @return The number of entries in the table database
      */
     @Override
-    public int getNumberOfProducts(){
+    public int getNumberOfProducts() {
         Query q = em.createNamedQuery("Product.countAll");
         return q.getFirstResult();
     }

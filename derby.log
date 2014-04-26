@@ -5,9 +5,9 @@ Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 -
 on database directory /Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239/10105239  with class loader sun.misc.Launcher$AppClassLoader@76ed5528 
 Loaded from file:/Applications/NetBeans/glassfish-4.0/javadb/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0-b132
-user.dir=/Applications/NetBeans/glassfish-4.0/javadb
-derby.system.home=/Users/daradermody/NetBeansProjects/10099638_10128794_10103406_10105239
+java.runtime.version=1.7.0_51-b00
+user.dir=/home/elfie/glassfish-4.0/javadb
+derby.system.home=/media/elfie/Media/college/DistSysProj3
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
 Sat Apr 26 14:45:08 IST 2014:
