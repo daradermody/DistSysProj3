@@ -32,15 +32,7 @@
             // Uncomment above and delete below after initial testing!
             String isAdmin = "true";
         %>
-
-        <script type="text/javascript" src="way2blogging.org-tripleflap.js"></script>
-        <script type="text/javascript">
-            var twitterAccount = "Koalascense";
-            var tweetThisText = "Koalascense - " + window.location.href;
-            tripleflapInit();
-        </script>
-        <a id="tBird" href="https://twitter.com/Koalascense" target="_blank" style="display: block; position: absolute; left: 35px; top: 550px; width: 64px; height: 64px; background-image: url(http://2.bp.blogspot.com/_nDNgmK8FIyI/TTPu1fD8gwI/AAAAAAAAASk/umOvdnb827E/way2blogging.org-twitterbirdsprite.png); background-color: transparent; z-index: 947; background-position: 0px 0px; background-repeat: no-repeat no-repeat;"></a>
-
+        
         <header>
             <span id="logo">Distributed Systems Project III</span>
             <form name="logOut" action="login.jsp" method="POST">
