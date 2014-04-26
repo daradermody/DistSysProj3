@@ -151,7 +151,8 @@
                         <li>
                             There are no search results to show!
                         </li>
-                        <% }%>
+                        <% }
+                            }%>
                     </ul>
                 </form>
             </div>
@@ -176,7 +177,7 @@
                                 int prAmount = p.getQuantity();
                         %>
                         <li>
-                            <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></button>
+                            <button type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></button>
                         </li>
                         <% }%>
                     </ul>

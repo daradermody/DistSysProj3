@@ -23,7 +23,7 @@
 <%@page import="interactionBeans.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 
 <%!
     interactProductLocal productBean = null;
@@ -141,8 +141,7 @@
             String newProductImage = Security.sanitise(request.getParameter("productImage"), false);
             String newProductSummary = Security.sanitise(request.getParameter("productSummary"), true);
 
-            if (!newProductName.equals(
-                    "") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
+            if (!newProductName.equals("") && !newProductDescription.equals("") && (newProductPrice > 0) && (newProductAmount > 0)) {
                 // Create new shop product object with user-inputted product details
                 productBean.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
                 // Data log for product addition
@@ -176,8 +175,7 @@
                 <form name="productList" method="POST" action="browseProduct.jsp">
                     <ul>
                         <%-- Loops through getting of products --%>
-                        <% for (dbEntities.Product product
-                                    : productBean.findAllProducts()) {
+                        <% for (dbEntities.Product product : productBean.findAllProducts()) {
                                 String title = product.getTitle();
                                 String summary = product.getSummary();
                                 String image = product.getImage();
@@ -192,7 +190,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                                            <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -213,9 +211,9 @@
                                                     </td>
                                                     <td>
                                                         <% if (isAdmin.equals("true")) {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Edit.png" title="edit"/></button>
+                                                        <button class="product-edit-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Edit.png" title="edit"/></button>
                                                             <% } else {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="Buy.png" title="buy"/></button>
+                                                        <button class="product-buy-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
                                                 </tr>
@@ -230,12 +228,12 @@
                     </ul>
                 </form>
             </div>
-            <div id="sidebar">
+            <div id="sidebar" class="big-wrapper">
                 <form name="checkout" method="POST" action="checkout.jsp">
                     <%
                         double total = shoppingCartBean.getTotal();
                     %>
-                    <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
+                    <button type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>
@@ -253,7 +251,7 @@
                                 int amount = p.getQuantity();
                         %>
                         <li>
-                            <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
+                            <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
                         </li>
                         <% }%>
                     </ul>

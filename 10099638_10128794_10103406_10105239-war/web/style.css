@@ -115,12 +115,14 @@ h3 {
     width:70%;
     top: 50px;
 }
+
 #sidebar {
-    float:right;
-    width: 25%;
+    width: 15%;
     margin:0px auto;
     position: fixed;
-    top: 50px;
+    left: 70%;
+    top: 105px;
+    height: 70%;
 }
 .big-wrapper {
     overflow:auto;
@@ -128,7 +130,7 @@ h3 {
     margin: 0 3px 5px 0;
     padding: 1% 3% 1% 3%;
     width: 96%;
-    height: 80px;
+    height: 30%;
     border: 1px solid #DDD;
     -webkit-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
     -moz-box-shadow: 1px 1px 7px rgba(153, 153, 153, 0.2);
@@ -358,11 +360,39 @@ button[type="submit"].product-image-button {
     border-right: 4px solid #cb9bf1;
     float: left;
     height: 100%;
-    width: 30%;
+    width: 50%;
     font-size: 14px;
     white-space: normal;
 }
 button[type="submit"].product-image-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+button[type="submit"].product-edit-button {
+    border: none;
+    border-right: 4px solid #cb9bf1;
+    float: left;
+    height: 100%;
+    width: 35%;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"].product-edit-button:hover{
+    background:#cb9af4;
+    box-shadow: 0px 0px 1px #777;
+    border-right: 4px solid #b063ef;
+}
+button[type="submit"].product-buy-button {
+    border: none;
+    border-right: 4px solid #cb9bf1;
+    float: left;
+    height: 100%;
+    width: 35%;
+    font-size: 14px;
+    white-space: normal;
+}
+button[type="submit"].product-buy-button:hover{
     background:#cb9af4;
     box-shadow: 0px 0px 1px #777;
     border-right: 4px solid #b063ef;
