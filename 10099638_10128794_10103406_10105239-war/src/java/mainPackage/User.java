@@ -12,7 +12,7 @@
 package mainPackage;
 
 import dbEntities.Customer;
-import interactionBeans.shoppingCartBean;
+import interactionBeans.*;
 
 /**
  * A User data type, containing the details of one user.
@@ -22,11 +22,11 @@ import interactionBeans.shoppingCartBean;
  * @author Patrick O Keeffe 10128794
  */
 public class User {
-    private final Customer details;
+    public final Customer details;
     private String sessionID; //for security class
     private int sessionTime;
     private final boolean isAdmin;
-    private shoppingCartBean shoppingCart;
+    private shoppingCart shoppingCart;
     
     /**
      * Constructor to create a logged on user.
@@ -106,5 +106,13 @@ public class User {
      */
     public String getPwdHash(){
         return this.details.getPassword();
+    }
+    
+    public shoppingCart getShoppingCart() {
+        return this.shoppingCart;
+    }
+    
+    public void setShoppingCart(shoppingCart cart) {
+        this.shoppingCart = cart;
     }
 }

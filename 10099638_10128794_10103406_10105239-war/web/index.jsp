@@ -23,14 +23,16 @@
 <%@page import="interactionBeans.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page errorPage="/errorPage.jsp" %>
+<%--<%@page errorPage="/errorPage.jsp" %>--%>
 
 <%!
     interactProductLocal productBean = null;
+    shoppingCart shoppingCartBean = null;
 
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -39,7 +41,6 @@
 
 
 <jsp:include page="/header.jsp" />
-<jsp:useBean id="shoppingCartBean" class="interactionBeans.shoppingCartBean" /> 
 
 <!DOCTYPE html>
 <html>
@@ -50,44 +51,40 @@
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
             User user = sec.authoriseRequest(request);
-            String username = user.getUsername(); // Set to more convenient variable
-            String id = user.getUsername(); // Set to more convenient variable
-            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            String username = ""; // Set to more convenient variable
+            String id = ""; // Set to more convenient variable
+            boolean isAdmin = false; // Set to more convenient variable
 
             // If session ID invalid/non-existant, forward to login page (also 
             // determine if login was attempted)
-            if (id.equals(
-                    "")) {
+            if (user == null) {
                 // If login failed, set attribute so login.jsp can set error message
-                if (!username.equals("<none>")) {
-                    request.setAttribute("invalid-login", "true");
-                } else {
-                    request.setAttribute("invalid-login", "false");
-                }
+                request.setAttribute("invalid-login", "false");
                 request.setAttribute("address", "index.jsp"); // Set requested page as this page
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
+            
+            username = user.getUsername(); // Set to more convenient variable
+            id = user.getSessionID(); // Set to more convenient variable
+            isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            if(user.getShoppingCart() != null)
+                shoppingCartBean = user.getShoppingCart();
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
 
             Cookie cookie = new Cookie("id", id); // Create new cookie with session ID
 
-            cookie.setMaxAge(
-                    -1); // Cookie will be deleted when browser exits
-            cookie.setSecure(
-                    true); // Forces browser to only send cookie over HTTPS/SSL
+            cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
+            cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
-            {
                 response.addCookie(cookie);
-            }
 
             // Complete checkout by simply removing all the items in the shopping cart
             String complete = Security.sanitise(request.getParameter("complete"), false);
 
-            if (!complete.equals(
-                    "")) {
+            if (!complete.equals("")) {
                 shoppingCartBean.checkout();
 
                 // Data log for completed checkout
@@ -114,8 +111,7 @@
             // Remove product if instructed from the browseProduct page
             String productID = Security.sanitise(request.getParameter("removeProduct"), false);
 
-            if (!productID.equals(
-                    "")) {
+            if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
                 //admin removng the item from database
                 productBean.removeProduct(productToRemove);

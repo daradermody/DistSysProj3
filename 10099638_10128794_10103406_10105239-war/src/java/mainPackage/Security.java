@@ -45,7 +45,6 @@ public class Security {
     public Security() {
         try {
             this.customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
-            System.out.println("CustomerBean is null? " + customerBean == null);
         } catch (NamingException ex) {
             Logger.getLogger(Security.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,11 +68,9 @@ public class Security {
      */
     public boolean verifyUser(String username, String password) {
         boolean validity = false;
-        System.out.println(productBean.findAllProducts().size());
-        // Uncomment and set validity to false (above) when Emma provides database
+
         //Check that there is an input for username, password, and that the user exists
         if (username != null && password != null && customerBean.exists(username)) {
-            System.out.println("customerBean is null?" + customerBean == null);
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
         }
@@ -190,7 +187,7 @@ public class Security {
      */
     public User authoriseRequest(HttpServletRequest request) {
         // User information array setup to package returned information
-        User user = new User();
+        User user = null;
 //        int USER = 0; // Constant index for username
 //        int ID = 1; // Constant index for session ID]
 //        int ADMINSTAT = 2; // Constant index for isAdmin boolean value as String
@@ -200,19 +197,25 @@ public class Security {
         Cookie[] cookies = request.getCookies(); // Fetch Cookie array
         if (cookies != null) // Cycle through each cookie in Cookie array to find one with name "id"
             for (Cookie cookie : cookies)
-                if (cookie.getName().equals("id"))
+                if (cookie.getName().equals("id")) {
+                    user = new User();
                     user.setSessionID(sanitise(cookie.getValue(), false)); // Get and sanitise string value
+                }
 
         // If no session cookie, check for session parameter in URL
-        if (user.getSessionID() == null)
-            user.setSessionID(sanitise(request.getParameter("id"), false));
-
-        user = verifySession(user.getSessionID()); // Get username from ID (null if invalid)
-        // If no session ID, check for username and password details
+        String idParam;
         if (user == null) {
-            user = new User();
-            user.setSessionID(""); // Reset given ID if invalid
-
+            idParam = sanitise(request.getParameter("id"), false);
+            if(!idParam.equals("")) {
+                user = new User();
+                user.setSessionID(idParam);
+            }
+        }
+        
+        if(user != null)
+            user = verifySession(user.getSessionID()); // Get username from ID (null if invalid)
+        
+        if(user == null) { // If no session ID, check for username and password details
             // Get username and password parameters from user request and sanitise each
             String username = sanitise(request.getParameter("username"), false);
             String password = sanitise(request.getParameter("password"), false);
@@ -227,13 +230,16 @@ public class Security {
                 user = startSession(username);
                 System.out.printf("Login attempt:\t%s | %s\n\tSession ID:\t%s\n",
                         user.getUsername(), password, user.getSessionID());
-            } else if (!user.getUsername().equals("<none>")) // Notify invalid attempt
+            } else if (!username.equals("<none>")) // Notify invalid attempt
                 System.out.printf("Login attempt: %s | %s\n\t>>> LOGIN FAILURE <<<\n",
-                        user.getUsername(), password);
+                        username, password);
         }
 
         // Return array containing username ("<none>" if not attempted) and session ID
-        return user;
+        if(user == null)
+            return null;
+        else
+            return user;
     }
 
     /**

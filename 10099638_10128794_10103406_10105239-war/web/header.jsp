@@ -26,9 +26,19 @@
             Security sec = new Security();
             // Check session ID, or username and password; if it fails, forward to login
             User user = sec.authoriseRequest(request);
-            String username = user.getUsername(); // Set to more convenient variable
-            String id = user.getUsername(); // Set to more convenient variable
-            boolean isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            boolean isAdmin = false; // Set to more convenient variable
+
+            // If session ID invalid/non-existant, forward to login page (also 
+            // determine if login was attempted)
+            if (user == null) {
+                // If login failed, set attribute so login.jsp can set error message
+                request.setAttribute("invalid-login", "false");
+                request.setAttribute("address", "index.jsp"); // Set requested page as this page
+                // Forward request (with parameters) to login page for authentication
+                getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
+            } else {
+                isAdmin = user.getIsAdmin(); // Set to more convenient variable
+            }
         %>
         
         <header>

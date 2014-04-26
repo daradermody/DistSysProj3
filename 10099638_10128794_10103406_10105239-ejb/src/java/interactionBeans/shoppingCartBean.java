@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Remove;
+import javax.ejb.Stateful;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
@@ -33,7 +34,8 @@ import javax.transaction.UserTransaction;
  * @author Niko Flores 10103406
  * @author Patrick O Keeffe 10128794
  */
-public class shoppingCartBean {
+@Stateful
+public class shoppingCartBean implements shoppingCart {
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
 
@@ -45,6 +47,7 @@ public class shoppingCartBean {
      * @param p The product to add
      * @param quantity
      */
+    @Override
     public void addItem(Product p, int quantity) {
         // obtain current number of items in cart
         Integer orderQuantity = items.get(p);
@@ -62,6 +65,7 @@ public class shoppingCartBean {
      * @param p The item to be removed
      * @param quantity The quantity of the item to be removed.
      */
+    @Override
     public void removeItem(Product p, int quantity) {
         // obtain current number of items in cart
         Integer orderQuantity = items.get(p);
@@ -88,6 +92,7 @@ public class shoppingCartBean {
      * @return True if the update was successful, false if there was
      * insufficient stock.
      */
+    @Override
     public boolean updateQuantity(int pid, int diff) {
         boolean success = false; // Variable that holds satus of operation completion
         
@@ -111,6 +116,7 @@ public class shoppingCartBean {
     
     
     @Remove
+    @Override
     public void cancel() {
         // no action required - annotation @Remove indicates
         // that calling this method should remove the EJB which will
@@ -148,6 +154,7 @@ public class shoppingCartBean {
      * Method to return (up to) 5 items from the shopping cart.
      * @return HashMap of the chosen items.
      */
+    @Override
     public HashMap<Product,Integer> get5Items(){
         if (items.size() <= 5){
             return items;
@@ -171,6 +178,7 @@ public class shoppingCartBean {
      *
      * @return The total price of the goods
      */
+    @Override
     public double getTotal() {
         double total = 0;
         Set<Product> keys = items.keySet();
@@ -184,12 +192,14 @@ public class shoppingCartBean {
         return total;
     }
 
+    @Override
     public HashMap<Product, Integer> getItems() {
         return this.items;
     }
 
     @Remove
     //TODO: Update tables
+    @Override
     public String checkout() {
         // dummy checkout method that just returns message for successful
         // checkout
@@ -207,6 +217,7 @@ public class shoppingCartBean {
         return message;
     }
 
+    @Override
     public void persist(Object object) {
         /* Add this to the deployment descriptor of this module (e.g. web.xml, ejb-jar.xml):
          * <persistence-context-ref>
@@ -222,7 +233,7 @@ public class shoppingCartBean {
             Context ctx = new InitialContext();
             UserTransaction utx = (UserTransaction) ctx.lookup("java:comp/env/UserTransaction");
             utx.begin();
-            EntityManager em = (EntityManager) ctx.lookup("java:comp/env/persistence/LogicalName");
+            em = (EntityManager) ctx.lookup("java:comp/env/persistence/LogicalName");
             em.persist(object);
             utx.commit();
         } catch (Exception e) {
@@ -230,5 +241,4 @@ public class shoppingCartBean {
             throw new RuntimeException(e);
         }
     }
-
 }
