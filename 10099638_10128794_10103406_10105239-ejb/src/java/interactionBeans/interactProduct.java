@@ -35,7 +35,7 @@ import javax.persistence.Query;
 public class interactProduct implements interactProductLocal {
     @PersistenceContext(unitName = "10099638_10128794_10103406_10105239-ejbPU")
     private EntityManager em;
-
+    
     /**
      * Facility to fulfill the required user action of adding a product. (Admin
      * only -- which will be taken care of front-end)
@@ -49,7 +49,12 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
-        Product p = new Product(0, title, quantity);
+        Query q = em.createNamedQuery("Product.countAll");
+        int id = Integer.valueOf(q.getSingleResult().toString());
+        while( !idExists(id) ){
+            id +=1;
+        }
+        Product p = new Product(id, title, quantity);
         p.setDescription(description);
         p.setPrice((long) price);
         p.setImage(imagepath);
@@ -58,6 +63,11 @@ public class interactProduct implements interactProductLocal {
         persist(p);
     }
 
+    public boolean idExists(int id){
+        Query q  = em.createNamedQuery("Product.findById");
+        q.setParameter("id", id);
+        return !q.getResultList().isEmpty();
+    }
     /**
      * Removes the given product from the database. The product can be uniquely
      * identified by it's id, <br />
