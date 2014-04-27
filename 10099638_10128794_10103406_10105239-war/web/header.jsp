@@ -64,7 +64,7 @@
             <table class="searchbar">
                 <tr class="searchRow">
                     <td class="searchCell">
-                        <textarea class="searchText" name="searchKeywords"></textarea>
+                        <input type="text" class="searchText" name="searchKeywords">
                     </td>
                     <td class="searchCell" align="left">
                         Search by:<select name="searchBy">
