@@ -10,7 +10,7 @@
         Number: 3
 
 --%>
-
+ 
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="interactionBeans.shoppingCart"%>
 <%@page import="interactionBeans.interactProductLocal"%>
