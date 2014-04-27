@@ -72,6 +72,7 @@ public class Comments implements Serializable {
         this.content = content;
         this.poster = poster;
         this.product = product;
+        this.date = new Date();
     }
 
     public Integer getId() {

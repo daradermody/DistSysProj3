@@ -235,9 +235,12 @@
                     <%
                         // For each message, display according to set of tags and style
                         for (dbEntities.Comments comm : productBean.getComments(product.getId())) {
+                            System.out.println("Comment date exists? " + (comm.getDate() != null));
                             String message = comm.getContent();
                             String poster = comm.getPoster();
-                            String date = comm.getDate().toString();
+                            String date = "";
+                            if(comm.getDate() != null)
+                                date = comm.getDate().toString();
                     %>
                     <li>
                         <div class="big-wrapper message-container">
@@ -251,7 +254,7 @@
                             </div>
                         </div>
                     </li>
-                    <% } // End of for loop for retrieving all messages%>
+                    <% } System.out.println("End loop"); // End of for loop for retrieving all messages%>
 
                     <li>
                         <div class="big-wrapper message-container">

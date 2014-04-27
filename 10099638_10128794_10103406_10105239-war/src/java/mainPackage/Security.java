@@ -71,6 +71,8 @@ public class Security {
         boolean validity = false;
 
         //Check that there is an input for username, password, and that the user exists
+        System.out.println("CUstomer exists: " + (customerBean != null));
+        System.out.println("CUstomer name exists: " + (customerBean.exists(username)));
         if (username != null && password != null && customerBean.exists(username)) {
             validity = customerBean.verifyPassword(username, password);
             //validity = UserList.verifyUser(username, password);
