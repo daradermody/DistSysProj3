@@ -179,7 +179,7 @@ public class interactProduct implements interactProductLocal {
         int quantity = (int) q.getSingleResult();
 
         // Check if resulting quantity of operation is valid (greater than zero)
-        if ((quantity + diff) > 0) {
+        if ((quantity + diff) >= 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
