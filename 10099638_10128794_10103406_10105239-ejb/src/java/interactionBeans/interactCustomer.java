@@ -16,6 +16,7 @@ import java.util.Queue;
 import javax.ejb.Stateless;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueSender;
@@ -149,7 +150,16 @@ public class interactCustomer implements interactCustomerLocal {
     /******************************************************************\
      *                    Message-Driven Bean Methods                  |
     \******************************************************************/
- 
+    
+    /* COMMENTED OUT DUE TO CAUSATION OF ERRORS
+    
+    static final int N = 10;
+
+    QueueConnection conn;
+    QueueSession session;
+    Queue queA;
+    Queue queB;
+    
     public void setupPTP() {
         try {
             InitialContext iniCtx = new InitialContext();
@@ -205,4 +215,6 @@ public class interactCustomer implements interactCustomerLocal {
             e.printStackTrace();
         }
     }
+    */
+    
 }

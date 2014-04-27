@@ -14,13 +14,23 @@ package interactionBeans;
 import dbEntities.Product;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -278,4 +288,76 @@ public class shoppingCartBean implements shoppingCart {
             throw new RuntimeException(e);
         }
     }
+    
+    
+    /******************************************************************\
+     *                    Message-Driven Bean Methods                  |
+    \******************************************************************/
+    
+    /* COMMENTED OUT DUE TO CAUSATION OF ERRORS
+    
+    static final int N = 10;
+
+    QueueConnection conn;
+    QueueSession session;
+    Queue queA;
+    Queue queB;
+    
+    public void setupPTP() {
+        try {
+            InitialContext iniCtx = new InitialContext();
+            Object tmp = iniCtx.lookup("ConnectionFactory");
+            QueueConnectionFactory qcf = (QueueConnectionFactory) tmp;
+            conn = qcf.createQueueConnection();
+            queA = (Queue) iniCtx.lookup("queue/A");
+            queB = (Queue) iniCtx.lookup("queue/B");
+            session = conn.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE);
+            conn.start();
+        } catch(JMSException | NamingException e) {
+            System.out.println("JMS or NamingException: ");
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendRecvAsync(String textBase) {
+        
+        System.out.println("Begin sendRecvAsync");
+
+        // Setup the PTP connection, session
+        setupPTP();
+
+        try {
+            // Set the async listener for queA
+            QueueReceiver recv = session.createReceiver((javax.jms.Queue) queA);
+            recv.setMessageListener(new MessageBean());
+
+            // Send a few text msgs to queB
+            QueueSender send = session.createSender((javax.jms.Queue) queB);
+
+            for(int m = 0; m < 10; m ++) {
+                TextMessage tm = session.createTextMessage(textBase+"#"+m);
+                tm.setJMSReplyTo((Destination) queA);
+                send.send(tm);
+                System.out.println("sendRecvAsync, sent text=" + tm.getText());
+            }
+        } catch(JMSException e) {
+            System.out.println("JMS Exception: ");
+            e.printStackTrace();
+        }
+        
+        System.out.println("End sendRecvAsync");
+    }
+    
+    public void stop() {
+        try {
+            conn.stop();
+            session.close();
+            conn.close();
+        } catch(JMSException e) {
+            System.out.println("JMS Exception: ");
+            e.printStackTrace();
+        }
+    }
+    
+    */
 }
