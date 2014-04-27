@@ -182,7 +182,7 @@
                     <% }%>
                 </ul>
             </div>
-            <div id="sidebar">
+            <div id="sidebar" class="big-wrapper">
                 <%
                     double total = shoppingCartBean.getTotal();
                 %>

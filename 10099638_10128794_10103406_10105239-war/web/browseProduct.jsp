@@ -249,18 +249,19 @@
                                     <textarea class="message product-message" name="productBody"></textarea>
                                     <input id="submit-button" type="submit" value="Comment">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
-                                </form>
+                                </form> 
                                 <form name="refresh" action="browseProduct.jsp" method="POST">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
-                                    <button id="refresh-button" type="submit" name="refresh" value="true">Refresh</button>
+                                    <button id="submit-button" type="submit" name="refresh" value="true">Refresh</button>
                                 </form>
                             </div>
+
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <div id="sidebar">
+        <div id="sidebar" class="big-wrapper">
             <form name="checkout" method="POST" action="checkout.jsp">
                 <%
                     double total = shoppingCartBean.getTotal();

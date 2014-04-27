@@ -337,13 +337,6 @@ button[type="submit"]:hover, input[type="submit"]:hover {
     height: 100%;
 }
 
-#submit-button {
-    height: 30px;
-    width: 20%;
-    border: 2px solid #cb9bf1;
-    border-top: none;
-}
-
 button[type="submit"].product-title-button {
     border: none;
     border-right: 4px solid #cb9bf1;
