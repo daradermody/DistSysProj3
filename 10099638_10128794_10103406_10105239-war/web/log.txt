@@ -1,0 +1,6 @@
+Item can't go down to 0 <-- amount
+After checkout, items aren't deleted from the list
+Add the required users in the database
+Add extra items in database
+Message driven bean <-- switch back to the logging facility at the start?
+Add the message driven bean but comment it. <-- mention in the report

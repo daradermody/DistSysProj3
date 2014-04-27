@@ -132,7 +132,7 @@
                             }
                         }
                     }
-                    
+
                     // If requested product not found, redirect to main product page
                     if (product == null) {
                         response.sendRedirect("index.jsp");

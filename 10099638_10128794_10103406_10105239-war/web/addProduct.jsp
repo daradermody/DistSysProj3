@@ -149,7 +149,7 @@
                                     </tr>
                     </table>
                     <input id="submit-button" type="submit" value="Add Product">
-            </form>
-        </div>
-    </body>
-</html>
+                    </form>
+                </div>
+                </body>
+                </html>

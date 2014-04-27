@@ -66,12 +66,13 @@
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            
+
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if(user.getShoppingCart() != null)
+            if (user.getShoppingCart() != null) {
                 cart = user.shoppingCart;
+            }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -81,7 +82,9 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
 
             // Complete checkout by simply removing all the items in the shopping cart
             String complete = Security.sanitise(request.getParameter("complete"), false);
@@ -113,7 +116,7 @@
                 int productToRemove = Integer.valueOf(productID);
 //                String productTitle = (productBean.searchByID(productToRemove)).getTitle();
                 productBean.removeProduct(productToRemove);
-                
+
                 // Data log for item removal
 //                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
 //                Date date = new Date();
@@ -202,12 +205,12 @@
                                                         Amount: <b><%= amount%></b>
                                                     </td>
                                                     <td>
-        
+
                                                         <% if (isAdmin) {%>
                                                         <button class="product-edit-button" type="submit" name="product-id" value="<%= prodId%>"><img src="images/Edit.png" title="edit"/></button>
 
 
-                                                            <% } else {%>
+                                                        <% } else {%>
                                                         <button class="product-buy-button" type="submit" name="product-id" value="<%= prodId%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
@@ -248,7 +251,7 @@
                         </li>
                         <% }%>
                     </ul>
-                        <hr/>Total: <b><%= total%></b>
+                    <hr/>Total: <b><%= total%></b>
                 </form>
             </div>
         </div>

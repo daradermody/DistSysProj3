@@ -66,12 +66,13 @@
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            
+
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if(user.getShoppingCart() != null)
+            if (user.getShoppingCart() != null) {
                 cart = user.shoppingCart;
+            }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -81,7 +82,9 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
         %>
 
         <!-- Import jQuery -->
@@ -101,9 +104,9 @@
     <body>
         <div class="main-body">
             <h1>Thank you for buying from Koalascense!
-            You didn't have to pay. You still owe us money.
-            Depending on where you live, we will break your legs, unless the
-            police get to you first.</h1>
+                You didn't have to pay. You still owe us money.
+                Depending on where you live, we will break your legs, unless the
+                police get to you first.</h1>
             <br>
             <br>
             <hr>
