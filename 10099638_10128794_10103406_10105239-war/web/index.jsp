@@ -194,7 +194,7 @@
                                                         <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
-                                                        <span class="product-summary">
+                                                        <span>
                                                             <%= summary%>
                                                         </span>
                                                     </td>

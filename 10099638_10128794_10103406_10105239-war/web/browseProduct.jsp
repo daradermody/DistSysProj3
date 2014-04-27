@@ -131,7 +131,7 @@
                     // If the admin user changes the amount of the product, reflect the changes
                     String addAmount = Security.sanitise(request.getParameter("productAmount"), false);
                     int amountAdd = 0;
-                    if(!addAmount.equals("")) {
+                    if (!addAmount.equals("")) {
                         amountAdd = Integer.valueOf(addAmount);
                         if (amountAdd > 0) {
                             productBean.increaseQuantity(product.getId(), amountAdd);
@@ -142,7 +142,7 @@
                     // Ensure that the requested amount will not force the total amount to go below 0
                     String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
                     int amountBuy = 0;
-                    if(!buyAmount.equals("")) {
+                    if (!buyAmount.equals("")) {
                         amountBuy = Integer.valueOf(buyAmount);
                         if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
                             productBean.reduceQuantity(product.getId(), amountBuy);
@@ -160,7 +160,7 @@
                     <table>
                         <tr>
                             <td>
-                                <%= product.getTitle()%>
+                                <button class="product-title-button" type="submit" name="product-id" value="<%= product.getId()%>"><%= product.getTitle()%></button>
                             </td>
                         </tr>
                         <tr>
@@ -168,7 +168,12 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <img src="<%= product.getImage()%>" title="<%= product.getTitle()%>">
+                                            <button class="product-image-button" type="submit" name="product-id" value="<%= product.getId()%>"><img src="<%= product.getImage()%>" title="<%= product.getTitle()%>"></button>
+                                        </td>
+                                        <td>
+                                            <span>
+                                                <%= product.getSummary()%>
+                                            </span>
                                         </td>
                                         <td>
                                             Price: <b><%= product.getPrice()%></b><hr>
@@ -187,7 +192,7 @@
                                         <% if (isAdmin) {%>
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
-                                                <button class="product-title-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="images/Remove.png" title="remove"/></button>
+                                                <button class="product-edit-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="images/Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
                                         <% } else {%>
@@ -196,7 +201,7 @@
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
-                                                <button class="product-title-button" type="submit" name="buyProduct" value="Buy Product"><img src="images/Buy.png" title="buy"/></button>
+                                                <button class="product-edit-button" type="submit" name="buyProduct" value="Buy Product"><img src="images/Buy.png" title="buy"/></button>
                                             </form>
                                         </td>
                                         <% }%>
