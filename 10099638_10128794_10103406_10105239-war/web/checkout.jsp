@@ -10,7 +10,7 @@
         Number: 3
 
 --%>
- 
+
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="interactionBeans.shoppingCart"%>
 <%@page import="interactionBeans.interactProductLocal"%>
@@ -64,12 +64,13 @@
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            
+
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if(user.getShoppingCart() != null)
+            if (user.getShoppingCart() != null) {
                 shoppingCartBean = user.getShoppingCart();
+            }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -79,7 +80,25 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
+
+            // Remove product if instructed by the user
+            String productID = Security.sanitise(request.getParameter("removeCartProduct"), false);
+            if (!productID.equals("")) {
+                int productToRemove = Integer.valueOf(productID);
+
+                // Checks how many items needs to be deleted from the cart
+                String amountReduce = Security.sanitise(request.getParameter("removeAmount"), false);
+                if (!amountReduce.equals("")) {
+                    int reduceAmount = Integer.valueOf(amountReduce);
+                    if ((reduceAmount > 0) && (productToRemove > 0)) {
+                        // Customer removing item from the shopping cart
+                        shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), reduceAmount);
+                    }
+                }
+            }
         %>
 
         <!-- Import jQuery -->
@@ -99,64 +118,69 @@
     <body>
         <div class="main-body">
             <div id="main">
-                <form name="shoppingCart" method="POST" action="browseProduct.jsp">
-                    <ul>
-                        <%-- Loops through getting of shopping cart products --%>
-                        <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
-                            Set<dbEntities.Product> keys = shopCart.keySet();
-                            Iterator<dbEntities.Product> it = keys.iterator();
-                            dbEntities.Product p;
+                <ul>
+                    <%-- Loops through getting of shopping cart products --%>
+                    <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
+                        Set<dbEntities.Product> keys = shopCart.keySet();
+                        Iterator<dbEntities.Product> it = keys.iterator();
+                        dbEntities.Product p;
 
-                            for (int m = 0; m < shopCart.size(); m++) {
-                                p = it.next();
-                                String title = p.getTitle();
-                                String summary = p.getSummary();
-                                String image = p.getImage();
-                                int price = Integer.valueOf(String.valueOf(p.getPrice()));
-                                int amount = p.getQuantity();
-                        %>
-                        <li>
-                            <div class="big-wrapper">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <table>
-                                                <tr>
-                                                    <td>
-                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
-                                                    </td>
-                                                    <td>
-                                                        <span class="product-summary">
-                                                            <%= summary%>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        Price: <%= price%><br/>
-                                                        Amount: <%= amount%><br/>
-                                                        Item Total: <%= (price * amount)%>
-                                                    </td>
-                                                    <td>
+                        for (int m = 0; m < shopCart.size(); m++) {
+                            p = it.next();
+                            String title = p.getTitle();
+                            String summary = p.getSummary();
+                            String image = p.getImage();
+                            int price = Integer.valueOf(String.valueOf(p.getPrice()));
+                            int amount = p.getQuantity();
+                            int prodId = p.getId();
+                    %>
+                    <li>
+                        <div class="big-wrapper">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <form name="shoppingCart" method="POST" action="browseProduct.jsp">
+                                            <button class="product-title-button" type="submit" name="product-id" value="<%= prodId%>"><%= title%></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <form name="shoppingCart" method="POST" action="browseProduct.jsp">
+                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <span class="product-summary">
+                                                        <%= summary%>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    Price: <%= price%><br/>
+                                                    Amount: <%= amount%><br/>
+                                                    Item Total: <%= (price * amount)%>
+                                                </td>
+                                                <td>
+                                                    <form name="shoppingCart" method="POST" action="checkout.jsp">
                                                         <input type="number" name="removeAmount" id="reduce-amount">
                                                         <script type="text/javascript">
                                                             document.getElementById("reduce-amount").value = <%= amount%>;
                                                         </script>
-                                                        <button class="product-title-button" type="submit" name="removeProduct" value="<%= p.getId()%>"><img src="Remove.png" title="edit"/></button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </li>
-                        <% }%>
-                    </ul>
-                </form>
+                                                        <button class="product-title-button" type="submit" name="removeCartProduct" value="<%= p.getId()%>"><img src="images/Remove.png" title="edit"/></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                    <% }%>
+                </ul>
             </div>
             <div id="sidebar">
                 <%
