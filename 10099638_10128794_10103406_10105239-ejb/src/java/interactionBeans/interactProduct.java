@@ -78,6 +78,8 @@ public class interactProduct implements interactProductLocal {
         p.setSummary(summary);
 
         persist(p); // Persist created product
+        
+        //sendRecvAsync("Adding product"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -93,6 +95,7 @@ public class interactProduct implements interactProductLocal {
         Query q  = em.createNamedQuery("Product.findById");
         q.setParameter("id", id);
         return !q.getResultList().isEmpty();
+        //sendRecvAsync("Checking id existence"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
     
     /**
@@ -110,6 +113,7 @@ public class interactProduct implements interactProductLocal {
         q.setParameter("pid", id);
         
         q.executeUpdate(); // Execute query
+        //sendRecvAsync("Removing product"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -129,6 +133,7 @@ public class interactProduct implements interactProductLocal {
         
         // Return the product with the given ID, or null if it is not found
         return (results.size() > 0) ? (Product) q.getResultList().get(0) : null;
+        //sendRecvAsync("Searching by ID"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -141,6 +146,7 @@ public class interactProduct implements interactProductLocal {
         // Create query to return all products
         Query q = em.createNamedQuery("Product.findAll");
         return q.getResultList(); // Return list of all products
+        //sendRecvAsync("Finding products"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -200,7 +206,7 @@ public class interactProduct implements interactProductLocal {
             
             success = true;
         }
-
+        //sendRecvAsync("Updating quantity"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
         return success;
     }
 
