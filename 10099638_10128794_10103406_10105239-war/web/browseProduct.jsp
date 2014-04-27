@@ -125,41 +125,41 @@
                     // If requested product not found, redirect to main product page
                     if (product == null) {
                         response.sendRedirect("index.jsp");
-                    }
-                    else {
-                    // If the admin user changes the amount of the product, reflect the changes
-                    String addAmount = Security.sanitise(request.getParameter("productAmount"), false);
-                    int amountAdd = 0;
-                    if (!addAmount.equals("")) {
-                        amountAdd = Integer.valueOf(addAmount);
-                        productBean.increaseQuantity(product.getId(), amountAdd);
-                    }
-
-                    product = productBean.searchByID(product.getId());
-                    
-                    // If the user opts to buy the item, decrease amount of item and add to shopping cart
-                    // Ensure that the requested amount will not force the total amount to go below 0
-                    String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
-                    int amountBuy = 0;
-                    if (!buyAmount.equals("")) {
-                        amountBuy = Integer.valueOf(buyAmount);
-                        System.out.println("Product exists: " + (product != null));
-                        if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
-                            System.out.println("Product bean exists: " + (productBean != null));
-                            productBean.reduceQuantity(product.getId(), amountBuy);
-                            System.out.println("Shopping cart exists: " + (shoppingCartBean != null));
-                            shoppingCartBean.addItem(product, amountBuy);
-                            System.out.println("Test5");
+                    } else {
+                        // If the admin user changes the amount of the product, reflect the changes
+                        String addAmount = Security.sanitise(request.getParameter("productAmount"), false);
+                        int amountAdd = 0;
+                        if (!addAmount.equals("")) {
+                            amountAdd = Integer.valueOf(addAmount);
+                            productBean.increaseQuantity(product.getId(), amountAdd);
                         }
-                    }
 
-                    // If user posted content, add comment to product
-                    String postedContent = Security.sanitise(request.getParameter("productBody"), true);
-                    if (!postedContent.equals("")) {
-                        System.out.println("Test6");
-                        productBean.addComment(product, customer, postedContent);
-                        System.out.println("Test7");
-                    } }%>
+                        product = productBean.searchByID(product.getId());
+
+                    // If the user opts to buy the item, decrease amount of item and add to shopping cart
+                        // Ensure that the requested amount will not force the total amount to go below 0
+                        String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
+                        int amountBuy = 0;
+                        if (!buyAmount.equals("")) {
+                            amountBuy = Integer.valueOf(buyAmount);
+                            System.out.println("Product exists: " + (product != null));
+                            if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
+                                System.out.println("Product bean exists: " + (productBean != null));
+                                productBean.reduceQuantity(product.getId(), amountBuy);
+                                System.out.println("Shopping cart exists: " + (shoppingCartBean != null));
+                                shoppingCartBean.addItem(product, amountBuy);
+                                System.out.println("Test5");
+                            }
+                        }
+
+                        // If user posted content, add comment to product
+                        String postedContent = Security.sanitise(request.getParameter("productBody"), true);
+                        if (!postedContent.equals("")) {
+                            System.out.println("Test6");
+                            productBean.addComment(product, customer, postedContent);
+                            System.out.println("Test7");
+                        }
+                    }%>
 
                 <div class="big-wrapper">
                     <table>
@@ -207,6 +207,7 @@
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
                                                 <button class="product-edit-button" type="submit" name="buyProduct" value="Buy Product"><img height="32" width="32" src="images/Buy.png" title="buy"/></button>
+                                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
                                             </form>
                                         </td>
                                         <% }%>
@@ -250,16 +251,16 @@
                             </div>
 
                             <div class="message">
-                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 <form name="newComment" action="browseProduct.jsp" method="POST">
                                     <textarea class="message product-message" name="productBody"></textarea>
                                     <input id="submit-button" type="submit" value="Comment">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
+                                    <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 </form> 
-                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 <form name="refresh" action="browseProduct.jsp" method="POST">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
                                     <button id="submit-button" type="submit" name="refresh" value="true">Refresh</button>
+                                    <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 </form>
                             </div>
 
@@ -293,7 +294,7 @@
                     </li>
                     <% }%>
                 </ul>
-                    <br/>Total: <b><%= total%></b>
+                <br/>Total: <b><%= total%></b>
             </form>
         </div>
     </body>
