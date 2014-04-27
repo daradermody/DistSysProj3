@@ -65,12 +65,13 @@
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            
+
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if(user.getShoppingCart() != null)
+            if (user.getShoppingCart() != null) {
                 shoppingCartBean = user.getShoppingCart();
+            }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -80,7 +81,9 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
         %>
 
         <!-- Import jQuery -->
@@ -108,25 +111,31 @@
                             dbEntities.Product product = new dbEntities.Product();
                             String searchBy = Security.sanitise(request.getParameter("searchBy"), false);
                             if (searchBy.equals("ID")) {
-                                int searchID = Integer.valueOf(Security.sanitise(request.getParameter("searchKeywords"), false));
+                                int searchID = 0;
+                                try {
+                                    searchID = Integer.valueOf(Security.sanitise(request.getParameter("searchKeywords"), false));
+                                } catch(NumberFormatException e) {
+                                    System.out.println("Error caught: User searched for ID with non-integer string");
+                                }
                                 product = interactProduct.searchByID(searchID);
-                                results.add(product);
-                            }
-                            else if (searchBy.equals("name")) {
+                                if (product != null)
+                                    results.add(product);
+                            } else if (searchBy.equals("name")) {
                                 String searchKW = Security.sanitise(request.getParameter("searchKeywords"), false);
                                 results.addAll(interactProduct.searchProductByKeyword(searchKW));
                             }
 
-                        // Loops through search results
-                            for (dbEntities.Product prod : results) {
-                                String title = prod.getTitle();
-                                String summary = prod.getSummary();
-                                String image = prod.getImage();
-                                int price = Integer.valueOf(String.valueOf(prod.getPrice()));
-                                int amount = prod.getQuantity();
+                            if (!results.isEmpty()) {
+                                // Loops through search results
+                                for (dbEntities.Product prod : results) {
+                                    String title = prod.getTitle();
+                                    String summary = prod.getSummary();
+                                    String image = prod.getImage();
+                                    int price = Integer.valueOf(String.valueOf(prod.getPrice()));
+                                    int amount = prod.getQuantity();
 
-                                // Check to ensure that the amount is at least 1
-                                if (amount > 0) {
+                                    // Check to ensure that the amount is at least 1
+                                    if (amount > 0) {
                         %>
                         <li>
                             <div class="big-wrapper">
@@ -166,12 +175,16 @@
                                 </table>
                             </div>
                         </li>
-                        <% } else { %>
+                        <%
+                                }
+                            }
+                        } else { %>
                         <li>
                             There are no search results to show!
                         </li>
-                        <% }
-                            }%>
+                        <%
+                            }
+                        %>
                     </ul>
                 </form>
             </div>

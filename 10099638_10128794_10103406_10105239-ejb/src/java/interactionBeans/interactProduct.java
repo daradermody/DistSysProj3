@@ -80,11 +80,14 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public Product searchByID(int pid) {
+        List<Product> results;
         //@NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
         Query q = em.createNamedQuery("Product.findById");
         q.setParameter("id", pid);
-
-        return (Product) q.getSingleResult();
+        
+        results = q.getResultList();
+        
+        return (results.size() > 0) ? (Product) q.getResultList().get(0) : null;
     }
 
     /**
