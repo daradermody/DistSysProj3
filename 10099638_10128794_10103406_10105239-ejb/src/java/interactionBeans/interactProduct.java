@@ -53,7 +53,7 @@ public class interactProduct implements interactProductLocal {
         Query q = em.createNamedQuery("Product.countAll");
         
         // Convert result to integer
-        int id = (int) q.getSingleResult();
+        int id = Integer.valueOf(q.getSingleResult().toString());
         // Find ID that is not in use
         while( idExists(id) ){
             id +=1;
@@ -223,7 +223,7 @@ public class interactProduct implements interactProductLocal {
         Query q = em.createNamedQuery("Comments.countAll");
         
         // Get result and convert to integer
-        int id = (int) q.getSingleResult();
+        int id = Integer.valueOf(q.getSingleResult().toString());
         
         // Find ID that is not currently in use
         while( commentIdExists(id) ){
