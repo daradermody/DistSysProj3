@@ -143,16 +143,17 @@ public class interactProduct implements interactProductLocal {
         //First, check if the quanitity
         Query q = em.createNamedQuery("Product.findQuantityByID");
         q.setParameter("pid", pid);
-        int quantity = q.getFirstResult();
+        int quantity = (int) q.getSingleResult();
         // the quantity must be greater than the requested amount
         //requested amount is +ve => adding stock -> no theoretical limit
         
-        if (quantity >= Math.abs(diff) || diff > 0) {
+        if ((quantity + diff) > 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
             q2.setParameter("pid", pid);
             q2.setParameter("amt", quantity+diff);
+            q2.executeUpdate();
             //The query was run!
             success = true;
         }

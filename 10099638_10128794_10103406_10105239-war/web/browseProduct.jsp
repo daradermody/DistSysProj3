@@ -132,11 +132,11 @@
                     int amountAdd = 0;
                     if (!addAmount.equals("")) {
                         amountAdd = Integer.valueOf(addAmount);
-                        if (amountAdd > 0)
-                            productBean.increaseQuantity(product.getId(), amountAdd);
+                        productBean.increaseQuantity(product.getId(), amountAdd);
                     }
 
-
+                    product = productBean.searchByID(product.getId());
+                    
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
                     String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
