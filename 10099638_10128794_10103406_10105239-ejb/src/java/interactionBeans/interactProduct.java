@@ -51,7 +51,7 @@ public class interactProduct implements interactProductLocal {
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
         Query q = em.createNamedQuery("Product.countAll");
         int id = Integer.valueOf(q.getSingleResult().toString());
-        while( !idExists(id) ){
+        while( idExists(id) ){
             id +=1;
         }
         Product p = new Product(id, title, quantity);
@@ -197,11 +197,20 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void addComment(Product prod, Customer cust, String content) {
-
-        Comments comm = new Comments(0, content, cust.getUsername(), prod.getId());
+        Query q = em.createNamedQuery("Comments.countAll");
+        int id = Integer.valueOf(q.getSingleResult().toString());
+        while( commentIdExists(id) ){
+            id +=1;
+        }
+        Comments comm = new Comments(id, content, cust.getUsername(), prod.getId());
         em.persist(comm);
     }
 
+    public boolean commentIdExists(int id){
+        Query q  = em.createNamedQuery("Comments.findById");
+        q.setParameter("id", id);
+        return !q.getResultList().isEmpty();
+    }
     /**
      * Returns a List of Comments associated with the product. Calls the
      * Comments.findByProduct named query.

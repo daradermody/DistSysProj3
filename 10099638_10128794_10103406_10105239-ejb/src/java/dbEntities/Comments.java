@@ -33,7 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Comments.findByContent", query = "SELECT c FROM Comments c WHERE c.content = :content"),
     @NamedQuery(name = "Comments.findByPoster", query = "SELECT c FROM Comments c WHERE c.poster = :poster"),
     @NamedQuery(name = "Comments.findByProduct", query = "SELECT c FROM Comments c WHERE c.product = :product"),
-    @NamedQuery(name = "Comments.findByDate", query = "SELECT c FROM Comments c WHERE c.date = :date")})
+    @NamedQuery(name = "Comments.findByDate", query = "SELECT c FROM Comments c WHERE c.date = :date"),
+    @NamedQuery(name = "Comments.countAll", query = "SELECT COUNT(c) FROM Comments c")
+})
 public class Comments implements Serializable {
 
     private static final long serialVersionUID = 1L;
