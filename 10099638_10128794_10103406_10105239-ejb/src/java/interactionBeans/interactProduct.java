@@ -146,12 +146,13 @@ public class interactProduct implements interactProductLocal {
         int quantity = q.getFirstResult();
         // the quantity must be greater than the requested amount
         //requested amount is +ve => adding stock -> no theoretical limit
+        
         if (quantity >= Math.abs(diff) || diff > 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
             q2.setParameter("pid", pid);
-            q2.setParameter("amt", diff);
+            q2.setParameter("amt", quantity+diff);
             //The query was run!
             success = true;
         }

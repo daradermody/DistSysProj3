@@ -34,7 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Product.findByDescription", query = "SELECT p FROM Product p WHERE p.description = :description"),
     @NamedQuery(name = "Product.findByPrice", query = "SELECT p FROM Product p WHERE p.price = :price"),
     @NamedQuery(name = "Product.findByKeyword", query = "SELECT p FROM Product p WHERE lower(p.summary) LIKE lower(:kw) OR lower(p.description) LIKE lower(:kw) OR lower(p.title) LIKE lower(:kw)"),
-    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product p SET quantity=(SELECT quanitity from product q WHERE q.id=:pid)+:amt WHERE p.id=:pid")
+    @NamedQuery(name = "Product.updateStock", query = "UPDATE Product p SET p.quantity=:amt WHERE p.id=:pid"),
+    @NamedQuery(name = "Product.findQuantityByID", query="SELECT p.quantity FROM Product p WHERE p.id=:pid"),
+    @NamedQuery(name = "Product.countAll", query="SELECT COUNT(p) FROM Product p"),
+    @NamedQuery(name = "Product.removeByID", query="DELETE FROM Product p WHERE p.id=:pid")
 })
 
 public class Product implements Serializable {
