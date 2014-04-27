@@ -10,6 +10,8 @@
         Number: 3
 
 --%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="interactionBeans.shoppingCart"%>
 <%@page import="java.lang.NullPointerException"%>
 <%@page import="mainPackage.Security"%>
 <%@page import="java.util.Map.Entry"%>
@@ -17,6 +19,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page errorPage="/errorPage.jsp" %>
 
+<%!
+    shoppingCart cart = null;
+
+    // Initializes the enterprise java beans
+    public void jspInit() {
+        try {
+            cart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,6 +60,7 @@
             // Check if page was reached upon clicking the Log Out button
             String id = null;
             if (Security.sanitise((String) request.getParameter("log-out"), true).equals("true")) {
+                System.out.println("Log out");
                 // Check for ID in cookies
                 Cookie[] cookies = request.getCookies(); // Fetch Cookie array
                 if (cookies != null) // Cycle through each cookie in Cookie array to find one with name "id"

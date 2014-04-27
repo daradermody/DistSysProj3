@@ -86,17 +86,6 @@
                 response.addCookie(cookie);
             }
 
-            // Complete checkout by simply removing all the items in the shopping cart
-            String complete = Security.sanitise(request.getParameter("complete"), false);
-            if (!complete.equals("")) {
-                cart.checkout();
-
-                // Data log for completed checkout
-//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-//                Date date = new Date();
-//                fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
-            }
-
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
             if (!deleteAll.equals("")) {

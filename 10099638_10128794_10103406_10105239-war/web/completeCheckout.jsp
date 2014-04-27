@@ -85,6 +85,17 @@
             {
                 response.addCookie(cookie);
             }
+
+            // Complete checkout by simply removing all the items in the shopping cart
+            String complete = Security.sanitise(request.getParameter("complete"), false);
+            if (!complete.equals("")) {
+                cart.checkout();
+
+                // Data log for completed checkout
+//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+//                Date date = new Date();
+//                fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
+            }
         %>
 
         <!-- Import jQuery -->
