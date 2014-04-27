@@ -189,9 +189,9 @@
                 <br/>Total: <b><%= total%></b>
                 <br/>
                 <form name="cartActions" method="POST" action="index.jsp">
-                    <button type="submit" name="complete" value="Complete"><img src="images/Complete.png" title="complete"></button>
-                    <button type="submit" name="cancel" value="Cancel"><img src="images/Cancel.png" title="cancel"></button>
-                    <button type="submit" name="deleteAll" value="Delete All"><img src="images/Trash.png" title="deleteAll"></button>
+                    <button class="checkout-button" type="submit" name="complete" value="Complete"><img src="images/Complete.png" title="complete"></button>
+                    <br><button class="checkout-button" type="submit" name="cancel" value="Cancel"><img src="images/Cancel.png" title="cancel"></button>
+                    <br><button class="checkout-button" type="submit" name="deleteAll" value="Delete All"><img src="images/Trash.png" title="deleteAll"></button>
                 </form>
             </div>
         </div>

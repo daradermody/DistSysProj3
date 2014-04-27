@@ -296,7 +296,7 @@
                     </li>
                     <% }%>
                 </ul>
-                <br/>Total: <%= total%>
+                    <br/>Total: <b><%= total%></b>
             </form>
         </div>
     </body>

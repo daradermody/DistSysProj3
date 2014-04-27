@@ -114,12 +114,13 @@
                                 int searchID = 0;
                                 try {
                                     searchID = Integer.valueOf(Security.sanitise(request.getParameter("searchKeywords"), false));
-                                } catch(NumberFormatException e) {
+                                } catch (NumberFormatException e) {
                                     System.out.println("Error caught: User searched for ID with non-integer string");
                                 }
                                 product = interactProduct.searchByID(searchID);
-                                if (product != null)
+                                if (product != null) {
                                     results.add(product);
+                                }
                             } else if (searchBy.equals("name")) {
                                 String searchKW = Security.sanitise(request.getParameter("searchKeywords"), false);
                                 results.addAll(interactProduct.searchProductByKeyword(searchKW));
@@ -213,7 +214,7 @@
                         </li>
                         <% }%>
                     </ul>
-                    <br/>Total: <%= total%>
+                    <br/>Total: <b><%= total%></b>
                 </form>
             </div>
         </div>
