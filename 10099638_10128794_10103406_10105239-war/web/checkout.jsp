@@ -10,7 +10,6 @@
         Number: 3
 
 --%>
-
 <%@page import="javax.naming.InitialContext"%>
 <%@page import="interactionBeans.shoppingCart"%>
 <%@page import="interactionBeans.interactProductLocal"%>
@@ -96,6 +95,7 @@
                     if ((reduceAmount > 0) && (productToRemove > 0)) {
                         // Customer removing item from the shopping cart
                         shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), reduceAmount);
+                        interactProduct.increaseQuantity(productToRemove, reduceAmount);
                     }
                 }
             }
@@ -131,7 +131,7 @@
                             String summary = p.getSummary();
                             String image = p.getImage();
                             int price = Integer.valueOf(String.valueOf(p.getPrice()));
-                            int amount = p.getQuantity();
+                            int amount = shoppingCartBean.getItems().get(p);
                             int prodId = p.getId();
                     %>
                     <li>
@@ -150,7 +150,7 @@
                                             <tr>
                                                 <td>
                                                     <form name="shoppingCart" method="POST" action="browseProduct.jsp">
-                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img height="90" width="90" src="<%= image%>" title="<%= title%>"></button>
                                                     </form>
                                                 </td>
                                                 <td>
@@ -169,7 +169,7 @@
                                                         <script type="text/javascript">
                                                             document.getElementById("reduce-amount").value = <%= amount%>;
                                                         </script>
-                                                        <button class="product-title-button" type="submit" name="removeCartProduct" value="<%= p.getId()%>"><img src="images/Remove.png" title="edit"/></button>
+                                                        <button class="product-title-button" type="submit" name="removeCartProduct" value="<%= p.getId()%>"><img height="32" width="32"  src="images/Remove.png" title="edit"/></button>
                                                     </form>
                                                 </td>
                                             </tr>

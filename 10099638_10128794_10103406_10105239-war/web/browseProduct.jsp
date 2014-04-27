@@ -1,12 +1,13 @@
 <%-- 
  
-   Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
+   Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
    Module:      Distributed Systems 2
         Code:   CE4208
    Lecturer:    Reiner Dojen
-   Date:        07 April 2014
+   Date:        25 April 2014
  
-   Project:     Secure Authentication and Session Management System for a Web Application
+   Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+        Number: 3
 
 --%>
 <%@page import="interactionBeans.interactCustomerLocal"%>
@@ -67,19 +68,19 @@
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            
+
             System.out.println("Starting shopping cart crap");
             System.out.println("Shopping cart exists " + (user.shoppingCart != null));
 
-            if(user.getShoppingCart() == null) {
+            if (user.getShoppingCart() == null) {
                 user.shoppingCart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
                 System.out.println("Creating new shopping cart");
             }
-                
+
             cart = user.shoppingCart;
             System.out.println("Exist? " + (cart != null));
             //System.out.println("test: " + cart.printItemList());
-            
+
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
 
@@ -143,9 +144,7 @@
                             productBean.increaseQuantity(product.getId(), amountAdd);
                         }
 
-                        product = productBean.searchByID(product.getId());
-
-                    // If the user opts to buy the item, decrease amount of item and add to shopping cart
+                        // If the user opts to buy the item, decrease amount of item and add to shopping cart
                         // Ensure that the requested amount will not force the total amount to go below 0
                         String buyAmount = Security.sanitise(request.getParameter("reduceAmount"), false);
                         int amountBuy = 0;
@@ -160,6 +159,7 @@
                                 System.out.println("Test5");
                             }
                         }
+                        product = productBean.searchByID(product.getId());
 
                         // If user posted content, add comment to product
                         String postedContent = Security.sanitise(request.getParameter("productBody"), true);
@@ -182,7 +182,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-image-button" type="submit"><img src="<%= product.getImage()%>" title="<%= product.getTitle()%>"></button>
+                                            <button class="product-image-button" type="submit"><img height="90" width="90" src="<%= product.getImage()%>" title="<%= product.getTitle()%>"></button>
                                         </td>
                                         <td>
                                             <span>
@@ -211,7 +211,6 @@
                                         <% } else {%>
                                         <td>
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
-                                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
@@ -239,8 +238,9 @@
                             String message = comm.getContent();
                             String poster = comm.getPoster();
                             String date = "";
-                            if(comm.getDate() != null)
+                            if (comm.getDate() != null) {
                                 date = comm.getDate().toString();
+                            }
                     %>
                     <li>
                         <div class="big-wrapper message-container">
@@ -254,7 +254,8 @@
                             </div>
                         </div>
                     </li>
-                    <% } System.out.println("End loop"); // End of for loop for retrieving all messages%>
+                    <% }
+                        System.out.println("End loop"); // End of for loop for retrieving all messages%>
 
                     <li>
                         <div class="big-wrapper message-container">
@@ -298,8 +299,9 @@
                         for (int i = 0; i < shopCart.size(); i++) {
                             p = it.next();
                             String title = p.getTitle();
+                            //TODO shoppingCart.getQuantity(key) might be more efficient
                             int price = Integer.valueOf(String.valueOf(p.getPrice()));
-                            int amount = p.getQuantity();
+                            int amount = cart.getItems().get(p);
                     %>
                     <li>
                         <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>

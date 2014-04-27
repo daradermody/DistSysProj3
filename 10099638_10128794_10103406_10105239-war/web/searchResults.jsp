@@ -28,13 +28,13 @@
 
 <%!
     interactProductLocal interactProduct = null;
-    shoppingCart shoppingCartBean = null;
+    shoppingCart cart = null;
     interactCustomerLocal customerBean = null;
 
     public void jspInit() {
         try {
             interactProduct = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
-            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+            cart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
             customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
@@ -70,7 +70,7 @@
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
             if (user.getShoppingCart() != null) {
-                shoppingCartBean = user.getShoppingCart();
+                cart = user.getShoppingCart();
             }
 
             // Determine if user has cookies disabled
@@ -151,7 +151,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img height="90" width="90" src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span class="product-summary">
@@ -192,13 +192,13 @@
             <div id="sidebar" class="big-wrapper">
                 <form name="checkout" method="POST" action="checkout.jsp">
                     <%
-                        double total = shoppingCartBean.getTotal();
+                        double total = cart.getTotal();
                     %>
                     <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>
-                        <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
+                        <%  HashMap<dbEntities.Product, Integer> shopCart = cart.get5Items();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
@@ -207,7 +207,7 @@
                                 p = it.next();
                                 String prTitle = p.getTitle();
                                 int prPrice = Integer.valueOf(String.valueOf(p.getPrice()));
-                                int prAmount = p.getQuantity();
+                                int prAmount = cart.getItems().get(p);
                         %>
                         <li>
                             <button type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></button>

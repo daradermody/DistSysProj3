@@ -1,12 +1,13 @@
 <%-- 
  
-   Group:       Dara Dermody (10099638), Emma Foley (10105239), Niko Flores (10103406), Patrick O'Keeffe (10128794)
+   Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
    Module:      Distributed Systems 2
         Code:   CE4208
    Lecturer:    Reiner Dojen
-   Date:        07 April 2014
+   Date:        25 April 2014
  
-   Project:     Secure Authentication and Session Management System for a Web Application
+   Project:     Online Shop Application using Enterprise JavaBeans and Entity Classes
+        Number: 3
 
 --%>
 <%@page import="interactionBeans.interactProductLocal"%>
@@ -192,7 +193,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodId%>"><img height="90" width="90" src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span>
@@ -243,7 +244,7 @@
                                 p = it.next();
                                 String title = p.getTitle();
                                 int price = Integer.valueOf(String.valueOf(p.getPrice()));
-                                int amount = p.getQuantity();
+                                int amount = cart.getItems().get(p);
                         %>
                         <li>
                             <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
