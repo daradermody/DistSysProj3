@@ -70,6 +70,7 @@ public class shoppingCartBean implements shoppingCart {
         // adjust quantity and put back to cart
         orderQuantity += quantity;
         items.put(p, orderQuantity);
+        //sendRecvAsync("Adding item"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -94,6 +95,8 @@ public class shoppingCartBean implements shoppingCart {
             // final quantity > 0 - adjust quantity
             items.put(p, orderQuantity);
         }
+        
+        //sendRecvAsync("Removing item"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
 
     }
 
@@ -126,7 +129,8 @@ public class shoppingCartBean implements shoppingCart {
             //The query was run!
             success = true;
         }
-
+        //sendRecvAsync("Updating quantity"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
+        
         return success;
     }
 
@@ -137,6 +141,7 @@ public class shoppingCartBean implements shoppingCart {
     @Override
     public void logout(){
         cancel(); //empty the cart and destroy when the user logs out
+        //sendRecvAsync("Loging out"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
     
     /**
@@ -162,7 +167,9 @@ public class shoppingCartBean implements shoppingCart {
             System.out.println("Product ID: " + prod.getId());
             System.out.println("Amount in Cart: " + amountInCart);
             items.remove(prod);
+            
         }
+        //sendRecvAsync("Cancelling"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -179,6 +186,7 @@ public class shoppingCartBean implements shoppingCart {
             k = it.next();
             message += k.getTitle() + ", quantity: " + items.get(k) + "\n<br>";
         }
+        //sendRecvAsync("Printing item list"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
         return message;
     }
 
@@ -202,6 +210,7 @@ public class shoppingCartBean implements shoppingCart {
                 p = it.next();
                 hm.put(p, items.get(p));
             }
+            //sendRecvAsync("Getting five items in cart"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
             return hm;
         }
     }
@@ -221,7 +230,7 @@ public class shoppingCartBean implements shoppingCart {
             curr = it.next();
             total += curr.getPrice() * items.get(curr);
         }
-
+        //sendRecvAsync("Getting total cost"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
         return total;
     }
 
@@ -233,6 +242,7 @@ public class shoppingCartBean implements shoppingCart {
     @Override
     public HashMap<Product, Integer> getItems() {
         return this.items;
+        //sendRecvAsync("Getting items in cart"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
     }
 
     /**
@@ -255,7 +265,7 @@ public class shoppingCartBean implements shoppingCart {
             p = it.next();
             removeItem(p, p.getQuantity());
         }
-        
+        //sendRecvAsync("checking out"); stop(); // MESSAGE DRIVEN BEAN COMMENTED OUT
         return message;
     }
 
