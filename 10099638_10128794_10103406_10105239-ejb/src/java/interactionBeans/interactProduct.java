@@ -69,7 +69,8 @@ public class interactProduct implements interactProductLocal {
     @Override
     public void removeProduct(int id) {
         Query q = em.createNamedQuery("Product.removeByID");
-        q.setParameter("id", id);
+        q.setParameter("pid", id);
+        q.executeUpdate();
     }
 
     /**

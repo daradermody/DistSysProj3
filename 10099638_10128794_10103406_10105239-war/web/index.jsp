@@ -113,12 +113,14 @@
             if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
                 //admin removing the item from database
+                String productTitle = (productBean.searchByID(productToRemove)).getTitle();
                 productBean.removeProduct(productToRemove);
                 
+                //TODO: Make it work
                 // Data log for item removal
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
                 Date date = new Date();
-                fileLog.println("Item: " + (productBean.searchByID(productToRemove)).getTitle() + " removed @ " + date.toString());
+                fileLog.println("Item: " + productTitle + " removed @ " + date.toString());
             }
 
             // Add new product if parameters exist
