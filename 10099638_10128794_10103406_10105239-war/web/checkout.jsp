@@ -22,7 +22,7 @@
 <%@page import="mainPackage.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
 
 <%!
@@ -30,6 +30,7 @@
     shoppingCart shoppingCartBean = null;
     interactCustomerLocal customerBean = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             interactProduct = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -84,6 +85,7 @@
             }
 
             // Remove product if instructed by the user
+            // Ensures that the passed parameters are propers
             String productID = Security.sanitise(request.getParameter("removeCartProduct"), false);
             if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
@@ -94,8 +96,8 @@
                     int reduceAmount = Integer.valueOf(amountReduce);
                     if ((reduceAmount > 0) && (productToRemove > 0)) {
                         // Customer removing item from the shopping cart
-                        shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), reduceAmount);
-                        interactProduct.increaseQuantity(productToRemove, reduceAmount);
+                        shoppingCartBean.removeItem(interactProduct.searchByID(productToRemove), reduceAmount); // Remove item from cart
+                        interactProduct.increaseQuantity(productToRemove, reduceAmount); // Add item back to main product database
                     }
                 }
             }
@@ -119,7 +121,7 @@
         <div class="main-body">
             <div id="main">
                 <ul>
-                    <%-- Loops through getting of shopping cart products --%>
+                    <%-- Loops through - getting all shopping cart products --%>
                     <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.getItems();
                         Set<dbEntities.Product> keys = shopCart.keySet();
                         Iterator<dbEntities.Product> it = keys.iterator();

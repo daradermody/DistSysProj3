@@ -17,13 +17,14 @@
 <%@page import="interactionBeans.interactProductLocal"%>
 <%@page import="mainPackage.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
 
 <%!
     interactProductLocal productBean = null;
     shoppingCart shoppingCartBean = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -59,12 +60,13 @@
                 // Forward request (with parameters) to login page for authentication
                 getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            
+
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if(user.getShoppingCart() != null)
+            if (user.getShoppingCart() != null) {
                 shoppingCartBean = user.getShoppingCart();
+            }
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -74,7 +76,9 @@
             cookie.setMaxAge(-1); // Cookie will be deleted when browser exits
             cookie.setSecure(true); // Forces browser to only send cookie over HTTPS/SSL
             if (!cookiesDisabled) // If cookies enabled, add cookie to response
+            {
                 response.addCookie(cookie);
+            }
         %>
 
         <!-- Import jQuery -->
@@ -145,7 +149,7 @@
                                     </tr>
                     </table>
                     <input id="submit-button" type="submit" value="Add Product">
-                    </form>
-                </div>
-                </body>
-                </html>
+            </form>
+        </div>
+    </body>
+</html>

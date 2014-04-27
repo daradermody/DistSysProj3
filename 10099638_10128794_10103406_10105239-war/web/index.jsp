@@ -24,12 +24,13 @@
 <%@page import="interactionBeans.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 
 <%!
     interactProductLocal productBean = null;
     shoppingCart cart = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -110,11 +111,9 @@
             String productID = Security.sanitise(request.getParameter("removeProduct"), false);
             if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
-                //admin removing the item from database
 //                String productTitle = (productBean.searchByID(productToRemove)).getTitle();
                 productBean.removeProduct(productToRemove);
                 
-                //TODO: Make it work
                 // Data log for item removal
 //                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
 //                Date date = new Date();
@@ -175,7 +174,7 @@
                                 int price = Integer.valueOf(String.valueOf(product.getPrice()));
                                 int amount = product.getQuantity();
                                 int prodId = product.getId();
-                                // Check to ensure that the amount is at least 1
+                                // Check to ensure that the amount is at least 1 or if the user is admin, as admins can increase quantity
                                 if (amount > 0 || isAdmin) {
                         %>
                         <li>
@@ -232,7 +231,7 @@
                     <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
-                        <%-- Loops through, getting 5 items of the shopping cart --%>
+                        <%-- Loops through, getting ONLY 5 items of the shopping cart --%>
                         <%  HashMap<dbEntities.Product, Integer> shopCart = cart.get5Items();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();

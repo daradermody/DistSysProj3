@@ -23,7 +23,7 @@
 <%@page import="mainPackage.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
 
 <%!
@@ -31,6 +31,7 @@
     shoppingCart cart = null;
     interactCustomerLocal customerBean = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             interactProduct = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -110,6 +111,7 @@
                             ArrayList<dbEntities.Product> results = new ArrayList<>();
                             dbEntities.Product product = new dbEntities.Product();
                             String searchBy = Security.sanitise(request.getParameter("searchBy"), false);
+                            // Differentiates between search by ID or by keywords
                             if (searchBy.equals("ID")) {
                                 int searchID = 0;
                                 try {
@@ -135,7 +137,7 @@
                                     int price = Integer.valueOf(String.valueOf(prod.getPrice()));
                                     int amount = prod.getQuantity();
                                     int prodID = prod.getId();
-                                    // Check to ensure that the amount is at least 1
+                                    // Check to ensure that the amount is at least 1 (it will not display items whose amounts are less than 1
                                     if (amount > 0) {
                         %>
                         <li>

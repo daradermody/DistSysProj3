@@ -21,7 +21,7 @@
 <%@page import="mainPackage.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 <jsp:include page="/header.jsp" />
 
 <%!
@@ -29,6 +29,7 @@
     shoppingCart cart = null;
     interactCustomerLocal customerBean = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -79,7 +80,6 @@
 
             cart = user.shoppingCart;
             System.out.println("Exist? " + (cart != null));
-            //System.out.println("test: " + cart.printItemList());
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -120,7 +120,7 @@
                         }
                     }
 
-                    // Retrieves the request product from database
+                    // Retrieves the requested product from database
                     dbEntities.Product product = null;
                     String requestedProduct = Security.sanitise(request.getParameter("product-id"), false);
                     if (requestedProduct != "") {
@@ -132,6 +132,7 @@
                             }
                         }
                     }
+                    
                     // If requested product not found, redirect to main product page
                     if (product == null) {
                         response.sendRedirect("index.jsp");
@@ -150,13 +151,9 @@
                         int amountBuy = 0;
                         if (!buyAmount.equals("")) {
                             amountBuy = Integer.valueOf(buyAmount);
-                            System.out.println("Product exists: " + (product != null));
                             if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
-                                System.out.println("Product bean exists: " + (productBean != null));
                                 productBean.reduceQuantity(product.getId(), amountBuy);
-                                System.out.println("Shopping cart exists: " + (cart != null));
                                 cart.addItem(product, amountBuy);
-                                System.out.println("Test5");
                             }
                         }
                         product = productBean.searchByID(product.getId());
@@ -164,9 +161,7 @@
                         // If user posted content, add comment to product
                         String postedContent = Security.sanitise(request.getParameter("productBody"), true);
                         if (!postedContent.equals("")) {
-                            System.out.println("Test6");
                             productBean.addComment(product, customer, postedContent);
-                            System.out.println("Test7");
                         }
                     }%>
 
@@ -232,7 +227,7 @@
                 </div>
                 <ul>
                     <%
-                        // For each message, display according to set of tags and style
+                        // Display each comment for the specified product
                         for (dbEntities.Comments comm : productBean.getComments(product.getId())) {
                             System.out.println("Comment date exists? " + (comm.getDate() != null));
                             String message = comm.getContent();
@@ -290,7 +285,7 @@
                 <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                 <br>
                 <ul>
-                    <%-- Loops through, getting 5 items of the shopping cart --%>
+                    <%-- Loops through, getting ONLY 5 items of the shopping cart --%>
                     <%  HashMap<dbEntities.Product, Integer> shopCart = cart.get5Items();
                         Set<dbEntities.Product> keys = shopCart.keySet();
                         Iterator<dbEntities.Product> it = keys.iterator();
@@ -299,7 +294,6 @@
                         for (int i = 0; i < shopCart.size(); i++) {
                             p = it.next();
                             String title = p.getTitle();
-                            //TODO shoppingCart.getQuantity(key) might be more efficient
                             int price = Integer.valueOf(String.valueOf(p.getPrice()));
                             int amount = cart.getItems().get(p);
                     %>

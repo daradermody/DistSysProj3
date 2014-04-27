@@ -24,12 +24,13 @@
 <%@page import="interactionBeans.*" %>
 <%@page import="java.util.ArrayList" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%--<%@page errorPage="/errorPage.jsp" %>--%>
+<%@page errorPage="/errorPage.jsp" %>
 
 <%!
     interactProductLocal productBean = null;
     shoppingCart cart = null;
 
+    // Initializes the enterprise java beans
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
@@ -46,7 +47,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Browse Products</title>
+        <title>Complete Checkout</title>
         <link rel="stylesheet" type="text/css" href="style.css" />
         <%
             Security sec = new Security();
