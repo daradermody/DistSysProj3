@@ -134,9 +134,12 @@
                     if (!addAmount.equals("")) {
                         amountAdd = Integer.valueOf(addAmount);
                         if (amountAdd > 0) {
+                            System.out.println("Test1");
                             productBean.increaseQuantity(product.getId(), amountAdd);
+                            System.out.println("Test2");
                         }
                     }
+
 
                     // If the user opts to buy the item, decrease amount of item and add to shopping cart
                     // Ensure that the requested amount will not force the total amount to go below 0
@@ -145,15 +148,20 @@
                     if (!buyAmount.equals("")) {
                         amountBuy = Integer.valueOf(buyAmount);
                         if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
+                            System.out.println("Test3");
                             productBean.reduceQuantity(product.getId(), amountBuy);
+                            System.out.println("Test4");
                             shoppingCartBean.addItem(product, amountBuy);
+                            System.out.println("Test5");
                         }
                     }
 
                     // If user posted content, add comment to product
                     String postedContent = Security.sanitise(request.getParameter("productBody"), true);
                     if (!postedContent.equals("")) {
+                        System.out.println("Test6");
                         productBean.addComment(product, customer, postedContent);
+                        System.out.println("Test7");
                     }%>
 
                 <div class="big-wrapper">
@@ -179,11 +187,8 @@
                                             Price: <b><%= product.getPrice()%></b><hr>
                                             <% if (isAdmin) {%>
                                             <form name="increase-amount" method="POST" action="browseProduct.jsp">
-                                                Amount: <b><%= product.getQuantity()%></b> + <input type="number" id="product-amount" name="productAmount">
-                                                <script type="text/javascript">
-                                                    document.getElementById("product-amount").value = 0;
-                                                </script>
-                                                <br/><input id="submit-button" type="submit" name="change-amount" value="Change Amount">
+                                                Amount: <b><%= product.getQuantity()%></b> + <input type="number" id="product-amount" name="productAmount" value="0">
+                                                <br/><input id="submit-button" type="submit" value="Change Amount">
                                             </form>
                                             <% } else {%>                                             
                                             Amount: <b><%= product.getQuantity()%></b>
