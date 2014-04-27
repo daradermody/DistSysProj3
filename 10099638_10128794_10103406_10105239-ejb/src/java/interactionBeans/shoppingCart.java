@@ -41,7 +41,11 @@ public interface shoppingCart {
      */
     public boolean updateQuantity(int pid, int diff);
     
-    
+    /**
+     * Method that removes products from the shopping cart and restores the 
+     * quantity values in the database of products
+     *
+     */
     @Remove
     public void cancel();
     
@@ -64,11 +68,27 @@ public interface shoppingCart {
      */
     public double getTotal();
 
+    /**
+     * Method that returns items in the shopping cart
+     *
+     * @return Map (product:quantity) of products in shopping cart
+     */
     public HashMap<Product, Integer> getItems();
 
+    /**
+     * Checkout method that just returns message for successful checkout
+     *
+     * @return
+     */
     @Remove
-    //TODO: Update tables
     public String checkout();
 
+    /**
+     * Persist method
+     *
+     * @param object Object to persist
+     */
     public void persist(Object object);
+
+    public void logout();
 }

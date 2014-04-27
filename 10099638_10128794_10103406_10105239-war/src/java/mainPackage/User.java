@@ -1,4 +1,3 @@
-
 /* 
  * Group:       Niko Flores (10103406), Emma Foley (10105239), Dara Dermody (10099638), Patrick O'Keeffe (10128794)
  * Module:      Distributed Systems 2
@@ -24,11 +23,11 @@ import interactionBeans.*;
  */
 public class User {
 
-    private final Customer details;
+    private final Customer details; // Customer object (reference to database)
     private String sessionID; //for security class
     private int sessionTime;
     private final boolean isAdmin;
-    public shoppingCart shoppingCart;
+    public shoppingCart shoppingCart; // Shopping cart object (reference to database)
 
     /**
      * Constructor to create a logged on user.
@@ -62,7 +61,6 @@ public class User {
      * @return the boolean for administrative privileges
      */
     public boolean getIsAdmin(){
-
         return this.details.getIsadmin();
     }
 
@@ -72,7 +70,6 @@ public class User {
      * @return the username
      */
     public String getUsername(){
-
         return this.details.getUsername();
     }
 
@@ -111,7 +108,6 @@ public class User {
      */
     public void setSessionID(String id){
         this.sessionID=id;
-
     }
 
     /**
@@ -124,10 +120,20 @@ public class User {
         return this.details.getPassword();
     }
     
+    /**
+     * Getter for the user's shopping cart
+     *
+     * @return The shopping cart of the user
+     */
     public shoppingCart getShoppingCart() {
         return this.shoppingCart;
     }
     
+    /**
+     * Setter for the user's shopping cart
+     *
+     * @param cart The shopping cart to give to the user
+     */
     public void setShoppingCart(shoppingCart cart) {
         this.shoppingCart = cart;
     }

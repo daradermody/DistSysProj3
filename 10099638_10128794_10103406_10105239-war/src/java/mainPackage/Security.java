@@ -35,24 +35,24 @@ import org.owasp.html.Sanitizers;
  */
 public class Security {
 
-    //interactCustomerLocal customerBean = lookupinteractCustomerLocal();
-    //ConverterBeanLocal converterBean;
     interactCustomerLocal customerBean;
     interactProductLocal productBean;
 
     private static ArrayList<User> sessionUsers = new ArrayList<>();
     final private static int TIMEOUT = 900;
 
+    // Constructor method that creates reference to interactCustomer bean
     public Security() {
         try {
+            // Get instance from bean lookup
             this.customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
         } catch (NamingException ex) {
             Logger.getLogger(Security.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
-            InitialContext initialContext = new InitialContext();
-            productBean = (interactProductLocal) initialContext.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
+            // Get instance from bean lookup
+            productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
         } catch (NamingException e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -75,7 +75,6 @@ public class Security {
         System.out.println("CUstomer name exists: " + (customerBean.exists(username)));
         if (username != null && password != null && customerBean.exists(username)) {
             validity = customerBean.verifyPassword(username, password);
-            //validity = UserList.verifyUser(username, password);
         }
 
         return validity;
@@ -95,14 +94,14 @@ public class Security {
 
         User user = null; // ID value to return; if person already has session, return null
 
-
+        // If username is valid, add
         if (username != null) {
 
             // Cycle through sessions recorded for existence of user
             for (User userCycle : sessionUsers)
                 if (userCycle.getUsername().equals(username)) {
                     exists = true;
-                    user = userCycle;
+                    user = userCycle; // Get user reference
                     break;
                 }
 
@@ -111,16 +110,12 @@ public class Security {
                 UUID uniqueID = UUID.randomUUID(); // Creates the universally unique session ID
                 Integer seconds = (int) (System.currentTimeMillis() / 1000); // Retrieves the current time in milliseconds and converts into an integer
 
-                // Cycle through all user in the list of generated users for user requiring session
-                //check that the user exists
-
+                // Check that the user exists
                 if (customerBean.exists(username)) {
                     //new user with the Customer, ID and Timestamp
 
                     user = new User(customerBean.findByUsername(username), String.valueOf(uniqueID), seconds);
 
-                    //user.setSessionID(String.valueOf(uniqueID)); // Set new session ID generated
-                    //user.setTimestamp(seconds); // Set current timestamp of user
                     sessionUsers.add(user); // Adds the user into the list of logged in users
                 }
 
@@ -140,6 +135,7 @@ public class Security {
      */
     public User verifySession(String sessionID) {
         User user = null;
+        
         if (sessionID != null) {
             // Cycle through each user to find User object associated with given session ID
             for (User userCycle : sessionUsers) {
@@ -170,7 +166,9 @@ public class Security {
     public static boolean endSession(String sessionID) {
         boolean success = false;
 
+        
         if (sessionID != null) {
+            // Cycle through list of users that have a session running and remove from list
             for (Iterator<User> iter = sessionUsers.iterator(); iter.hasNext();) {
                 User user = iter.next();
                 if (user.getSessionID().equals(sessionID)) { // User found
@@ -198,10 +196,6 @@ public class Security {
     public User authoriseRequest(HttpServletRequest request) {
         // User information array setup to package returned information
         User user = null;
-//        int USER = 0; // Constant index for username
-//        int ID = 1; // Constant index for session ID]
-//        int ADMINSTAT = 2; // Constant index for isAdmin boolean value as String
-//        String userInfo[] = {null, null, null}; // User information array
 
         // Check for ID in cookies
         Cookie[] cookies = request.getCookies(); // Fetch Cookie array
@@ -216,16 +210,20 @@ public class Security {
         String idParam;
         if (user == null) {
             idParam = sanitise(request.getParameter("id"), false);
+            
+            // If session ID is not empty (it exist), create store that ID in new user object
             if(!idParam.equals("")) {
                 user = new User();
                 user.setSessionID(idParam);
             }
         }
         
+        // Get username from ID (null if invalid)
         if(user != null)
-            user = verifySession(user.getSessionID()); // Get username from ID (null if invalid)
+            user = verifySession(user.getSessionID());
         
-        if(user == null) { // If no session ID, check for username and password details
+        // If no session ID, check for username and password details
+        if(user == null) { 
             // Get username and password parameters from user request and sanitise each
             String username = sanitise(request.getParameter("username"), false);
             String password = sanitise(request.getParameter("password"), false);
@@ -275,27 +273,17 @@ public class Security {
          PolicyFactory policy = policyBuilder1.toFactory();
          policy.sanitize(inputString);
          */
+        
         // Initialise policy to convert html-unsafe characters to safe characters
         PolicyFactory policy1 = new HtmlPolicyBuilder().toFactory();
 
-        if (allowFormattingAndLinks) // Use pre-made policy that allows some formatting tags (i, b, u, etc.) and links (a href)
-        {
+        // Use pre-made policy that allows some formatting tags (i, b, u, etc.) and links (a href)
+        if (allowFormattingAndLinks)
             policy1 = Sanitizers.FORMATTING.and(Sanitizers.LINKS);
-        }
 
         sanitisedStr = policy1.sanitize(str); // Sanitise string (remove dangerous substrings)
 
         return sanitisedStr;
     }
-//
-//    private interactCustomerLocal lookupinteractCustomerLocal() {
-//        try {
-//            Context c = new InitialContext();
-//            return (interactCustomerLocal) c.lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
-//        } catch (NamingException ne) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-//            throw new RuntimeException(ne);
-//        }
-//    }
 
 }

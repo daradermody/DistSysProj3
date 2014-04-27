@@ -12,7 +12,6 @@ package interactionBeans;
 
 import dbEntities.Customer;
 import java.util.List;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -37,17 +36,19 @@ public class interactCustomer implements interactCustomerLocal {
     /**
      * Get the password matching a given username.
      *
-     * @param username The username
-     * @return The corresponding password
+     * @param username The username of the user
+     * @return The corresponding password of the user
      */
     @Override
     public String getPassword(String username) {
         String password = null;
 
+        // Create query to find customer object
         Query q = em.createNamedQuery("Customer.findByUsername");
         q.setParameter("username", username);
 
         try {
+            // Get result of customer search and get associated password
             Customer c = (Customer) q.getSingleResult();
             password = c.getPassword();
         } catch (NoResultException e) {
@@ -68,6 +69,7 @@ public class interactCustomer implements interactCustomerLocal {
      */
     @Override
     public boolean verifyPassword(String username, String password) {
+        // Return a comparison between the password given and the password of the username given
         return password.equals(getPassword(username));
     }
 
@@ -78,25 +80,43 @@ public class interactCustomer implements interactCustomerLocal {
      */
     @Override
     public List<Customer> findAllCustomers() {
+        // Create query to find all customers
         Query q = em.createNamedQuery("Customer.findAll");
         return q.getResultList();
     }
 
+    /**
+     * Method that checks if the user with the user specified username exists
+     *
+     * @param username Username to search for
+     * @return Return boolean value indicating existence of user with specified username in database
+     */
     @Override
     public boolean exists(String username) {
+        // Create query to find customer with given username
         Query q = em.createNamedQuery("Customer.findByUsername");
         q.setParameter("username", username);
 
-        return q.getResultList().size() == 1;
+        // Return true if result list is not empty
+        return !q.getResultList().isEmpty();
     }
 
+    /**
+     * Method that finds customer based on user supplied username
+     *
+     * @param username Username of the customer object being searched for
+     * @return Customer object that has the username given
+     */
     @Override
     public Customer findByUsername(String username) {
+        // Create query for searching by username
         Query q = em.createNamedQuery("Customer.findByUsername");
         q.setParameter("username", username);
 
         Customer c = null;
+        
         try {
+            // Get results of database search
             c = (Customer) q.getSingleResult();
         } catch (NoResultException e) {
             e.printStackTrace();
@@ -105,6 +125,11 @@ public class interactCustomer implements interactCustomerLocal {
 
     }
 
+    /**
+     * Method that persists the object given
+     *
+     * @param object Object to persist
+     */
     @Override
     public void persist(Object object) {
         em.persist(object);

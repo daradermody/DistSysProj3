@@ -120,11 +120,20 @@ public class shoppingCartBean implements shoppingCart {
         return success;
     }
 
+    /**
+     * Method that is used to logout user and remove items in shopping cart
+     */
     @Remove
+    @Override
     public void logout(){
         cancel(); //empty the cart and destroy when the user logs out
     }
     
+    /**
+     * Method that removes products from the shopping cart and restores the 
+     * quantity values in the database of products
+     *
+     */
     @Override
     public void cancel() {
         // no action required - annotation @Remove indicates
@@ -168,7 +177,6 @@ public class shoppingCartBean implements shoppingCart {
      *
      * @return HashMap of the chosen items.
      */
-
     @Override
     public HashMap<Product,Integer> get5Items(){
         if (items.size() <= 5){
@@ -207,15 +215,24 @@ public class shoppingCartBean implements shoppingCart {
         return total;
     }
 
+    /**
+     * Method that returns items in the shopping cart
+     *
+     * @return Map (product:quantity) of products in shopping cart
+     */
     @Override
     public HashMap<Product, Integer> getItems() {
         return this.items;
     }
 
+    /**
+     * Checkout method that just returns message for successful checkout
+     *
+     * @return
+     */
     @Override
     public String checkout() {
-        // dummy checkout method that just returns message for successful
-        // checkout
+        // Create message to return
         String message = "You checked out the following items:\n<br />"
                 + printItemList() + "<br />Total cost is: " + getTotal();
 
@@ -223,13 +240,20 @@ public class shoppingCartBean implements shoppingCart {
         Iterator<dbEntities.Product> it = keys.iterator();
         dbEntities.Product p;
 
+        // Cycle through all products in shopping cart and remove items from database
         for (int i = 0; i < items.size(); i++) {
             p = it.next();
             removeItem(p, p.getQuantity());
         }
+        
         return message;
     }
 
+    /**
+     * Persist method
+     *
+     * @param object Object to persist
+     */
     @Override
     public void persist(Object object) {
         /* Add this to the deployment descriptor of this module (e.g. web.xml, ejb-jar.xml):

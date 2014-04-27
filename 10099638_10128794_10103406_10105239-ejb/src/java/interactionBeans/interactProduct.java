@@ -49,25 +49,41 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void addProduct(String title, String description, int quantity, int price, String imagepath, String summary) {
+        // Create query to count all products in database
         Query q = em.createNamedQuery("Product.countAll");
-        int id = Integer.valueOf(q.getSingleResult().toString());
+        
+        // Convert result to integer
+        int id = (int) q.getSingleResult();
+        // Find ID that is not in use
         while( idExists(id) ){
             id +=1;
         }
+        
+        // Create product and set parameters with ID that is not being used
         Product p = new Product(id, title, quantity);
         p.setDescription(description);
         p.setPrice((long) price);
         p.setImage(imagepath);
         p.setSummary(summary);
 
-        persist(p);
+        persist(p); // Persist created product
     }
 
+    /**
+     * Method that checks if the given ID links to a product (i.e. the product 
+     * exists in the database
+     *
+     * @param id ID to search database with
+     * @return Boolean value indicating existence of product with given ID
+     */
+    @Override
     public boolean idExists(int id){
+        // Create query to find product by ID
         Query q  = em.createNamedQuery("Product.findById");
         q.setParameter("id", id);
         return !q.getResultList().isEmpty();
     }
+    
     /**
      * Removes the given product from the database. The product can be uniquely
      * identified by it's id, <br />
@@ -78,9 +94,11 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void removeProduct(int id) {
+        // Create query to remove product
         Query q = em.createNamedQuery("Product.removeByID");
         q.setParameter("pid", id);
-        q.executeUpdate();
+        
+        q.executeUpdate(); // Execute query
     }
 
     /**
@@ -96,8 +114,9 @@ public class interactProduct implements interactProductLocal {
         Query q = em.createNamedQuery("Product.findById");
         q.setParameter("id", pid);
         
-        results = q.getResultList();
+        results = q.getResultList(); // Get results of query
         
+        // Return the product with the given ID, or null if it is not found
         return (results.size() > 0) ? (Product) q.getResultList().get(0) : null;
     }
 
@@ -108,8 +127,9 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public List<Product> findAllProducts() {
+        // Create query to return all products
         Query q = em.createNamedQuery("Product.findAll");
-        return q.getResultList();
+        return q.getResultList(); // Return list of all products
     }
 
     /**
@@ -121,7 +141,7 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public boolean increaseQuantity(int pid, int amount) {
-        return updateQuantity(pid, amount);
+        return updateQuantity(pid, amount); // Call update quantity
     }
 
     /**
@@ -135,7 +155,7 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public boolean reduceQuantity(int pid, int amount) {
-        return updateQuantity(pid, 0 - amount);
+        return updateQuantity(pid, 0 - amount); // Call update quentity with minus value
 
     }
 
@@ -154,18 +174,19 @@ public class interactProduct implements interactProductLocal {
         //First, check if the quanitity
         Query q = em.createNamedQuery("Product.findQuantityByID");
         q.setParameter("pid", pid);
-        int quantity = (int) q.getSingleResult();
-        // the quantity must be greater than the requested amount
-        //requested amount is +ve => adding stock -> no theoretical limit
         
+        // Get result of query
+        int quantity = (int) q.getSingleResult();
+
+        // Check if resulting quantity of operation is valid (greater than zero)
         if ((quantity + diff) > 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
             q2.setParameter("pid", pid);
             q2.setParameter("amt", quantity+diff);
-            q2.executeUpdate();
-            //The query was run!
+            q2.executeUpdate(); //The query is executed
+            
             success = true;
         }
 
@@ -182,10 +203,11 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public List<Product> searchProductByKeyword(String kw) {
+        // Create query to find customer object with given keyword
         Query q = em.createNamedQuery("Product.findByKeyword");
         q.setParameter("kw", "%"+kw+"%");
 
-        return q.getResultList();
+        return q.getResultList(); // Return list of results
     }
 
     /**
@@ -197,33 +219,52 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public void addComment(Product prod, Customer cust, String content) {
+        // Create query to count all products in database
         Query q = em.createNamedQuery("Comments.countAll");
-        int id = Integer.valueOf(q.getSingleResult().toString());
+        
+        // Get result and convert to integer
+        int id = (int) q.getSingleResult();
+        
+        // Find ID that is not currently in use
         while( commentIdExists(id) ){
             id +=1;
         }
+        
+        // Create comment object with ID that is not already used
         Comments comm = new Comments(id, content, cust.getUsername(), prod.getId());
-        em.persist(comm);
+        em.persist(comm); // Persist comment object
     }
 
+    /**
+     * Method that checks if a comment with the user specified ID exists in the 
+     * database
+     *
+     * @param id ID of comment to look for
+     * @return Boolean value indicating the existence of the comment with the 
+     * given ID
+     */
+    @Override
     public boolean commentIdExists(int id){
+        // Create query for looking for comment with specified ID in database
         Query q  = em.createNamedQuery("Comments.findById");
         q.setParameter("id", id);
         return !q.getResultList().isEmpty();
     }
+    
     /**
      * Returns a List of Comments associated with the product. Calls the
      * Comments.findByProduct named query.
      *
-     * @param pid
+     * @param pid Product ID of the product to get comments for
      * @return Comments for the Product
      */
     @Override
     public List<Comments> getComments(int pid) {
+        // Create query for finding comments with specific product ID
         Query q = em.createNamedQuery("Comments.findByProduct");
         q.setParameter("product", pid);
 
-        return q.getResultList();
+        return q.getResultList(); // Return list of comments produced by the query
     }
 
 
@@ -234,17 +275,19 @@ public class interactProduct implements interactProductLocal {
      */
     @Override
     public int getNumberOfProducts() {
+        // Create query that counts all products
         Query q = em.createNamedQuery("Product.countAll");
-        return q.getFirstResult();
+        return q.getFirstResult(); // Return number of products in database
     }
 
     /**
      * Wrapper for the enitity manager persist method which basically adds an object to the database.
+     * 
      * @param object 
      */
     @Override
     public void persist(Object object) {
-        em.persist(object);
+        em.persist(object); // persist given object
     }
 }
 

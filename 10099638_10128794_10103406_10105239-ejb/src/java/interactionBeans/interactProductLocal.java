@@ -109,7 +109,8 @@ public interface interactProductLocal {
     public List<Comments> getComments(int pid);
 
     /**
-     * Wrapper for the enitity manager persist method which basically adds an object to the database.
+     * Wrapper for the enitity manager persist method which basically adds an 
+     * object to the database.
      * @param object 
      */
     public void persist(Object object);
@@ -119,4 +120,23 @@ public interface interactProductLocal {
      * @return The number of entries in the table database 
      */
     public int getNumberOfProducts();
+
+    /**
+     * Method that checks if the given ID links to a product (i.e. the product 
+     * exists in the database
+     *
+     * @param id ID to search database with
+     * @return Boolean value indicating existence of product with given ID
+     */
+    public boolean idExists(int id);
+
+    /**
+     * Method that checks if a comment with the user specified ID exists in the 
+     * database
+     *
+     * @param id ID of comment to look for
+     * @return Boolean value indicating the existence of the comment with the 
+     * given ID
+     */
+    public boolean commentIdExists(int id);
 }
