@@ -13,10 +13,10 @@ import javax.jms.MessageListener;
 
 /**
  *
- * @author daradermody
+ * @author root
  */
 @MessageDriven(activationConfig = {
-    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "unknown"),
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal"),
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue")
 })
 public class MessageBean implements MessageListener {
@@ -26,6 +26,7 @@ public class MessageBean implements MessageListener {
     
     @Override
     public void onMessage(Message message) {
+        System.out.println("MESSAGE RECEIVED!!");
     }
     
 }
