@@ -122,7 +122,6 @@
                             }
                         }
                     }
-
                     // If requested product not found, redirect to main product page
                     if (product == null) {
                         response.sendRedirect("index.jsp");
@@ -133,11 +132,8 @@
                     int amountAdd = 0;
                     if (!addAmount.equals("")) {
                         amountAdd = Integer.valueOf(addAmount);
-                        if (amountAdd > 0) {
-                            System.out.println("Test1");
+                        if (amountAdd > 0)
                             productBean.increaseQuantity(product.getId(), amountAdd);
-                            System.out.println("Test2");
-                        }
                     }
 
 
@@ -147,10 +143,11 @@
                     int amountBuy = 0;
                     if (!buyAmount.equals("")) {
                         amountBuy = Integer.valueOf(buyAmount);
+                        System.out.println("Product exists: " + (product != null));
                         if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
-                            System.out.println("Test3");
+                            System.out.println("Product bean exists: " + (productBean != null));
                             productBean.reduceQuantity(product.getId(), amountBuy);
-                            System.out.println("Test4");
+                            System.out.println("Shopping cart exists: " + (shoppingCartBean != null));
                             shoppingCartBean.addItem(product, amountBuy);
                             System.out.println("Test5");
                         }
@@ -187,7 +184,7 @@
                                             Price: <b><%= product.getPrice()%></b><hr>
                                             <% if (isAdmin) {%>
                                             <form name="increase-amount" method="POST" action="browseProduct.jsp">
-                                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                                 Amount: <b><%= product.getQuantity()%></b> + <input type="number" id="product-amount" name="productAmount" value="0">
                                                 <br/><input id="submit-button" type="submit" value="Change Amount">
                                             </form>
@@ -199,13 +196,13 @@
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
                                                 <button class="product-image-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img height="32" width="32" src="images/Remove.png" title="remove"/></button>
-                                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                             </form>
                                         </td>
                                         <% } else {%>
                                         <td>
                                             <form name="buy-product" method="POST" action="browseProduct.jsp">
-                                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
@@ -253,13 +250,13 @@
                             </div>
 
                             <div class="message">
-                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 <form name="newComment" action="browseProduct.jsp" method="POST">
                                     <textarea class="message product-message" name="productBody"></textarea>
                                     <input id="submit-button" type="submit" value="Comment">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
                                 </form> 
-                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                 <form name="refresh" action="browseProduct.jsp" method="POST">
                                     <input type="hidden" name="product-title" value="<%= product.getTitle()%>">
                                     <button id="submit-button" type="submit" name="refresh" value="true">Refresh</button>
