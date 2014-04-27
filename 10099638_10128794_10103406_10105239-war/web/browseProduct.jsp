@@ -183,7 +183,7 @@
                                                 <script type="text/javascript">
                                                     document.getElementById("product-amount").value = 0;
                                                 </script>
-                                                <br/><input id="submit-button" type="submit" value="Change Amount">
+                                                <br/><input id="submit-button" type="submit" name="change-amount" value="Change Amount">
                                             </form>
                                             <% } else {%>                                             
                                             Amount: <b><%= product.getQuantity()%></b>
@@ -192,7 +192,7 @@
                                         <% if (isAdmin) {%>
                                         <td>
                                             <form name="remove-product" method="POST" action="index.jsp">
-                                                <button class="product-edit-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img src="images/Remove.png" title="remove"/></button>
+                                                <button class="product-edit-button" type="submit" name="removeProduct" value="<%= product.getId()%>"><img height="32" width="32" src="images/Remove.png" title="remove"/></button>
                                             </form>
                                         </td>
                                         <% } else {%>
@@ -201,7 +201,7 @@
                                                 <input type="number" id="reduce-amount" name="reduceAmount">
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
-                                                <button class="product-edit-button" type="submit" name="buyProduct" value="Buy Product"><img src="images/Buy.png" title="buy"/></button>
+                                                <button class="product-edit-button" type="submit" name="buyProduct" value="Buy Product"><img height="32" width="32" src="images/Buy.png" title="buy"/></button>
                                             </form>
                                         </td>
                                         <% }%>
