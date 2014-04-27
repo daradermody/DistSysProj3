@@ -12,7 +12,17 @@ package interactionBeans;
 
 import dbEntities.Customer;
 import java.util.List;
+import java.util.Queue;
 import javax.ejb.Stateless;
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -133,5 +143,66 @@ public class interactCustomer implements interactCustomerLocal {
     @Override
     public void persist(Object object) {
         em.persist(object);
+    }
+    
+    
+    /******************************************************************\
+     *                    Message-Driven Bean Methods                  |
+    \******************************************************************/
+ 
+    public void setupPTP() {
+        try {
+            InitialContext iniCtx = new InitialContext();
+            Object tmp = iniCtx.lookup("ConnectionFactory");
+            QueueConnectionFactory qcf = (QueueConnectionFactory) tmp;
+            conn = qcf.createQueueConnection();
+            queA = (Queue) iniCtx.lookup("queue/A");
+            queB = (Queue) iniCtx.lookup("queue/B");
+            session = conn.createQueueSession(false, QueueSession.AUTO_ACKNOWLEDGE);
+            conn.start();
+        } catch(JMSException | NamingException e) {
+            System.out.println("JMS or NamingException: ");
+            e.printStackTrace();
+        }
+    }
+    
+    public void sendRecvAsync(String textBase) {
+        
+        System.out.println("Begin sendRecvAsync");
+
+        // Setup the PTP connection, session
+        setupPTP();
+
+        try {
+            // Set the async listener for queA
+            QueueReceiver recv = session.createReceiver((javax.jms.Queue) queA);
+            recv.setMessageListener(new MessageBean());
+
+            // Send a few text msgs to queB
+            QueueSender send = session.createSender((javax.jms.Queue) queB);
+
+            for(int m = 0; m < 10; m ++) {
+                TextMessage tm = session.createTextMessage(textBase+"#"+m);
+                tm.setJMSReplyTo((Destination) queA);
+                send.send(tm);
+                System.out.println("sendRecvAsync, sent text=" + tm.getText());
+            }
+        } catch(JMSException e) {
+            System.out.println("JMS Exception: ");
+            e.printStackTrace();
+        }
+        
+        System.out.println("End sendRecvAsync");
+    }
+    
+    public void stop() {
+        try {
+            conn.stop();
+            session.close();
+            conn.close();
+        } catch(JMSException e) {
+            System.out.println("JMS Exception: ");
+            e.printStackTrace();
+        }
     }
 }
