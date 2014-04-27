@@ -159,20 +159,17 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    Price: <%= price%><br/>
-                                                    Amount: <%= amount%><br/>
-                                                    Item Total: <%= (price * amount)%>
+                                                    Price: <b><%= price%></b><br/>
+                                                    Amount: <b><%= amount%></b><br/>
+                                                    Item Total: <b><%= (price * amount)%></b>
                                                 </td>
                                                 <td>
                                                     <form name="shoppingCart" method="POST" action="checkout.jsp">
-                                                        <input type="number" name="removeAmount" id="reduce-amount">
-                                                        <script type="text/javascript">
-                                                            document.getElementById("reduce-amount").value = <%= amount%>;
-                                                        </script>
+                                                        <input type="number" name="removeAmount" value="1" id="reduce-amount">
                                                         <button class="product-title-button" type="submit" name="removeCartProduct" value="<%= p.getId()%>"><img height="32" width="32"  src="images/Remove.png" title="edit"/></button>
                                                     </form>
                                                 </td>
-                                            </tr>
+                                            </tr> 
                                         </table>
                                     </td>
                                 </tr>
@@ -187,9 +184,11 @@
                     double total = shoppingCartBean.getTotal();
                 %>
                 <br/>Total: <b><%= total%></b>
-                <br/>
-                <form name="cartActions" method="POST" action="index.jsp">
+                <hr/>
+                <form name="cartActions" method="POST" action="completeCheckout.jsp">
                     <button class="checkout-button" type="submit" name="complete" value="Complete"><img src="images/Complete.png" title="complete"></button>
+                </form>
+                <form name="cartActions" method="POST" action="index.jsp">
                     <br><button class="checkout-button" type="submit" name="cancel" value="Cancel"><img src="images/Cancel.png" title="cancel"></button>
                     <br><button class="checkout-button" type="submit" name="deleteAll" value="Delete All"><img src="images/Trash.png" title="deleteAll"></button>
                 </form>

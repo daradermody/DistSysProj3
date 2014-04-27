@@ -304,11 +304,11 @@
                             int amount = cart.getItems().get(p);
                     %>
                     <li>
-                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
+                        <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><b><%= price%> x <%= amount%> = <%=(price * amount)%></b></button>
                     </li>
                     <% }%>
                 </ul>
-                <br/>Total: <b><%= total%></b>
+                <hr/>Total: <b><%= total%></b>
             </form>
         </div>
     </body>

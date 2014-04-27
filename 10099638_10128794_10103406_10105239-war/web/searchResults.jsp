@@ -134,7 +134,7 @@
                                     String image = prod.getImage();
                                     int price = Integer.valueOf(String.valueOf(prod.getPrice()));
                                     int amount = prod.getQuantity();
-
+                                    int prodID = prod.getId();
                                     // Check to ensure that the amount is at least 1
                                     if (amount > 0) {
                         %>
@@ -143,7 +143,7 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><%= title%></button>
+                                            <button class="product-title-button" type="submit" name="product-id" value="<%= prodID%>"><%= title%></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -151,7 +151,7 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <button class="product-image-button" type="submit" name="product-name" value="<%= title%>"><img height="90" width="90" src="<%= image%>" title="<%= title%>"></button>
+                                                        <button class="product-image-button" type="submit" name="product-id" value="<%= prodID%>"><img height="90" width="90" src="<%= image%>" title="<%= title%>"></button>
                                                     </td>
                                                     <td>
                                                         <span class="product-summary">
@@ -164,9 +164,9 @@
                                                     </td>
                                                     <td>
                                                         <% if (isAdmin) {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Edit.png" title="edit"/></button>
+                                                        <button class="product-title-button" type="submit" name="product-id" value="<%= prodID%>"><img src="images/Edit.png" title="edit"/></button>
                                                             <% } else {%>
-                                                        <button class="product-title-button" type="submit" name="product-name" value="<%= title%>"><img src="images/Buy.png" title="buy"/></button>
+                                                        <button class="product-title-button" type="submit" name="product-id" value="<%= prodID%>"><img src="images/Buy.png" title="buy"/></button>
                                                             <% } %>
                                                     </td>
                                                 </tr>
@@ -210,11 +210,11 @@
                                 int prAmount = cart.getItems().get(p);
                         %>
                         <li>
-                            <button type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></button>
+                            <button type="submit" name="checkout" value="checkout.jsp"><%= prTitle%><br/><b><%= prPrice%> x <%= prAmount%> = <%=(prPrice * prAmount)%></b></button>
                         </li>
                         <% }%>
                     </ul>
-                    <br/>Total: <b><%= total%></b>
+                    <hr/>Total: <b><%= total%></b>
                 </form>
             </div>
         </div>

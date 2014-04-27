@@ -97,27 +97,34 @@ public class shoppingCartBean implements shoppingCart {
      */
     @Override
     public boolean updateQuantity(int pid, int diff) {
-        boolean success = false; // Variable that holds satus of operation completion
+         boolean success = false; // Variable that holds satus of operation completion
 
         //First, check if the quanitity
         Query q = em.createNamedQuery("Product.findQuantityByID");
         q.setParameter("pid", pid);
-        int quantity = q.getFirstResult();
+        int quantity = (int) q.getSingleResult();
         // the quantity must be greater than the requested amount
         //requested amount is +ve => adding stock -> no theoretical limit
-        if (quantity >= Math.abs(diff) || diff > 0) {
+        
+        if ((quantity + diff) > 0) {
             //Select the query 
             Query q2 = em.createNamedQuery("Product.updateStock");
             //set the parameters
             q2.setParameter("pid", pid);
-            q2.setParameter("amt", diff);
+            q2.setParameter("amt", quantity+diff);
+            q2.executeUpdate();
             //The query was run!
             success = true;
         }
+
         return success;
     }
 
     @Remove
+    public void logout(){
+        cancel(); //empty the cart and destroy when the user logs out
+    }
+    
     @Override
     public void cancel() {
         // no action required - annotation @Remove indicates
@@ -127,12 +134,14 @@ public class shoppingCartBean implements shoppingCart {
         Iterator<dbEntities.Product> iter = setOfKeys.iterator();
         dbEntities.Product prod;
 
-        for (int i = 0; i < items.size(); i++) {
+        while (iter.hasNext()) {
             prod = iter.next(); //gets teh product in the cart
             int amountInCart = items.get(prod);//gets the quantity of prod that were in the cart
             //productNamesDumped.add(prod.getTitle());
             //add the items back to the database
             updateQuantity(prod.getId(), amountInCart);
+            System.out.println("Product ID: " + prod.getId());
+            System.out.println("Amount in Cart: " + amountInCart);
             items.remove(prod);
         }
     }
@@ -192,7 +201,7 @@ public class shoppingCartBean implements shoppingCart {
         Product curr;
         while (it.hasNext()) {
             curr = it.next();
-            total = curr.getPrice() * items.get(curr);
+            total += curr.getPrice() * items.get(curr);
         }
 
         return total;
@@ -203,8 +212,6 @@ public class shoppingCartBean implements shoppingCart {
         return this.items;
     }
 
-    @Remove
-    //TODO: Update tables
     @Override
     public String checkout() {
         // dummy checkout method that just returns message for successful

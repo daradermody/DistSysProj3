@@ -84,26 +84,24 @@
 
             // Complete checkout by simply removing all the items in the shopping cart
             String complete = Security.sanitise(request.getParameter("complete"), false);
-
             if (!complete.equals("")) {
                 cart.checkout();
 
                 // Data log for completed checkout
-                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-                Date date = new Date();
-                fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
+//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+//                Date date = new Date();
+//                fileLog.println("Shopping Cart - Completed checkout @ " + date.toString());
             }
 
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
-
             if (!deleteAll.equals("")) {
                 cart.cancel();
 
                 // Data log for dumped items
-                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-                Date date = new Date();
-                fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
+//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+//                Date date = new Date();
+//                fileLog.println("Shopping Cart - All items dumped @ " + date.toString());
                 //for(int n = 0; n < productNamesDumped.size(); n++) {
                 //    fileLog.println("\t" + productNamesDumped.get(n));
             }
@@ -113,14 +111,14 @@
             if (!productID.equals("")) {
                 int productToRemove = Integer.valueOf(productID);
                 //admin removing the item from database
-                String productTitle = (productBean.searchByID(productToRemove)).getTitle();
+//                String productTitle = (productBean.searchByID(productToRemove)).getTitle();
                 productBean.removeProduct(productToRemove);
                 
                 //TODO: Make it work
                 // Data log for item removal
-                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-                Date date = new Date();
-                fileLog.println("Item: " + productTitle + " removed @ " + date.toString());
+//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+//                Date date = new Date();
+//                fileLog.println("Item: " + productTitle + " removed @ " + date.toString());
             }
 
             // Add new product if parameters exist
@@ -140,13 +138,13 @@
                 // Create new shop product object with user-inputted product details
                 productBean.addProduct(newProductName, newProductDescription, newProductAmount, newProductPrice, newProductImage, newProductSummary);
                 // Data log for product addition
-                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
-                Date date = new Date();
-                if (!newProductName.equals("")) {
-                    fileLog.println("New item: " + newProductName + " added @ " + date.toString());
-                } else {
-                    fileLog.println("New item added @ " + date.toString());
-                }
+//                PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
+//                Date date = new Date();
+//                if (!newProductName.equals("")) {
+//                    fileLog.println("New item: " + newProductName + " added @ " + date.toString());
+//                } else {
+//                    fileLog.println("New item added @ " + date.toString());
+//                }
             }
         %>
 
@@ -247,11 +245,11 @@
                                 int amount = cart.getItems().get(p);
                         %>
                         <li>
-                            <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><%= price%> x <%= amount%> = <%=(price * amount)%></button>
+                            <button class type="submit" name="checkout" value="checkout.jsp"><%= title%><br/><b><%= price%> x <%= amount%> = <%=(price * amount)%></b></button>
                         </li>
                         <% }%>
                     </ul>
-                        <br/>Total: <b><%= total%></b>
+                        <hr/>Total: <b><%= total%></b>
                 </form>
             </div>
         </div>
