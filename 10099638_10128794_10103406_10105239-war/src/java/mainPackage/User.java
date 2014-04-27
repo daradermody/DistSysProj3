@@ -28,7 +28,7 @@ public class User {
     private String sessionID; //for security class
     private int sessionTime;
     private final boolean isAdmin;
-    private shoppingCart shoppingCart;
+    public shoppingCart shoppingCart;
 
     /**
      * Constructor to create a logged on user.

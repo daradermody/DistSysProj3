@@ -25,13 +25,13 @@
 
 <%!
     interactProductLocal productBean = null;
-    shoppingCart shoppingCartBean = null;
+    shoppingCart cart = null;
     interactCustomerLocal customerBean = null;
 
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
-            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+            cart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
             customerBean = (interactCustomerLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactCustomer!interactionBeans.interactCustomerLocal");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
@@ -67,10 +67,19 @@
             username = user.getUsername(); // Set to more convenient variable
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
-            if (user.getShoppingCart() != null) {
-                shoppingCartBean = user.getShoppingCart();
-            }
+            
+            System.out.println("Starting shopping cart crap");
+            System.out.println("Shopping cart exists " + (user.shoppingCart != null));
 
+            if(user.getShoppingCart() == null) {
+                user.shoppingCart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+                System.out.println("Creating new shopping cart");
+            }
+                
+            cart = user.shoppingCart;
+            System.out.println("Exist? " + (cart != null));
+            //System.out.println("test: " + cart.printItemList());
+            
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
 
@@ -146,8 +155,8 @@
                             if (amountBuy > 0 && ((product.getQuantity() - amountBuy) >= 0)) {
                                 System.out.println("Product bean exists: " + (productBean != null));
                                 productBean.reduceQuantity(product.getId(), amountBuy);
-                                System.out.println("Shopping cart exists: " + (shoppingCartBean != null));
-                                shoppingCartBean.addItem(product, amountBuy);
+                                System.out.println("Shopping cart exists: " + (cart != null));
+                                cart.addItem(product, amountBuy);
                                 System.out.println("Test5");
                             }
                         }
@@ -207,7 +216,7 @@
                                                 <script type="text/javascript">
                                                     document.getElementById("reduce-amount").value = 1;</script>
                                                 <button class="product-edit-button" type="submit" name="buyProduct" value="Buy Product"><img height="32" width="32" src="images/Buy.png" title="buy"/></button>
-                                                <input type="hidden" name="product-id" value="<%= product.getId()%>"
+                                                <input type="hidden" name="product-id" value="<%= product.getId()%>">
                                             </form>
                                         </td>
                                         <% }%>
@@ -272,13 +281,13 @@
         <div id="sidebar" class="big-wrapper">
             <form name="checkout" method="POST" action="checkout.jsp">
                 <%
-                    double total = shoppingCartBean.getTotal();
+                    double total = cart.getTotal();
                 %>
                 <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                 <br>
                 <ul>
                     <%-- Loops through, getting 5 items of the shopping cart --%>
-                    <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
+                    <%  HashMap<dbEntities.Product, Integer> shopCart = cart.get5Items();
                         Set<dbEntities.Product> keys = shopCart.keySet();
                         Iterator<dbEntities.Product> it = keys.iterator();
                         dbEntities.Product p;

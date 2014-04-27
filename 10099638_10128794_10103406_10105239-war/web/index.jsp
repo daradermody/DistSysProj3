@@ -27,12 +27,12 @@
 
 <%!
     interactProductLocal productBean = null;
-    shoppingCart shoppingCartBean = null;
+    shoppingCart cart = null;
 
     public void jspInit() {
         try {
             productBean = (interactProductLocal) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/interactProduct!interactionBeans.interactProductLocal");
-            shoppingCartBean = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
+            cart = (shoppingCart) new InitialContext().lookup("java:global/10099638_10128794_10103406_10105239/10099638_10128794_10103406_10105239-ejb/shoppingCartBean!interactionBeans.shoppingCart");
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -69,7 +69,7 @@
             id = user.getSessionID(); // Set to more convenient variable
             isAdmin = user.getIsAdmin(); // Set to more convenient variable
             if(user.getShoppingCart() != null)
-                shoppingCartBean = user.getShoppingCart();
+                cart = user.shoppingCart;
 
             // Determine if user has cookies disabled
             boolean cookiesDisabled = request.getCookies() == null;
@@ -85,7 +85,7 @@
             String complete = Security.sanitise(request.getParameter("complete"), false);
 
             if (!complete.equals("")) {
-                shoppingCartBean.checkout();
+                cart.checkout();
 
                 // Data log for completed checkout
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
@@ -96,9 +96,8 @@
             // Put the items from the shopping cart back to the database, if the customer clicks delete all
             String deleteAll = Security.sanitise(request.getParameter("deleteAll"), false);
 
-            if (!deleteAll.equals(
-                    "")) {
-                shoppingCartBean.cancel();
+            if (!deleteAll.equals("")) {
+                cart.cancel();
 
                 // Data log for dumped items
                 PrintWriter fileLog = new PrintWriter(new BufferedWriter(new FileWriter("log.txt", true)));
@@ -229,13 +228,13 @@
             <div id="sidebar" class="big-wrapper">
                 <form name="checkout" method="POST" action="checkout.jsp">
                     <%
-                        double total = shoppingCartBean.getTotal();
+                        double total = cart.getTotal();
                     %>
                     <button class="checkout-button" type="submit" name="checkout" value="checkout.jsp"><img src="images/Checkout.png" title="checkout"></button>
                     <br/>
                     <ul>
                         <%-- Loops through, getting 5 items of the shopping cart --%>
-                        <%  HashMap<dbEntities.Product, Integer> shopCart = shoppingCartBean.get5Items();
+                        <%  HashMap<dbEntities.Product, Integer> shopCart = cart.get5Items();
                             Set<dbEntities.Product> keys = shopCart.keySet();
                             Iterator<dbEntities.Product> it = keys.iterator();
                             dbEntities.Product p;
