@@ -17,7 +17,7 @@
 <%@page import="interactionBeans.interactProductLocal"%>
 <%@page import="mainPackage.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page errorPage="/errorPage.jsp" %>
+<%--<%@page errorPage="/errorPage.jsp" %>--%>
 <jsp:include page="/header.jsp" />
 
 <%!
