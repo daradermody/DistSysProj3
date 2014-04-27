@@ -119,7 +119,7 @@
             String productPrice = Security.sanitise(request.getParameter("productPrice"), false);
             int newProductPrice = (!productPrice.equals("")) ? Integer.valueOf(productPrice) : 9999999;
 
-            String productAmount = Security.sanitise(request.getParameter("productPrice"), false);
+            String productAmount = Security.sanitise(request.getParameter("productAmount"), false);
             int newProductAmount = (!productPrice.equals("")) ? Integer.valueOf(productAmount) : 0;
 
             String newProductImage = "images/" + Security.sanitise(request.getParameter("productImage"), false);
